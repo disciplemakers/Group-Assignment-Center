@@ -10,13 +10,17 @@ describe LocationsController do
     it "recognizes and generates #new" do
       { :get => "/locations/new" }.should route_to(:controller => "locations", :action => "new")
     end
-
+    
     it "recognizes and generates #show" do
       { :get => "/locations/1" }.should route_to(:controller => "locations", :action => "show", :id => "1")
     end
 
     it "recognizes and generates #edit" do
       { :get => "/locations/1/edit" }.should route_to(:controller => "locations", :action => "edit", :id => "1")
+    end
+
+    it "recognizes and generates #new_child with parent_id" do
+      { :get => "/locations/1/new_child" }.should route_to(:controller => "locations", :action => "new_child", :parent_id => "1")
     end
 
     it "recognizes and generates #create" do

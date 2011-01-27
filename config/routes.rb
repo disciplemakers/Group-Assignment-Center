@@ -1,5 +1,14 @@
 Gac::Application.routes.draw do
   resources :locations
+  #resources :locations do
+  #  member do
+  #    get 'new_child'
+  #  end
+  #end
+  
+
+  # New child named route
+  match 'locations/:parent_id/new_child' => 'locations#new_child', :as => :new_child
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

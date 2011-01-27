@@ -34,6 +34,18 @@ class LocationsController < ApplicationController
       format.xml  { render :xml => @location }
     end
   end
+  
+  # GET /locations/1/new_child
+  # GET /locations/1/new_child.xml
+  def new_child
+    @location = Location.new
+    @parent = Location.find(params[:parent_id])
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @location }
+    end
+  end
 
   # GET /locations/1/edit
   def edit

@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<p> 
+<p>
   <b>ID:</b>
   <%= @location.id %>
 </p>
@@ -17,5 +17,16 @@
 </p>
 <% end %>
 
+<p>
+  <b>Capacity:</b>
+  <%= @location.capacity %>
+</p>
+
+<p>
+  <b>Comment:</b>
+  <%= @location.comment %>
+</p>
+
 <%= link_to 'Edit', edit_location_path(@location) %> |
-<%= link_to 'Back', locations_path %>
+<%= link_to 'Back', locations_path %> |
+<%= link_to 'New Child', new_child_path(:parent_id => @location.id) %>
