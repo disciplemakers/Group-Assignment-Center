@@ -14,7 +14,10 @@ class LocationsController < ApplicationController
   # GET /locations/1.xml
   def show
     @location = Location.find(params[:id])
-
+    if @location.parent_id and not @location.parent
+      flash[:notice] = "Error: This child thinks it has a parent but doesn't!"  
+    end
+    
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @location }
