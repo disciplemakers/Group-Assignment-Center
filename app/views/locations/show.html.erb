@@ -1,10 +1,21 @@
 <p id="notice"><%= notice %></p>
 
+<p> 
+  <b>ID:</b>
+  <%= @location.id %>
+</p>
+
 <p>
   <b>Name:</b>
   <%= @location.name %>
 </p>
 
+<% if @location.parent_id %>
+<p>
+  <b>Parent:</b>
+  <%= @location.parent.name %>
+</p>
+<% end %>
 
 <%= link_to 'Edit', edit_location_path(@location) %> |
 <%= link_to 'Back', locations_path %>
