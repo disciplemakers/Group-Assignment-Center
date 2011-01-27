@@ -1,6 +1,4 @@
 Gac::Application.routes.draw do
-  resources :location_relations
-
   resources :locations
 
   # The priority is based upon order of creation:

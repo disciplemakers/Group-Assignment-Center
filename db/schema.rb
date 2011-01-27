@@ -12,13 +12,6 @@
 
 ActiveRecord::Schema.define(:version => 20110127152343) do
 
-  create_table "location_relations", :force => true do |t|
-    t.integer  "parent_id"
-    t.integer  "child_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "locations", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
