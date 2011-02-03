@@ -1,0 +1,65 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @group.name %>
+</p>
+
+<p>
+  <b>Capacity:</b>
+  <%= @group.capacity %>
+</p>
+
+<p>
+  <b>Can contain people:</b>
+  <%= @group.can_contain_people %>
+</p>
+
+<p>
+  <b>Can contain groups:</b>
+  <%= @group.can_contain_groups %>
+</p>
+
+<p>
+  <b>Location:</b>
+  <%= @group.location_id %>
+</p>
+
+<p>
+  <b>Comment:</b>
+  <%= @group.comment %>
+</p>
+
+<p>
+  <b>Unique membership:</b>
+  <%= @group.unique_membership %>
+</p>
+
+<p>
+  <b>Required membership:</b>
+  <%= @group.required_membership %>
+</p>
+
+<p>
+  <b>Gender constraint:</b>
+  <%= @group.gender_constraint_id %>
+</p>
+
+<p>
+  <b>Label text:</b>
+  <%= @group.label_text %>
+</p>
+
+<p>
+  <b>Label text prepend to child label:</b>
+  <%= @group.label_text_prepend_to_child_label %>
+</p>
+
+<p>
+  <b>Label field:</b>
+  <%= @group.label_field %>
+</p>
+
+
+<%= link_to 'Edit', edit_group_path(@group) %> |
+<%= link_to 'Back', groups_path %>

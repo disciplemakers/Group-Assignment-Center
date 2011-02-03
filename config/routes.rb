@@ -1,4 +1,6 @@
 Gac::Application.routes.draw do
+  resources :groups
+
   resources :locations
   #resources :locations do
   #  member do
