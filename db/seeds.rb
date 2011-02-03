@@ -5,3 +5,7 @@
 #
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
+
+gender_constraints = GenderConstraint.create([{:constraint => 'Male'},
+                                              {:constraint => 'Female'},
+                                              {:constraint => 'Single Gender'}])                             

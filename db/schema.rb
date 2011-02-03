@@ -10,7 +10,31 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110127203448) do
+ActiveRecord::Schema.define(:version => 20110203214852) do
+
+  create_table "gender_constraints", :force => true do |t|
+    t.string   "constraint"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "groups", :force => true do |t|
+    t.string   "name"
+    t.integer  "capacity"
+    t.boolean  "can_contain_people"
+    t.boolean  "can_contain_groups"
+    t.integer  "location_id"
+    t.text     "comment"
+    t.boolean  "unique_membership"
+    t.boolean  "required_membership"
+    t.integer  "gender_constraint_id"
+    t.string   "label_text"
+    t.boolean  "label_text_prepend_to_child_label"
+    t.integer  "label_field"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "parent_id"
+  end
 
   create_table "locations", :force => true do |t|
     t.string   "name"
