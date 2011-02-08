@@ -17,12 +17,7 @@
   </div>
   
   <% if @parent %>
-    <div class="field">
-      <%= f.label :parent_id %><br />
-      <%= f.text_field :parent_id, :size => 3, 
-                       :value => @parent.id,
-                       :readonly => true %>
-    </div>   
+      <%= f.hidden_field :parent_id, :value => @parent.id%>
   <% end %>
   
   <div class="field">
