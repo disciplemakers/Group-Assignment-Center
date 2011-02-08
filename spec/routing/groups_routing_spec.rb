@@ -18,6 +18,12 @@ describe GroupsController do
     it "recognizes and generates #edit" do
       { :get => "/groups/1/edit" }.should route_to(:controller => "groups", :action => "edit", :id => "1")
     end
+    
+	  it "recognizes and generates #new_child with parent_id" do
+      { :get => "/groups/1/new" }.should route_to(:controller => "groups",
+      													:action => "new",
+      													:id => "1")
+    end
 
     it "recognizes and generates #create" do
       { :post => "/groups" }.should route_to(:controller => "groups", :action => "create")

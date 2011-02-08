@@ -23,9 +23,14 @@ class GroupsController < ApplicationController
 
   # GET /groups/new
   # GET /groups/new.xml
+  # GET /groups/1/new
+  # GET /groups/1/new.xml
   def new
     @group = Group.new
-
+    if params[:id]
+      @parent = Group.find(params[:id])
+    end
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @group }

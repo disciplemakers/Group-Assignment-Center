@@ -7,7 +7,7 @@ module LocationsHelper
     output = content_tag(:li, nil, false) do
       link_to(location.name, location) + ' | ' +
       link_to('Edit', edit_location_path(location)) + ' | ' +
-      link_to('New Child', new_child_path(location)) + ' | ' +
+      link_to('New Child', new_child_location_path(location)) + ' | ' +
       link_to('Destroy', location, :confirm => 'Are you sure?', :method => :delete)
     end
              

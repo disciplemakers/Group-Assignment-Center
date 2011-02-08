@@ -7,10 +7,11 @@ Gac::Application.routes.draw do
   #    get 'new_child'
   #  end
   #end
-  
 
   # New child named route
-  match 'locations/:parent_id/new_child' => 'locations#new_child', :as => :new_child
+  match 'locations/:id/new' => 'locations#new', :as => :new_child_location
+  match 'groups/:id/new' => 'groups#new', :as => :new_child_group
+  
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

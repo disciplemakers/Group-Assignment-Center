@@ -34,17 +34,17 @@ describe LocationsController do
     end
   end
   
-  describe "GET new_child" do
+  describe "GET new with id" do
     it "assigns a new location as @location" do
       Location.stub(:new) { mock_location }
       Location.stub(:find).with("37") { mock_model(Location).as_null_object }
-      get :new_child, :parent_id => "37"
+      get :new, :id => "37"
       assigns(:location).should be(mock_location)
     end
     
     it "assigns requested parent as @parent" do
       Location.stub(:find).with("37") { mock_location }
-      get :new_child, :parent_id => "37"
+      get :new, :id => "37"
       assigns(:parent).should be(mock_location)
     end
   end

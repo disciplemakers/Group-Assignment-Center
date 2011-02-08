@@ -15,16 +15,16 @@
     <%= f.label :name %><br />
     <%= f.text_field :name %>
   </div>
-  <div class="field">
-    <%= f.label :parent_id %><br />
-    <% if @parent %>
+  
+  <% if @parent %>
+    <div class="field">
+      <%= f.label :parent_id %><br />
       <%= f.text_field :parent_id, :size => 3, 
                        :value => @parent.id,
                        :readonly => true %>
-    <% else %>
-      <%= f.text_field :parent_id, :size => 3 %>
-    <% end %>
-  </div>
+    </div>   
+  <% end %>
+  
   <div class="field">
     <%= f.label :capacity %><br />
     <%= f.text_field :capacity, :size => 3 %>

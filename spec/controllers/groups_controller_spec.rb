@@ -34,6 +34,21 @@ describe GroupsController do
     end
   end
 
+  describe "GET new with id" do
+    it "assigns a new group as @group" do
+      Group.stub(:new) { mock_group }
+      Group.stub(:find).with("37") { mock_model(Group).as_null_object }
+      get :new, :id => "37"
+      assigns(:group).should == mock_group
+    end
+    
+    it "assigns requested parent as @parent" do
+      Group.stub(:find).with("37") { mock_group }
+      get :new, :id => "37"
+      assigns(:parent).should == mock_group
+    end
+  end
+
   describe "GET edit" do
     it "assigns the requested group as @group" do
       Group.stub(:find).with("37") { mock_group }
