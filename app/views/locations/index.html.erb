@@ -3,7 +3,7 @@
 <ul>
 <% @locations.each do |location| %>
   <% unless location.parent %>
-      <%= print_location(location) %>
+      <%= print_tree(location) %>
   <% end %>
 <% end %>
 </ul>
