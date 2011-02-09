@@ -1,46 +1,12 @@
 <h1>Listing groups</h1>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Capacity</th>
-    <th>Can contain people</th>
-    <th>Can contain groups</th>
-    <th>Location</th>
-    <th>Comment</th>
-    <th>Unique membership</th>
-    <th>Required membership</th>
-    <th>Gender constraint</th>
-    <th>Label text</th>
-    <th>Label text prepend to child label</th>
-    <th>Label field</th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
+<ul>
 <% @groups.each do |group| %>
-  <tr>
-    <td><%= group.name %></td>
-    <td><%= group.capacity %></td>
-    <td><%= group.can_contain_people %></td>
-    <td><%= group.can_contain_groups %></td>
-    <td><%= group.location_id %></td>
-    <td><%= group.comment %></td>
-    <td><%= group.unique_membership %></td>
-    <td><%= group.required_membership %></td>
-    <td><%= group.gender_constraint_id %></td>
-    <td><%= group.label_text %></td>
-    <td><%= group.label_text_prepend_to_child_label %></td>
-    <td><%= group.label_field %></td>
-    <td><%= link_to 'Show', group %></td>
-    <td><%= link_to 'Edit', edit_group_path(group) %></td>
-    <td><%= link_to 'New Child', new_child_group_path(group) %></td>
-    <td><%= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
+  <% unless group.parent %>
+      <%= print_tree(group) %>
+  <% end %>
 <% end %>
-</table>
+</ul>
 
 <br />
 
