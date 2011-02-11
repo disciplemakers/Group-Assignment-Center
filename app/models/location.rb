@@ -3,4 +3,5 @@ class Location < ActiveRecord::Base
   has_many :children, :class_name => "Location", 
            :foreign_key => "parent_id", :dependent => :destroy
   has_many :groups
+  has_many :events
 end

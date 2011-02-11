@@ -4,10 +4,11 @@ class Group < ActiveRecord::Base
   belongs_to :parent, :class_name => "Group", :foreign_key => "parent_id"
   has_many :children, :class_name => "Group", 
            :foreign_key => "parent_id", :dependent => :destroy
+  has_many :events
            
   after_initialize :normalize_unique_membership_constraint,
                    :normalize_required_membership_constraint,
-                   :if => :parent_id
+                   :if => :has_valid_parent?
                    
   validates_presence_of :name
   validates_numericality_of :capacity, :only_integer => true,
@@ -15,8 +16,17 @@ class Group < ActiveRecord::Base
                             :greater_than_or_equal_to => 0
   validates_inclusion_of :unique_membership, :required_membership,
                          :in => [true, false, nil]
-  validate :unique_membership_with_respect_to_parent, :if => :parent_id
-  validate :required_membership_with_respect_to_parent, :if => :parent_id
+  validate :unique_membership_with_respect_to_parent, :if => :has_valid_parent?
+  validate :required_membership_with_respect_to_parent, :if => :has_valid_parent?
+  
+  def has_valid_parent?
+    begin
+      parent = Group.find(self.parent_id)
+      true
+    rescue
+      false
+    end
+  end
   
   # Change the value of unique_membership to be consistent with parent
   # settings, if necessary.
