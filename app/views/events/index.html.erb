@@ -28,6 +28,27 @@
 <% end %>
 </table>
 
-<br />
 
-<%= link_to 'New Event', new_event_path %>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Title</th>
+    <th>Location</th>
+    <th>Start date</th>
+    <th>End date</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+<% @remote_events.each do |id, event| %>
+  <tr>
+    <td><%= event["ID"] %></td>
+    <td><%= event["Title"] %></td>
+    <td><%= event["LocationName"] %></td>
+    <td><%= event["StartDate"] %></td>
+    <td><%= event["EndDate"] %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
