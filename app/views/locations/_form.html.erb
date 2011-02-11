@@ -12,8 +12,7 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
+    <%= f.label :name %>: <%= f.text_field :name %>
   </div>
   
   <% if @parent %>
@@ -21,11 +20,11 @@
   <% end %>
   
   <div class="field">
-    <%= f.label :capacity %><br />
-    <%= f.text_field :capacity, :size => 3 %>
+    <%= f.label :capacity %>: 
+    <%= f.text_field :capacity, :size => 4 %>
   </div>
   <div class="field">
-    <%= f.label :comment %><br />
+    <%= f.label :comment %>: 
     <%= f.text_area :comment, :rows => 2 %>
   </div>
   <div class="actions">
