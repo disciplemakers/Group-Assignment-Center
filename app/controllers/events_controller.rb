@@ -1,3 +1,5 @@
+require 'regonlineconnector'
+
 class EventsController < ApplicationController
   # GET /events
   # GET /events.xml
