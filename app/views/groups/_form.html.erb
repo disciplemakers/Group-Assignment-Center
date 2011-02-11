@@ -12,55 +12,47 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
+    <%= f.label :name %>: <%= f.text_field :name %>
   </div>
   <% if @parent %>
     <%= f.hidden_field :parent_id, :value => @parent.id%>
   <% end %> 
   <div class="field">
-    <%= f.label :capacity %><br />
-    <%= f.text_field :capacity %>
+    <%= f.label :capacity %>: <%= f.text_field :capacity, :size => 4 %>
   </div>
   <div class="field">
-    <%= f.label :can_contain_people %><br />
-    <%= f.check_box :can_contain_people %>
+    <%= f.check_box :can_contain_people %><%= f.label :can_contain_people %>
   </div>
   <div class="field">
-    <%= f.label :can_contain_groups %><br />
-    <%= f.check_box :can_contain_groups %>
+    <%= f.check_box :can_contain_groups %><%= f.label :can_contain_groups %>
   </div>
   <div class="field">
-    <%= f.label :location_id %><br />
-    <%= f.text_field :location_id %>
+    <%= f.label :location_id %>: 
+    <%= f.collection_select(:location_id, Location.all, :id, :name, {:include_blank => true}) %>
   </div>
   <div class="field">
-    <%= f.label :comment %><br />
-    <%= f.text_area :comment %>
+    <%= f.label :comment%>:<br />
+    <%= f.text_area :comment, :rows => 2 %>
   </div>
   <div class="field">
-    <%= f.label :unique_membership %><br />
-    <%= f.check_box :unique_membership %>
+    <%= f.check_box :unique_membership %><%= f.label :unique_membership %>
   </div>
   <div class="field">
-    <%= f.label :required_membership %><br />
-    <%= f.check_box :required_membership %>
+    <%= f.check_box :required_membership %><%= f.label :required_membership %>
   </div>
   <div class="field">
-    <%= f.label :gender_constraint_id %><br />
-    <%= f.text_field :gender_constraint_id %>
+    <%= f.label :gender_constraint_id %>:
+    <%= f.collection_select(:gender_constraint_id, GenderConstraint.all, :id, :constraint, {:include_blank => true}) %>
   </div>
   <div class="field">
-    <%= f.label :label_text %><br />
-    <%= f.text_field :label_text %>
+    <%= f.label :label_text %>: <%= f.text_field :label_text %>
   </div>
   <div class="field">
-    <%= f.label :label_text_prepend_to_child_label %><br />
     <%= f.check_box :label_text_prepend_to_child_label %>
+    <%= f.label :label_text_prepend_to_child_label %>
   </div>
   <div class="field">
-    <%= f.label :label_field %><br />
-    <%= f.text_field :label_field %>
+    <%= f.label :label_field %>: <%= f.text_field :label_field %>
   </div>
   <div class="actions">
     <%= f.submit %>
