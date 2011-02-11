@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Remote event:</b>
+  <%= @event.remote_event_id %>
+</p>
+
+<p>
+  <b>Remote report:</b>
+  <%= @event.remote_report_id %>
+</p>
+
+<p>
+  <b>Location:</b>
+  <%= @event.location_id %>
+</p>
+
+<p>
+  <b>Group:</b>
+  <%= @event.group_id %>
+</p>
+
+<p>
+  <b>Start date:</b>
+  <%= @event.start_date %>
+</p>
+
+<p>
+  <b>End date:</b>
+  <%= @event.end_date %>
+</p>
+
+
+<%= link_to 'Edit', edit_event_path(@event) %> |
+<%= link_to 'Back', events_path %>

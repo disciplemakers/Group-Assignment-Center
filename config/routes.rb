@@ -1,4 +1,6 @@
 Gac::Application.routes.draw do
+  resources :events
+
   resources :groups
 
   resources :locations

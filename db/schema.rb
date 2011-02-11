@@ -10,7 +10,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110203214852) do
+ActiveRecord::Schema.define(:version => 20110211184504) do
+
+  create_table "events", :force => true do |t|
+    t.integer  "remote_event_id"
+    t.integer  "remote_report_id"
+    t.integer  "location_id"
+    t.integer  "group_id"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "gender_constraints", :force => true do |t|
     t.string   "constraint"

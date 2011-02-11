@@ -1,0 +1,33 @@
+<h1>Listing events</h1>
+
+<table>
+  <tr>
+    <th>Remote event</th>
+    <th>Remote report</th>
+    <th>Location</th>
+    <th>Group</th>
+    <th>Start date</th>
+    <th>End date</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @events.each do |event| %>
+  <tr>
+    <td><%= event.remote_event_id %></td>
+    <td><%= event.remote_report_id %></td>
+    <td><%= event.location_id %></td>
+    <td><%= event.group_id %></td>
+    <td><%= event.start_date %></td>
+    <td><%= event.end_date %></td>
+    <td><%= link_to 'Show', event %></td>
+    <td><%= link_to 'Edit', edit_event_path(event) %></td>
+    <td><%= link_to 'Destroy', event, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Event', new_event_path %>
