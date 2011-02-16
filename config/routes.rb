@@ -1,4 +1,10 @@
 Gac::Application.routes.draw do
+  #get "sessions/new"
+
+  #get "sessions/create"
+
+  #get "sessions/destroy"
+
   resources :events
 
   resources :groups
@@ -10,11 +16,16 @@ Gac::Application.routes.draw do
   #  end
   #end
 
+  controller :sessions do
+    get 'login' => :new
+    post 'login' => :create
+    delete 'logout' => :destroy
+  end
+
   # New child named route
   match 'locations/:id/new' => 'locations#new', :as => :new_child_location
   match 'groups/:id/new' => 'groups#new', :as => :new_child_group
   
-
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
