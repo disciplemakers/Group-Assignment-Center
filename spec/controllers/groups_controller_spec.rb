@@ -39,13 +39,14 @@ describe GroupsController do
       Group.stub(:new) { mock_group }
       Group.stub(:find).with("37") { mock_model(Group).as_null_object }
       get :new, :id => "37"
-      assigns(:group).should == mock_group
+      assigns(:group).should be(mock_group)
     end
     
     it "assigns requested parent as @parent" do
+      Group.stub(:new) { mock_model(Group).as_null_object }
       Group.stub(:find).with("37") { mock_group }
       get :new, :id => "37"
-      assigns(:parent).should == mock_group
+      assigns(:parent).should be(mock_group)
     end
   end
 
