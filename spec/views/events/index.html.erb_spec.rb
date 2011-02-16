@@ -16,6 +16,15 @@ describe "events/index.html.erb" do
         :group_id => 1
       )
     ])
+    assign(:remote_events, {999999 => {"ID"           => 999999,
+                                       "Status"       => "Testing",
+                                       "Type"         => "Event",
+                                       "ClientID"     => nil,
+                                       "Title"        => "Test Conference",
+                                       "LocationName" => "Conference Center",
+                                       "Room"         => nil,
+                                       "StartDate"    => nil,
+                                       "EndDate"      => nil}})
   end
 
   it "renders a list of events" do
