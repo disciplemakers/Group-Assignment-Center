@@ -17,8 +17,8 @@ describe "events/edit.html.erb" do
     assert_select "form", :action => event_path(@event), :method => "post" do
       assert_select "input#event_remote_event_id", :name => "event[remote_event_id]"
       assert_select "input#event_remote_report_id", :name => "event[remote_report_id]"
-      assert_select "input#event_location_id", :name => "event[location_id]"
-      assert_select "input#event_group_id", :name => "event[group_id]"
+      assert_select "select#event_location_id", :name => "event[location_id]"
+      assert_select "select#event_group_id", :name => "event[group_id]"
     end
   end
 end
