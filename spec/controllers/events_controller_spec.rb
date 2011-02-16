@@ -11,11 +11,28 @@ describe EventsController do
   end
 
   describe "GET index" do
+    before(:each) do
+      mock_roc = mock('Connector')
+      ev_hash = {999999 => {"ID"           => 999999,
+                            "Status"       => "Testing",
+                            "Type"         => "Event",
+                            "ClientID"     => nil,
+                            "Title"        => "Test Conference",
+                            "LocationName" => "Conference Center",
+                            "Room"         => nil,
+                            "StartDate"    => nil,
+                            "EndDate"      => nil}}
+      mock_roc.stub(:events).with(no_args()).and_return(ev_hash)
+      RegonlineConnector.stub(:new).and_return(mock_roc)
+    end
+    
     it "assigns all events as @events" do
       Event.stub(:all) { [mock_event] }
       get :index
       assigns(:events).should eq([mock_event])
     end
+    
+    it "assigns remote events as @remote_events"
   end
 
   describe "GET show" do
