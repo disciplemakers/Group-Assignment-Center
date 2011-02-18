@@ -18,6 +18,7 @@ class EventsController < ApplicationController
   # GET /events/1.xml
   def show
     @event = Event.find(params[:id])
+    @remote_registrants = remote_registrants(@event, session[:account_id], session[:username], session[:password]) 
 
     respond_to do |format|
       format.html # show.html.erb
@@ -130,5 +131,14 @@ class EventsController < ApplicationController
         gac_event.save
       end
     end
+  end
+  
+  def remote_registrants(event, account_id, username, password)
+    roc = RegonlineConnector.new(account_id, username, password)
+    registrants = roc.report(event[:remote_report_id],
+                             event[:remote_event_id],
+                             '2/18/2010',
+                             '2/18/2011',
+                             'false')
   end
 end

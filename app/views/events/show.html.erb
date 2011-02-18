@@ -33,3 +33,35 @@
 
 <%= link_to 'Edit', edit_event_path(@event) %> |
 <%= link_to 'Back', events_path %>
+
+<h2>Registrants for Current Event</h2>
+
+<table>
+  <tr>
+    <th>Conf Number</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Registration Type</th>
+    <th>Gender</th>
+    <th>School</th>
+    <th>Graduation Year</th>
+    <th>Small Group Assignment</th>
+    <th>Housing Assignment</th>
+    <th>Campus Group Room</th>
+  </tr>
+
+<% @remote_registrants.each do |id, registrant| %>
+  <tr>
+    <td><%= registrant['ConfirmationNumber'] %></td>
+    <td><%= registrant['FirstName'] %></td>
+    <td><%= registrant['LastName'] %></td>
+    <td><%= registrant['RegistrationType'] %></td>
+    <td><%= registrant['Gender'] %></td>
+    <td><%= registrant['School'] %></td>
+    <td><%= registrant['GraduationYear'] %></td>
+    <td><%= registrant['SmallGroupAssignment'] %></td>
+    <td><%= registrant['HousingAssignment'] %></td>
+    <td><%= registrant['CampusGroupRoom'] %></td>
+  </tr>
+<% end %>
+</table>
