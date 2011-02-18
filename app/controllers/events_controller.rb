@@ -5,7 +5,7 @@ class EventsController < ApplicationController
   # GET /events.xml
   def index
     @events = Event.all
-    roc = RegonlineConnector.new(123456, 'joeuser', 'password')
+    roc = RegonlineConnector.new(session[:account_id], session[:username], session[:password])
     @remote_events = roc.events
 
     respond_to do |format|

@@ -21,6 +21,10 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    session[:username] = nil
+    session[:password] = nil
+    session[:account_id] = nil
+    redirect_to login_url, :alert => "Logged out"
   end
 
 end
