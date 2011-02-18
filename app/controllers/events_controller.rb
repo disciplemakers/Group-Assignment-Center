@@ -4,9 +4,9 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.xml
   def index
+    @remote_events = remote_events(session[:account_id], session[:username], session[:password])
+    create_groups(@remote_events)
     @events = Event.all
-    roc = RegonlineConnector.new(session[:account_id], session[:username], session[:password])
-    @remote_events = roc.events
 
     respond_to do |format|
       format.html # index.html.erb
@@ -82,6 +82,53 @@ class EventsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(events_url) }
       format.xml  { head :ok }
+    end
+  end
+  
+  private
+  
+  def remote_events(account_id, username, password)
+    roc = RegonlineConnector.new(account_id, username, password)
+    events = roc.events
+  end
+  
+  def location_from_event(event)
+    if event['LocationName'].nil?
+      return nil
+    elsif Location.find(:first, :conditions => {:name => event['LocationName']})
+      location = Location.find(:first, :conditions => {:name => event['LocationName']})
+      location.id
+    else
+      location = Location.new(:name => event['LocationName'])
+      location.save
+      location.id
+    end
+  end
+  
+  def group_from_event(event)
+    unless Group.find(:first, :conditions => {:name => event['Title']})
+      group = Group.new(:name => event['Title'],
+                        :can_contain_groups => true,
+                        :location => Location.find(:first,
+                                                   :conditions => {:name => event['LocationName']}))
+      group.save
+      group.id
+    else
+      group = Group.find(:first, :conditions => {:name => event['Title']})
+      group.id
+    end
+  end
+  
+  def create_groups(events)
+    events.each do |id, event|
+      if !Event.find(:first, :conditions => {:remote_event_id => event['ID']})
+        gac_event = Event.new(:remote_event_id => event['ID'],
+                              :location_id => location_from_event(event),
+                              :group_id => group_from_event(event),
+                              :start_date => event['StartDate'],
+                              :end_date => event['EndDate'])
+        gac_event.save
+      end
     end
   end
 end
