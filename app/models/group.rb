@@ -4,7 +4,7 @@ class Group < ActiveRecord::Base
   belongs_to :parent, :class_name => "Group", :foreign_key => "parent_id"
   has_many :children, :class_name => "Group", 
            :foreign_key => "parent_id", :dependent => :destroy
-  has_many :events
+  has_one :event
            
   after_initialize :normalize_unique_membership_constraint,
                    :normalize_required_membership_constraint,
