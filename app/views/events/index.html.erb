@@ -2,10 +2,10 @@
 
 <table>
   <tr>
+    <th>Event/Group</th>
     <th>Remote event</th>
     <th>Remote report</th>
     <th>Location</th>
-    <th>Group</th>
     <th>Start date</th>
     <th>End date</th>
     <th></th>
@@ -15,38 +15,17 @@
 
 <% @events.each do |event| %>
   <tr>
+    <td><%= Group.find(event.group_id).name %></td>
     <td><%= event.remote_event_id %></td>
     <td><%= event.remote_report_id %></td>
-    <td><%= event.location_id %></td>
-    <td><%= event.group_id %></td>
+    <td><% if event.location_id %>
+          <%= Location.find(event.location_id).name %>
+        <% end %></td>
     <td><%= event.start_date %></td>
     <td><%= event.end_date %></td>
     <td><%= link_to 'Show', event %></td>
     <td><%= link_to 'Edit', edit_event_path(event) %></td>
-    <td><%= link_to 'Destroy', event, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-
-
-<table>
-  <tr>
-    <th>ID</th>
-    <th>Title</th>
-    <th>Location</th>
-    <th>Start date</th>
-    <th>End date</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-<% @remote_events.each do |id, event| %>
-  <tr>
-    <td><%= event["ID"] %></td>
-    <td><%= event["Title"] %></td>
-    <td><%= event["LocationName"] %></td>
-    <td><%= event["StartDate"] %></td>
-    <td><%= event["EndDate"] %></td>
+    <td><%= link_to 'Destroy', event, :confirm => 'Are you sure? This will delete all groups associated with this event!!', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
