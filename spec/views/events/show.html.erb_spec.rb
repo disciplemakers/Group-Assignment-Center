@@ -8,6 +8,16 @@ describe "events/show.html.erb" do
       :location_id => 1,
       :group_id => 1
     ))
+    @remote_registrants = {12345678 => {"Gender"               => "M",
+                                        "ConfirmationNumber"   => 12345678,
+                                        "SchoolName"           => "Some University",
+                                        "HousingAssignment"    => nil,
+                                        "LastName"             => "Doe",
+                                        "GraduationYear"       => 2018,
+                                        "FirstName"            => "John",
+                                        "CampusGroupRoom"      => nil,
+                                        "SmallGroupAssignment" => nil,
+                                        "RegistrationType"     => "Student"}}
   end
 
   it "renders attributes in <p>" do

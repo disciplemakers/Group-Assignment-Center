@@ -18,16 +18,16 @@ describe EventsController do
   describe "GET index" do
     before(:each) do
       mock_roc = mock('Connector')
-      ev_hash = {999999 => {"ID"           => 999999,
-                            "Status"       => "Testing",
-                            "Type"         => "Event",
-                            "ClientID"     => nil,
-                            "Title"        => "Test Conference",
-                            "LocationName" => "Conference Center",
-                            "Room"         => nil,
-                            "StartDate"    => nil,
-                            "EndDate"      => nil}}
-      mock_roc.stub(:events).with(no_args()).and_return(ev_hash)
+      @event_hash = {999999 => {"ID"           => 999999,
+                                "Status"       => "Testing",
+                                "Type"         => "Event",
+                                "ClientID"     => nil,
+                                "Title"        => "Test Conference",
+                                "LocationName" => "Conference Center",
+                                "Room"         => nil,
+                                "StartDate"    => nil,
+                                "EndDate"      => nil}}
+      mock_roc.stub(:events).with(no_args()).and_return(@event_hash)
       RegonlineConnector.stub(:new).and_return(mock_roc)
     end
     
@@ -37,14 +37,40 @@ describe EventsController do
       assigns(:events).should eq([mock_event])
     end
     
-    it "assigns remote events as @remote_events"
+    it "assigns remote events as @remote_events" do
+      Event.stub(:all) { [mock_event] }
+      get :index
+      assigns(:remote_events).should eq(@event_hash)
+    end
   end
 
   describe "GET show" do
+    before(:each) do
+      mock_roc = mock('Connector')
+      @report_hash = {12345678 => {"Gender"               => "M",
+                                   "ConfirmationNumber"   => 12345678,
+                                   "SchoolName"           => "Some University",
+                                   "HousingAssignment"    => nil,
+                                   "LastName"             => "Doe",
+                                   "GraduationYear"       => 2018,
+                                   "FirstName"            => "John",
+                                   "CampusGroupRoom"      => nil,
+                                   "SmallGroupAssignment" => nil,
+                                   "RegistrationType"     => "Student"}}
+      mock_roc.stub(:report).with(any_args()).and_return(@report_hash)
+      RegonlineConnector.stub(:new).and_return(mock_roc)
+    end
+    
     it "assigns the requested event as @event" do
       Event.stub(:find).with("37") { mock_event }
       get :show, :id => "37"
       assigns(:event).should be(mock_event)
+    end
+    
+    it "assigns remote registrants as @remote_registrants" do
+      Event.stub(:find).with("37") { mock_event }
+      get :show, :id => "37"
+      assigns(:remote_registrants).should == @report_hash
     end
   end
 
