@@ -18,7 +18,9 @@ class EventsController < ApplicationController
   # GET /events/1.xml
   def show
     @event = Event.find(params[:id])
-    @remote_registrants = remote_registrants(@event, session[:account_id], session[:username], session[:password]) 
+    if @event.remote_report_id
+      @remote_registrants = remote_registrants(@event, session[:account_id], session[:username], session[:password])
+    end
 
     respond_to do |format|
       format.html # show.html.erb
