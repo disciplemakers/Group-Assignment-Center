@@ -7,9 +7,33 @@
   <%= csrf_meta_tag %>
 </head>
 <body>
+  <div id="banner">
+    <h1>Group Assignment Center</h1>
+  </div>
 <%= link_to 'Logout', logout_path, :method => :delete %>
 
-<%= yield %>
+<div id="columns">
+  <% if session[:username] %>
+    <div id="sidebar">
+      <div id="events">
+        <h2>Events</h2>
+        <ul>
+        <%= render @sidebar_events %>
+        </ul>
+      </div>
+      <div id="locations">
+        <h2>Locations</h2>
+        <ul>
+        <%= render @sidebar_locations %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div id="main">
+    <%= yield %>
+  </div>
+</div>
 
 </body>
 </html>

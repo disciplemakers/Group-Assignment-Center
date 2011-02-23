@@ -7,6 +7,7 @@ class EventsController < ApplicationController
     @remote_events = remote_events(session[:account_id], session[:username], session[:password])
     create_groups(@remote_events)
     @events = Event.all
+    @locations = Location.find_by_sql("SELECT * FROM locations WHERE parent_id IS NULL")
 
     respond_to do |format|
       format.html # index.html.erb
