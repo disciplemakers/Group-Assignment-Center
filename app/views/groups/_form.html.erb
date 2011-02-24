@@ -15,7 +15,7 @@
     <%= f.label :name %>: <%= f.text_field :name %>
   </div>
   <% if @parent %>
-    <%= f.hidden_field :parent_id, :value => @parent.id%>
+    <%= hidden_field_tag 'parent_id', @parent.id%>
   <% end %> 
   <div class="field">
     <%= f.label :capacity %>: <%= f.text_field :capacity, :size => 4 %>

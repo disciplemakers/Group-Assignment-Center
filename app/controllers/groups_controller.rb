@@ -2,6 +2,7 @@ class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.xml
   def index
+    Group.rebuild!
     @groups = Group.all
 
     respond_to do |format|
@@ -46,9 +47,11 @@ class GroupsController < ApplicationController
   # POST /groups.xml
   def create
     @group = Group.new(params[:group])
+    @parent = Group.find(params[:parent_id].to_i)
 
     respond_to do |format|
       if @group.save
+        @group.move_to_child_of(@parent)
         format.html { redirect_to(@group, :notice => 'Group was successfully created.') }
         format.xml  { render :xml => @group, :status => :created, :location => @group }
       else

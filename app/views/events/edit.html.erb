@@ -16,7 +16,7 @@
   <% end %>
 
   <div class="field">
-    <%= f.select :parent_id, nested_set_options(@group.descendants) {|i| "#{' -' * (i.level-1)} #{i.name}" }, {:include_blank => false}, {:multiple => true} %>
+    <%= f.select :parent_id, nested_set_options(@group) {|i| "#{' --' * (i.level)} #{i.name}" }, {:include_blank => false}, {:multiple => true} %>
     <%= button_to 'New', new_group_path(@group), :method => :get %>
     <%= button_to 'Edit', edit_group_path(@group), :method => :get %>
     <%= button_to 'Delete', @group, :confirm => 'Are you sure?', :method => :delete %>
