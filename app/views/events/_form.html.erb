@@ -11,40 +11,13 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :remote_event_id %>:
-    <%= f.text_field :remote_event_id, :disabled => true %>
-  </div>
+  <%= @event.start_date %> - <%= @event.end_date %> at <%= Location.find(@event.location_id).name %>  
+  
   <div class="field">
     <%= f.label :remote_report_id %>:
     <%= f.text_field :remote_report_id %>
   </div>
-  <div class="field">
-    <%= f.label :location_id %>: 
-    <%= f.collection_select(:location_id,
-                            Location.find_by_sql("SELECT * FROM locations WHERE parent_id IS NULL"),
-                            :id,
-                            :name,
-                            {:include_blank => true},
-                            :disabled => true) %>
-  </div>
-  <div class="field">
-    <%= f.label :group_id %>:
-    <%= f.collection_select(:group_id,
-                            Group.find_by_sql("SELECT * FROM groups WHERE parent_id IS NULL"),
-                            :id,
-                            :name,
-                            {:include_blank => true},
-                            :disabled => true) %>
-  </div>
-  <div class="field">
-    <%= f.label :start_date %><br />
-    <%= f.date_select :start_date, :disabled => true %>
-  </div>
-  <div class="field">
-    <%= f.label :end_date %><br />
-    <%= f.date_select :end_date, :disabled => true %>
-  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>
