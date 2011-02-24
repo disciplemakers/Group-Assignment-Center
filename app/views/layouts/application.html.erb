@@ -7,32 +7,53 @@
   <%= csrf_meta_tag %>
 </head>
 <body>
-  <div id="banner">
-    <h1>Group Assignment Center</h1>
-  </div>
-<%= link_to 'Logout', logout_path, :method => :delete %>
-
-<div id="columns">
-  <% if session[:username] %>
-    <div id="sidebar">
-      <div id="events">
-        <h2>Events</h2>
-        <ul>
-        <%= render @sidebar_events %>
-        </ul>
-      </div>
-      <div id="locations">
-        <h2>Locations</h2>
-        <ul>
-        <%= render @sidebar_locations %>
-        </ul>
+  <div id="header">
+    <div id="header_inner">
+      <%= link_to 'Logout', logout_path, :method => :delete %>
+      <div id="logo">
+        <h1>Group Assignment Center</h1>
       </div>
     </div>
-  <% end %>
-
-  <div id="main">
-    <%= yield %>
   </div>
+
+
+<div id="main">
+  <div id="main_inner" class="fixed">
+
+    <div id="primaryContent_2columns">
+      <div id="columnA_2columns">
+          <%= yield %>
+      </div>
+    </div>
+    
+    <% if session[:username] %>
+      <div id="secondaryContent_2columns">
+        <div id="columnC_2columns">
+          
+          <div id="events">
+            <h4>Events</h4>
+            <ul class="links">
+            <%= render @sidebar_events %>
+            </ul>
+          </div>
+          
+          <div id="locations">
+            <h4>Locations</h4>
+            <ul class="links">
+            <%= render @sidebar_locations %>
+            </ul>
+          </div>
+          
+        </div>
+      <br class="clear" />
+      </div>
+    <% end %>
+    
+  </div>
+</div>
+
+<div id="footer" class="fixed">
+  Hello!
 </div>
 
 </body>
