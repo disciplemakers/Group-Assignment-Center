@@ -1,6 +1,24 @@
-<h1>Editing event</h1>
+<h1><%= Group.find(@event.group_id).name %></h1>
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @event %> |
-<%= link_to 'Back', events_path %>
+<%= form_for(@group) do |f| %>
+  <% if @group.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@group.errors.count, "error") %> prohibited this group from being saved:</h2>
+
+      <ul>
+      <% @group.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.select :parent_id, nested_set_options(@group.descendants) {|i| "#{' -' * (i.level-1)} #{i.name}" }, {:include_blank => false}, {:multiple => true} %>
+    <%= button_to 'New', new_group_path(@group), :method => :get %>
+    <%= button_to 'Edit', edit_group_path(@group), :method => :get %>
+    <%= button_to 'Delete', @group, :confirm => 'Are you sure?', :method => :delete %>
+  </div>
+<% end %>

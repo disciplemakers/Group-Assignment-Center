@@ -1,14 +1,18 @@
 class Group < ActiveRecord::Base
+  acts_as_nested_set
+
   belongs_to :gender_constraint
   belongs_to :location
-  belongs_to :parent, :class_name => "Group", :foreign_key => "parent_id"
-  has_many :children, :class_name => "Group", 
-           :foreign_key => "parent_id", :dependent => :destroy
   has_one :event
+  
+  #belongs_to :parent, :class_name => "Group", :foreign_key => "parent_id"
+  #has_many :children, :class_name => "Group", 
+  #         :foreign_key => "parent_id", :dependent => :destroy
+
            
   after_initialize :normalize_unique_membership_constraint,
                    :normalize_required_membership_constraint,
-                   :if => :has_valid_parent?
+                   :if => :child?
                    
   validates_presence_of :name
   validates_numericality_of :capacity, :only_integer => true,
@@ -16,8 +20,8 @@ class Group < ActiveRecord::Base
                             :greater_than_or_equal_to => 0
   validates_inclusion_of :unique_membership, :required_membership,
                          :in => [true, false, nil]
-  validate :unique_membership_with_respect_to_parent, :if => :has_valid_parent?
-  validate :required_membership_with_respect_to_parent, :if => :has_valid_parent?
+  validate :unique_membership_with_respect_to_parent, :if => :child?
+  validate :required_membership_with_respect_to_parent, :if => :child?
   
   def has_valid_parent?
     begin
@@ -26,6 +30,10 @@ class Group < ActiveRecord::Base
     rescue
       false
     end
+  end
+  
+  def print_in_tree
+    string = "#{'-'*self.level} #{self.name}"
   end
   
   # Change the value of unique_membership to be consistent with parent
