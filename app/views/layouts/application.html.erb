@@ -10,9 +10,8 @@
   <div id="header">
     <img src="/images/DM_logo_small_white_trans.png">
     <div id="header_inner">
-      <%= link_to 'Logout', logout_path, :method => :delete %>
       <div id="logo">
-        <h1>Group Assignment Center</h1>
+        <h1>Disciple<i>Makers'</i> Group Assignment Center</h1>
       </div>
       <div id="menu">
         <ul>
@@ -26,7 +25,11 @@
 
 <div id="main">
   <div id="main_inner" class="fixed">
-
+    <div id="main_utility">
+      <div id="logout">
+        <%= link_to 'Logout', logout_path, :method => :delete %>
+      </div>
+    </div>
     <div id="primaryContent_2columns">
       <div id="columnA_2columns">
           <%= yield %>

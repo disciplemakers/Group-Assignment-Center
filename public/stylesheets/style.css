@@ -135,14 +135,16 @@ margin: 0 auto;
 {
 float: left;
 height: 112px;
-margin: 5px 0 10px 0;
+margin: .4em 0 0 .25em;
 border: none;
+padding: 0.05em
 }
 
 #logo
 {
 position: absolute;
 bottom: 0.6em;
+right: 0;
 }
 
 #logo h1
@@ -165,7 +167,7 @@ font-size: 1.0em;
 #menu
 {
 position: absolute;
-right: 0em;
+left: 0em;
 bottom: 0em;
 }
 
@@ -184,9 +186,9 @@ float: left;
 margin-left: 0.5em;
 display: block;
 padding: 1.1em 1.4em 1.0em 1.4em;
-background: #fff url('../images/n4.gif') repeat-x;
-border: solid 1px #fff;
-color: #616161;
+background: #FF790B url('../images/n3.gif') repeat-x;
+color: #fff;
+border: solid 1px #DB7623;
 font-weight: bold;
 font-size: 1.0em;
 text-transform: lowercase;
@@ -195,9 +197,9 @@ text-decoration: none;
 
 #menu li a.active
 {
-background: #FF790B url('../images/n3.gif') repeat-x;
-color: #fff;
-border: solid 1px #DB7623;
+background: #fff url('../images/n4.gif') repeat-x;
+border: solid 1px #fff;
+color: #616161;
 }
 
 /* Main */
@@ -229,7 +231,7 @@ margin-left: 2em;
 position: relative;
 width: 950px;
 margin: 0 auto;
-padding-top: 3.5em;
+/*padding-top: 3.5em;*/
 }
 
 #main_inner h3,h4
@@ -291,6 +293,21 @@ background-image: url('../images/n5.gif');
 {
 background-image: url('../images/n6.gif');
 margin-left: 1.1em;
+}
+
+#main_utility
+{
+position: relative;
+width: 950px;
+margin: 0;
+padding: .5em 0 0;
+height: 2.5em;
+text-align: right;
+}
+
+#main_utility #logout
+{
+margin-right: .5em
 }
 
 /* Footer */
