@@ -100,7 +100,7 @@ list-style: none;
 
 ul.links li
 {
-line-height: 2em;
+line-height: 1.5em;
 }
 
 ul.links li.first
@@ -130,6 +130,14 @@ margin: 0 auto;
 }
 
 /* Logo */
+
+#header img
+{
+float: left;
+height: 112px;
+margin: 5px 0 10px 0;
+border: none;
+}
 
 #logo
 {
@@ -210,6 +218,12 @@ margin-bottom: 2.0em;
 margin-bottom: 2.0em;
 }
 
+#main_inner ul.sub
+{
+margin-bottom: 0;
+margin-left: 2em;
+}
+
 #main_inner
 {
 position: relative;
@@ -228,14 +242,15 @@ position: relative;
 {
 font-size: 2.1em;
 padding-bottom: 0.1em;
-margin-bottom: 0.8em;
+margin-bottom: 0.5em;
+margin-top: 0;
 }
 
 #main_inner h4
 {
 font-size: 1.2em;
-padding-bottom: 0.175em;
-margin-bottom: 1.4em;
+padding-bottom: 0.17em;
+margin-bottom: 0.5em;
 margin-top: 0.95em;
 }
 
@@ -392,9 +407,9 @@ max-width: 2.5em;
 	#columnA_2columns
 	{
 	position: relative;
-	/*float: left;*/
+	float: left;
 	width: 100%;
-	margin-right: 20em;
+	margin-right: -17em;
 	padding-right: 2em;
 	}
 	
@@ -402,13 +417,14 @@ max-width: 2.5em;
 	
 	#secondaryContent_2columns
 	{
-	float: right;
+	/*float: right;*/
+	margin: 0 0 0 765px;
 	}
 	
 	#columnC_2columns
 	{
-	width: 13.0em;
-	/*float: left;*/
+	width: 13em;
+	float: left;
 	padding: 0em 0em 0.5em 2em;
 	border-left: dotted 1px #E1E1E1;
 	}

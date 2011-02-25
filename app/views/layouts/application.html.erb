@@ -8,10 +8,17 @@
 </head>
 <body>
   <div id="header">
+    <img src="/images/DM_logo_small_white_trans.png">
     <div id="header_inner">
       <%= link_to 'Logout', logout_path, :method => :delete %>
       <div id="logo">
         <h1>Group Assignment Center</h1>
+      </div>
+      <div id="menu">
+        <ul>
+          <li><a href="#">Assign</a></li>
+          <li><a class="active" href="#" disabled>Setup</a></li>
+        </ul>
       </div>
     </div>
   </div>
@@ -31,14 +38,14 @@
         <div id="columnC_2columns">
           
           <div id="events">
-            <h4>Events</h4>
+            <h4>Active <span>Events</span></h4>
             <ul class="links">
             <%= render @sidebar_events %>
             </ul>
           </div>
           
           <div id="locations">
-            <h4>Locations</h4>
+            <h4>Available <span>Locations</span></h4>
             <ul class="links">
             <%= render @sidebar_locations %>
             </ul>
@@ -53,7 +60,7 @@
 </div>
 
 <div id="footer" class="fixed">
-  Hello!
+  Copyright &copy; 2011 <a href="http://www.dm.org">Disciple<i>Makers</i></a>, Inc. All Rights Reserved.
 </div>
 
 </body>

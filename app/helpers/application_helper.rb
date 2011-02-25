@@ -17,7 +17,7 @@ module ApplicationHelper
       object.children.each do |child|
         contents += print_tree(child)
       end
-      output += content_tag(:ul, contents, nil, false)
+      output += content_tag(:ul, contents, {:class => "sub"}, false)
     end
     output
   end 
