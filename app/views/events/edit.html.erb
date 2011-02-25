@@ -1,6 +1,8 @@
+<% content_for :title do "GAC - Editing #{Group.find(@event.group_id).name}" end %>
+
 <h3><%= Group.find(@event.group_id).name %></h3>
 
-<%= render 'form' %>
+<% if false %><%= render 'form' %><% end %>
 
 <%= form_for(@group) do |f| %>
   <% if @group.errors.any? %>
@@ -16,9 +18,9 @@
   <% end %>
 
   <div class="field">
-    <%= f.select :parent_id, nested_set_options(@group) {|i| "#{' --' * (i.level)} #{i.name}" }, {:include_blank => false}, {:multiple => true} %>
-    <%= button_to 'New', new_group_path(@group), :method => :get %>
+    <%= f.select :parent_id, nested_set_options(@group) {|i| "#{'---' * (i.level)} #{i.name}" }, {:include_blank => false}, {:multiple => true} %>
+    <%= button_to 'New', new_group_path, :method => :get %>
     <%= button_to 'Edit', edit_group_path(@group), :method => :get %>
-    <%= button_to 'Delete', @group, :confirm => 'Are you sure?', :method => :delete %>
+    <%= button_to 'Delete', @group, :confirm => 'Are you sure? All subgroups and assignments will be deleted!', :method => :delete %>
   </div>
 <% end %>

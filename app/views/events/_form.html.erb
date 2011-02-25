@@ -11,8 +11,16 @@
     </div>
   <% end %>
 
-  <%= @event.start_date %> - <%= @event.end_date %> at <%= Location.find(@event.location_id).name %>  
+  <h5>
+    <% if @event.start_date and @event.end_date %>
+      <%= @event.start_date %> - <%= @event.end_date %>
+    <% end %>
+    <% if @event.location_id %>
+      at <%= Location.find(@event.location_id).name %>  
+    <% end %>
+  </h5>
   
+  <br />
   <div class="field">
     <%= f.label :remote_report_id %>:
     <%= f.text_field :remote_report_id %>
