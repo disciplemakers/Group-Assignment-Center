@@ -1,8 +1,16 @@
 <% content_for :title do "GAC - Editing #{Group.find(@event.group_id).name}" end %>
 
-<h3><%= Group.find(@event.group_id).name %></h3>
+<h3 class="normal-case"><%= Group.find(@event.group_id).name %></h3>
+  <h5 class="normal-case">
+    <% if @event.start_date and @event.end_date %>
+      <%= @event.start_date %> - <%= @event.end_date %>
+    <% end %>
+    <% if @event.location_id %>
+      at <%= Location.find(@event.location_id).name %>  
+    <% end %>
+  </h5>
 
-<% if false %><%= render 'form' %><% end %>
+<% if true %><%= render 'form' %><% end %>
 
 <%= form_for(@group) do |f| %>
   <% if @group.errors.any? %>

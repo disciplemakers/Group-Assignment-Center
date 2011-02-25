@@ -1,3 +1,5 @@
+<% content_for :title do "GAC - Create New Group" end %>
+
 <h3>New group<% if @parent %> in <%= @parent.name %><% end %></h3>
 
 <%= render 'form' %>
