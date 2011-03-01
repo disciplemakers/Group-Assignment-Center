@@ -374,6 +374,22 @@ min-width: 2.0em;
 max-width: 2.5em;
 }
 
+.form-boxes {
+  margin-top: 4em;
+}
+
+.form-boxes > div {
+  float: left;
+}
+
+.form-boxes #left {
+  margin-right: 2em;
+}
+
+.form-boxes #right {
+  margin-left: 2em;
+}
+
 .actions div{
 display: inline-block;
 }
