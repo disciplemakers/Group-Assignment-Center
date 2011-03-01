@@ -64,6 +64,12 @@ describe GroupsController do
   end
 
   describe "POST create" do
+    # The controller will try to look up the parent group, so have the
+    # "find" class method return a mock object when searched for id=0.
+    before(:each) do
+        Group.stub(:find).with(0) { mock_group }        
+    end
+      
     describe "with valid params" do
       it "assigns a newly created group as @group" do
         Group.stub(:new).with({'these' => 'params'}) { mock_group(:save => true) }
