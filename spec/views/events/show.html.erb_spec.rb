@@ -8,6 +8,12 @@ describe "events/show.html.erb" do
       :location_id => 1,
       :group_id => 1
     ))
+    
+    # The view looks up the name of the event via the group,
+    # so we need to stub the group.
+    group = stub_model(Group, :name => "Test Event")
+    Group.stub(:find).with(1).and_return(group)
+    
     @remote_registrants = {12345678 => {"Gender"               => "M",
                                         "ConfirmationNumber"   => 12345678,
                                         "SchoolName"           => "Some University",
