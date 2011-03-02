@@ -46,4 +46,9 @@ describe Person do
     @person.should be_invalid
   end
   
+  it "is valid with nil graduation year" do
+    @person.graduation_year = nil
+    @person.should be_valid
+  end
+  
 end
