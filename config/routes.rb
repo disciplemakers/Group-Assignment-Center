@@ -1,4 +1,6 @@
 Gac::Application.routes.draw do
+  resources :people
+
   #get "sessions/new"
 
   #get "sessions/create"

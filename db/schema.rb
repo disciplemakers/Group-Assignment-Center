@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110224140920) do
+ActiveRecord::Schema.define(:version => 20110302192829) do
 
   create_table "events", :force => true do |t|
     t.integer  "remote_event_id"
@@ -57,6 +57,20 @@ ActiveRecord::Schema.define(:version => 20110224140920) do
     t.integer  "parent_id"
     t.integer  "capacity"
     t.text     "comment"
+  end
+
+  create_table "people", :force => true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "gender"
+    t.string   "registration_type"
+    t.string   "school"
+    t.string   "graduation_year"
+    t.string   "housing_assignment"
+    t.string   "small_group_assignment"
+    t.string   "campus_group_room"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

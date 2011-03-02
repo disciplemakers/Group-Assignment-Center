@@ -1,0 +1,53 @@
+<%= form_for(@person) do |f| %>
+  <% if @person.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@person.errors.count, "error") %> prohibited this person from being saved:</h2>
+
+      <ul>
+      <% @person.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name %>
+  </div>
+  <div class="field">
+    <%= f.label :last_name %><br />
+    <%= f.text_field :last_name %>
+  </div>
+  <div class="field">
+    <%= f.label :gender %><br />
+    <%= f.text_field :gender %>
+  </div>
+  <div class="field">
+    <%= f.label :registration_type %><br />
+    <%= f.text_field :registration_type %>
+  </div>
+  <div class="field">
+    <%= f.label :school %><br />
+    <%= f.text_field :school %>
+  </div>
+  <div class="field">
+    <%= f.label :graduation_year %><br />
+    <%= f.text_field :graduation_year %>
+  </div>
+  <div class="field">
+    <%= f.label :housing_assignment %><br />
+    <%= f.text_field :housing_assignment %>
+  </div>
+  <div class="field">
+    <%= f.label :small_group_assignment %><br />
+    <%= f.text_field :small_group_assignment %>
+  </div>
+  <div class="field">
+    <%= f.label :campus_group_room %><br />
+    <%= f.text_field :campus_group_room %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

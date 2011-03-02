@@ -1,0 +1,50 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>First name:</b>
+  <%= @person.first_name %>
+</p>
+
+<p>
+  <b>Last name:</b>
+  <%= @person.last_name %>
+</p>
+
+<p>
+  <b>Gender:</b>
+  <%= @person.gender %>
+</p>
+
+<p>
+  <b>Registration type:</b>
+  <%= @person.registration_type %>
+</p>
+
+<p>
+  <b>School:</b>
+  <%= @person.school %>
+</p>
+
+<p>
+  <b>Graduation year:</b>
+  <%= @person.graduation_year %>
+</p>
+
+<p>
+  <b>Housing assignment:</b>
+  <%= @person.housing_assignment %>
+</p>
+
+<p>
+  <b>Small group assignment:</b>
+  <%= @person.small_group_assignment %>
+</p>
+
+<p>
+  <b>Campus group room:</b>
+  <%= @person.campus_group_room %>
+</p>
+
+
+<%= link_to 'Edit', edit_person_path(@person) %> |
+<%= link_to 'Back', people_path %>
