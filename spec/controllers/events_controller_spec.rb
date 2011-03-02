@@ -72,6 +72,9 @@ describe EventsController do
       get :show, :id => "37"
       assigns(:remote_registrants).should == @report_hash
     end
+    
+    it "assigns a list of registrants as @registrants"
+     
   end
 
   describe "GET new" do
