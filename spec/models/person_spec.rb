@@ -2,8 +2,14 @@ require 'spec_helper'
 
 describe Person do
   before(:each) do
-    @person = stub_model(Person, :first_name => 'Joe',
+    @person = stub_model(Person, :confirmation_number => 12345678,
+                                 :first_name => 'Joe',
                                  :last_name => 'Test')
+  end
+  
+  it "is not valid without a confirmation number" do
+    @person.confirmation_number = nil
+    @person.should be_invalid
   end
   
   it "is not valid without a first name" do
