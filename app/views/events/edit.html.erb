@@ -26,6 +26,7 @@
   <% end %>
 
   <div class="form-boxes">
+    <h4 class="normal-case">Groups</h4>
     <div id="left">
       <div class="field">
         <%= f.select :parent_id, nested_set_options(@group) {|i| "#{'---' * (i.level)} #{i.name}" }, {:include_blank => false}, {:multiple => true} %>
