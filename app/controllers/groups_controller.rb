@@ -99,15 +99,25 @@ class GroupsController < ApplicationController
   end
   
   def disambiguate
-    puts "in disambiguate method with #{request.method} request\n"
-    puts "parent_id = #{params['group']['parent_id']}\n"
-    request.params['id'] = params['group']['parent_id'].first
+    #puts "in disambiguate method with #{request.method} request\n"
+    #puts "parent_id = #{params['group']['parent_id']}\n"
+    
     if params['commit'] == 'Edit'
       redirect_to edit_group_path(params[:id])
     elsif params['commit'] == 'New'
-      redirect_to new_child_group_path(params['group']['parent_id'])
-    elsif params['commit'] == 'Delete'      
+      if params.has_key?('group') and params['group'].has_key?('parent_id')
+        redirect_to new_child_group_path(params['group']['parent_id'])
+      else
+        redirect_to new_group_path
+      end
+    elsif params['commit'] == 'Delete'
+      # Assign a value for 'id' in the params hash because we're just going
+      # to hand off to the destroy method. (We can't redirect because HTTP
+      # redirects can only use GET, and that won't work with destroy.)
+      request.params['id'] = params['group']['parent_id'].first      
       destroy
+    else
+      puts "commit didn't match anything!\n"
     end
   end
 

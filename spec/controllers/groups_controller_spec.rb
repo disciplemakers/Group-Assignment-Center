@@ -99,25 +99,6 @@ describe GroupsController do
     end
   end
 
-  describe "POST edit" do
-    # This action results from user selecting a group in a select box then
-    # pressing the Edit button.
-    describe "with ID param" do
-      it "assigns the selected group ID" do
-        Group.stub(:find).with("37") { mock_group }
-        get :edit, :id => "37"
-        assigns(:group).should be(mock_group)
-      end
-      
-      it "redirects to the edit view for the selected group"
-    end
-    
-    describe "without ID param" do
-      
-    end
-  
-  end
-
   describe "PUT update" do
     describe "with valid params" do
       it "updates the requested group" do
@@ -168,4 +149,39 @@ describe GroupsController do
     end
   end
 
+  describe "POST disambiguate" do
+    describe "with parent_id" do
+      describe "with commit=New" do
+        it "redirects to the new child form" do
+          post :disambiguate, :commit => 'New', :group => {'parent_id' => "37"}
+          response.should redirect_to("/groups/37/new")
+        end
+      end
+      
+      describe "with commit=Edit" do
+        it "redirects to the edit form"        
+      end
+      
+      describe "with commit=Delete" do
+        it "calls the destroy method"
+      end
+    end
+    
+    describe "without parent_id" do
+      describe "with commit=New" do
+        it "redirects to the new group form (top-level)" do
+          post :disambiguate, :commit => 'New'
+          response.should redirect_to(new_group_url)
+        end
+      end
+      
+      describe "with commit=Edit" do
+        it "displays an error"
+      end
+      
+      describe "with commit=Delete" do
+        it "displays an error"
+      end
+    end
+  end
 end
