@@ -40,8 +40,16 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/edit
   def edit
-    @group = Group.find(params[:id])
+    puts "in edit method, with #{request.method} request\n"
+    if request.post?
+      group_id = request.request_parameters['parent_id']
+      puts "group_id = #{group_id}\n"
+    else
+      group_id = params[:id]
+    end
+    @group = Group.find(group_id)
   end
+
 
   # POST /groups
   # POST /groups.xml
@@ -80,6 +88,7 @@ class GroupsController < ApplicationController
   # DELETE /groups/1
   # DELETE /groups/1.xml
   def destroy
+    puts "in destroy method with params[:id] = #{params[:id]}\n"
     @group = Group.find(params[:id])
     @group.destroy
 
@@ -88,4 +97,18 @@ class GroupsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def disambiguate
+    puts "in disambiguate method with #{request.method} request\n"
+    puts "parent_id = #{params['group']['parent_id']}\n"
+    request.params['id'] = params['group']['parent_id'].first
+    if params['commit'] == 'Edit'
+      redirect_to edit_group_path(params[:id])
+    elsif params['commit'] == 'New'
+      redirect_to new_child_group_path(params['group']['parent_id'])
+    elsif params['commit'] == 'Delete'      
+      destroy
+    end
+  end
+
 end

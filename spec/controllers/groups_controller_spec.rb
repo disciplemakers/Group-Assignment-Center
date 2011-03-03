@@ -99,6 +99,25 @@ describe GroupsController do
     end
   end
 
+  describe "POST edit" do
+    # This action results from user selecting a group in a select box then
+    # pressing the Edit button.
+    describe "with ID param" do
+      it "assigns the selected group ID" do
+        Group.stub(:find).with("37") { mock_group }
+        get :edit, :id => "37"
+        assigns(:group).should be(mock_group)
+      end
+      
+      it "redirects to the edit view for the selected group"
+    end
+    
+    describe "without ID param" do
+      
+    end
+  
+  end
+
   describe "PUT update" do
     describe "with valid params" do
       it "updates the requested group" do

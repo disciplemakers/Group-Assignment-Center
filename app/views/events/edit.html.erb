@@ -12,7 +12,7 @@
 
 <% if true %><%= render 'form' %><% end %>
 
-<%= form_for(@group) do |f| %>
+<%= form_for(:group, :url => "/groups/disambiguate") do |f| %>
   <% if @group.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@group.errors.count, "error") %> prohibited this group from being saved:</h2>
@@ -31,9 +31,9 @@
         <%= f.select :parent_id, nested_set_options(@group) {|i| "#{'---' * (i.level)} #{i.name}" }, {:include_blank => false}, {:multiple => true} %>
       </div>
       <div class="actions">    
-        <%= button_to 'New', new_group_path, :method => :get %>
-        <%= button_to 'Edit', edit_group_path(@group), :method => :get %>
-        <%= button_to 'Delete', @group, :confirm => 'Are you sure? All subgroups and assignments will be deleted!', :method => :delete %>
+        <%= submit_tag 'New' %>
+        <%= submit_tag 'Edit' %>
+        <%= submit_tag 'Delete', :confirm => 'Are you sure? All subgroups and assignments will be deleted!' %>
       </div>
     </div>
     <div>
