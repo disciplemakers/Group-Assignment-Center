@@ -43,10 +43,8 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/edit
   def edit
-    puts "in edit method, with #{request.method} request\n"
     if request.post?
       group_id = request.request_parameters['parent_id']
-      puts "group_id = #{group_id}\n"
     else
       group_id = params[:id]
     end
