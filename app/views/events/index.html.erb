@@ -26,7 +26,7 @@
         <% end %></td>
     <td><%= event.start_date %></td>
     <td><%= event.end_date %></td>
-    <td><%= event.status.status %></td>
+    <td><%= Status.find(event.status_id).status %></td>
     <td><%= link_to 'Show', event %></td>
     <td><%= link_to 'Edit', edit_event_path(event) %></td>
     <td><%= link_to 'Destroy', event, :confirm => 'Are you sure? This will delete all groups associated with this event!!', :method => :delete %></td>
