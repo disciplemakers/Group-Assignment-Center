@@ -68,6 +68,11 @@ h4 span
 font-weight: bold;
 }
 
+h5 span
+{
+font-weight: bold;
+}
+
 br.clear
 {
 clear: both;
