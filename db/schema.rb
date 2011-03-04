@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110302204633) do
+ActiveRecord::Schema.define(:version => 20110304210211) do
 
   create_table "events", :force => true do |t|
     t.integer  "remote_event_id"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(:version => 20110302204633) do
     t.date     "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "status_id"
   end
 
   create_table "gender_constraints", :force => true do |t|
@@ -48,6 +49,7 @@ ActiveRecord::Schema.define(:version => 20110302204633) do
     t.integer  "lft"
     t.integer  "rgt"
     t.integer  "depth"
+    t.integer  "remote_event_id"
   end
 
   create_table "locations", :force => true do |t|
@@ -57,6 +59,9 @@ ActiveRecord::Schema.define(:version => 20110302204633) do
     t.integer  "parent_id"
     t.integer  "capacity"
     t.text     "comment"
+    t.integer  "lft"
+    t.integer  "rgt"
+    t.integer  "depth"
   end
 
   create_table "people", :force => true do |t|
@@ -72,6 +77,12 @@ ActiveRecord::Schema.define(:version => 20110302204633) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "confirmation_number"
+  end
+
+  create_table "statuses", :force => true do |t|
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end
