@@ -1,12 +1,12 @@
 <% content_for :title do "GAC - Editing #{Group.find(@event.group_id).name}" end %>
 
-<h3 class="normal-case"><%= Group.find(@event.group_id).name %></h3>
+<h3 class="normal-case"><span><%= Group.find(@event.group_id).name %></span></h3>
   <h5 class="normal-case">
     <% if @event.start_date and @event.end_date %>
-      <%= @event.start_date %> - <%= @event.end_date %>
+      <span><%= @event.start_date %> - <%= @event.end_date %></span>
     <% end %>
     <% if @event.location_id %>
-      at <%= Location.find(@event.location_id).name %>  
+      at <span><%= Location.find(@event.location_id).name %></span>  
     <% end %>
   </h5>
 
@@ -28,8 +28,9 @@
   <div class="form-boxes">
     <h4 class="normal-case">Groups</h4>
     <div id="left">
+      <%= f.hidden_field :event_group_id, :value => @event.group_id %>
       <div class="field">
-        <%= f.select :parent_id, nested_set_options(@group) {|i| "#{'---' * (i.level)} #{i.name}" }, {:include_blank => false}, {:multiple => true} %>
+        <%= f.select :parent_id, nested_set_options(@group) {|i| "#{'---' * (i.level)}#{i.name}" }, {:include_blank => false}, {:multiple => true} %>
       </div>
       <div class="actions">    
         <%= submit_tag 'New' %>
@@ -38,11 +39,16 @@
       </div>
     </div>
     <div>
-      <p>Placeholder for Button</p>
+      <p><%= submit_tag '<', :disabled => true %></p>
     </div>
     <div id="right">
       <div class="field">
-        <%= f.select :parent_id, nested_set_options(Group) {|i| "#{'---' * (i.level)} #{i.name}" }, {:include_blank => false}, {:multiple => true} %>
+        <h5>Available <span>Groups</span></h5>
+        <%= f.select :id, nested_set_options(@available_groups) {|i| "#{'---' * (i.level)} #{i.name}" }, {:include_blank => false}, {:multiple => true} %>
+      </div>
+      <div class="field">
+        <h5>Available <span>Locations</span></h5>
+        <%= f.select :id, nested_set_options(@location) {|i| "#{'---' * (i.level)} #{i.name}" }, {:include_blank => false}, {:multiple => true} %>
       </div>
     </div>
   </div>

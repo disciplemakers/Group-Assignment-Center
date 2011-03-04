@@ -15,6 +15,9 @@ class GroupsController < ApplicationController
   # GET /groups/1.xml
   def show
     @group = Group.find(params[:id])
+    
+    @root = @group.root
+    @event = Event.find(:first, :conditions => {:group_id => @root})
 
     respond_to do |format|
       format.html # show.html.erb
@@ -57,10 +60,13 @@ class GroupsController < ApplicationController
     @group = Group.new(params[:group])
     @parent = Group.find(params[:parent_id].to_i)
 
+    @root = @parent.root
+    @event = Event.find(:first, :conditions => {:group_id => @root})
+
     respond_to do |format|
       if @group.save
         @group.move_to_child_of(@parent)
-        format.html { redirect_to(@group, :notice => 'Group was successfully created.') }
+        format.html { redirect_to(edit_event_path(@event), :notice => 'Group was successfully created.') }
         format.xml  { render :xml => @group, :status => :created, :location => @group }
       else
         format.html { render :action => "new" }
@@ -73,10 +79,13 @@ class GroupsController < ApplicationController
   # PUT /groups/1.xml
   def update
     @group = Group.find(params[:id])
+    
+    @root = @group.root
+    @event = Event.find(:first, :conditions => {:group_id => @root})
 
     respond_to do |format|
       if @group.update_attributes(params[:group])
-        format.html { redirect_to(@group, :notice => 'Group was successfully updated.') }
+        format.html { redirect_to(edit_event_path(@event), :notice => 'Group was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -90,10 +99,14 @@ class GroupsController < ApplicationController
   def destroy
     puts "in destroy method with params[:id] = #{params[:id]}\n"
     @group = Group.find(params[:id])
+    
+    @root = @group.root
+    @event = Event.find(:first, :conditions => {:group_id => @root})
+    
     @group.destroy
 
     respond_to do |format|
-      format.html { redirect_to(groups_url) }
+      format.html { redirect_to(edit_event_path(@event)) }
       format.xml  { head :ok }
     end
   end
@@ -103,10 +116,16 @@ class GroupsController < ApplicationController
     #puts "parent_id = #{params['group']['parent_id']}\n"
     
     if params['commit'] == 'Edit'
-      redirect_to edit_group_path(params[:id])
+      redirect_to edit_group_path(params['group']['parent_id'])
     elsif params['commit'] == 'New'
-      if params.has_key?('group') and params['group'].has_key?('parent_id')
-        redirect_to new_child_group_path(params['group']['parent_id'])
+      if params.has_key?('group')
+        if params['group'].has_key?('parent_id')
+          redirect_to new_child_group_path(params['group']['parent_id'])
+        elsif params['group'].has_key?('event_group_id')
+          redirect_to new_child_group_path(params['group']['event_group_id'])
+        else
+          redirect_to new_group_path
+        end
       else
         redirect_to new_group_path
       end
