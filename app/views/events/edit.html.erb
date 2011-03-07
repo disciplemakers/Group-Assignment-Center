@@ -10,6 +10,10 @@
     <% end %>
   </h5>
 
+<% if notice %>
+  <div id="notice"><p><%= notice %></p></div>
+<% end %>
+
 <% if true %><%= render 'form' %><% end %>
 
 <%= form_for(:group, :url => "/groups/disambiguate") do |f| %>
@@ -26,8 +30,8 @@
   <% end %>
 
   <div class="form-boxes">
-    <h4 class="normal-case">Groups</h4>
     <div id="left">
+      <h5>Active <span>Groups</span></h5>
       <%= f.hidden_field :event_group_id, :value => @event.group_id %>
       <div class="field">
         <%= f.select :parent_id, nested_set_options(@group) {|i| "#{'---' * (i.level)}#{i.name}" }, {:include_blank => false}, {:multiple => true} %>
@@ -38,8 +42,8 @@
         <%= submit_tag 'Delete', :confirm => 'Are you sure? All subgroups and assignments will be deleted!' %>
       </div>
     </div>
-    <div>
-      <p><%= submit_tag '<', :disabled => true %></p>
+    <div id="middle">
+      <%= submit_tag '<', :confirm => 'Are you sure?  This will copy the selected group/location on the right (and all of its children) to the selected group on the left.' %>
     </div>
     <div id="right">
       <div class="field">
@@ -48,7 +52,7 @@
       </div>
       <div class="field">
         <h5>Available <span>Locations</span></h5>
-        <%= f.select :id, nested_set_options(@location) {|i| "#{'---' * (i.level)} #{i.name}" }, {:include_blank => false}, {:multiple => true} %>
+        <%= f.select :location_id, nested_set_options(@location) {|i| "#{'---' * (i.level)} #{i.name}" }, {:include_blank => false}, {:multiple => true} %>
       </div>
     </div>
   </div>

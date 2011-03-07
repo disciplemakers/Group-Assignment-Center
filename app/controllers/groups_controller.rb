@@ -95,7 +95,6 @@ class GroupsController < ApplicationController
   # DELETE /groups/1
   # DELETE /groups/1.xml
   def destroy
-    puts "in destroy method with params[:id] = #{params[:id]}\n"
     @group = Group.find(params[:id])
     
     @root = @group.root
@@ -133,6 +132,26 @@ class GroupsController < ApplicationController
       # redirects can only use GET, and that won't work with destroy.)
       request.params['id'] = params['group']['parent_id'].first      
       destroy
+    elsif params['commit'] == '<'
+      #if params.has_key?('group')
+      #  if params['group'].has_key?('parent_id')
+      #    parent = params['group']['parent_id']
+      #  elsif params['group'].has_key?('event_group_id')
+      #    redirect_to new_child_group_path(params['group']['event_group_id'])
+      #  else
+      #    redirect_to new_group_path
+      #  end
+      #else
+      #  redirect_to new_group_path
+      #end
+      groups = params['group']['id']
+      locations = params['group']['location_id']
+      
+      notice = 'groups ' + groups.join(', ') + ' and  locations ' + locations.join(', ') + ' should be added to ' +
+               'parent group ' + params['group']['parent_id'].first
+      
+      redirect_to(edit_event_path(params['group']['event_group_id']),
+                  :notice => notice)
     else
       puts "commit didn't match anything!\n"
     end
