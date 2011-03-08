@@ -1,13 +1,20 @@
-set :application, "set your application name here"
-set :repository,  "set your repository location here"
+set :application, "Group Assignment Center"
+default_run_options[:pty] = true
+set :repository,  "git@github.com:disciplemakers/Group-Assignment-Center.git"
 
-set :scm, :subversion
+set :scm, :git
+set :user, "capistrano"
+ssh_options[:forward_agent] = true
+set :branch, "devel"
+set :deploy_via, :remote_cache
+set :domain, "rails-dmz-001"
+set :db_domain, "mysql-dmz-001"
+
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 
-role :web, "your web-server here"                          # Your HTTP server, Apache/etc
-role :app, "your app-server here"                          # This may be the same as your `Web` server
-role :db,  "your primary db-server here", :primary => true # This is where Rails migrations will run
-role :db,  "your slave db-server here"
+role :web, domain                         # Your HTTP server, Apache/etc
+role :app, domain                          # This may be the same as your `Web` server
+role :db,  db_domain, :primary => true # This is where Rails migrations will run  
 
 # If you are using Passenger mod_rails uncomment this:
 # if you're still using the script/reapear helper you will need
