@@ -1,9 +1,11 @@
-set :application, "Group Assignment Center"
+set :application, "group_assignment_center"
 default_run_options[:pty] = true
 set :repository,  "git@github.com:disciplemakers/Group-Assignment-Center.git"
 
 set :scm, :git
 set :user, "capistrano"
+set :deploy_to, "/var/lib/capistrano/apps"
+set :use_sudo, false
 ssh_options[:forward_agent] = true
 set :branch, "devel"
 set :deploy_via, :remote_cache
@@ -14,7 +16,7 @@ set :db_domain, "mysql-dmz-001"
 
 role :web, domain                         # Your HTTP server, Apache/etc
 role :app, domain                          # This may be the same as your `Web` server
-role :db,  db_domain, :primary => true # This is where Rails migrations will run  
+#role :db,  db_domain, :primary => true # This is where Rails migrations will run  
 
 # If you are using Passenger mod_rails uncomment this:
 # if you're still using the script/reapear helper you will need
