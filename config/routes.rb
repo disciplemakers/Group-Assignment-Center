@@ -1,4 +1,6 @@
 Gac::Application.routes.draw do
+  resources :people
+
   #get "sessions/new"
 
   #get "sessions/create"
@@ -7,7 +9,9 @@ Gac::Application.routes.draw do
 
   resources :events
 
-  resources :groups
+  resources :groups do
+    post "disambiguate", :on => :collection
+  end
 
   resources :locations
   #resources :locations do

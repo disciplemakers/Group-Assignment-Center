@@ -10,7 +10,4 @@ class Group < ActiveRecord::Base
                             :allow_nil => true,
                             :greater_than_or_equal_to => 0
   
-  def print_in_tree
-    string = "#{'-'*self.level} #{self.name}"
-  end
 end

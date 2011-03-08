@@ -28,6 +28,7 @@ describe EventsController do
                                 "StartDate"    => nil,
                                 "EndDate"      => nil}}
       mock_roc.stub(:events).with(no_args()).and_return(@event_hash)
+      mock_roc.stub(:filtered_events).with(any_args()).and_return(@event_hash)
       RegonlineConnector.stub(:new).and_return(mock_roc)
     end
     
@@ -65,13 +66,16 @@ describe EventsController do
       Event.stub(:find).with("37") { mock_event }
       get :show, :id => "37"
       assigns(:event).should be(mock_event)
-    end
+    end 
     
     it "assigns remote registrants as @remote_registrants" do
       Event.stub(:find).with("37") { mock_event }
       get :show, :id => "37"
       assigns(:remote_registrants).should == @report_hash
     end
+    
+    it "assigns a list of registrants as @registrants"
+     
   end
 
   describe "GET new" do

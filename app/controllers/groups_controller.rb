@@ -15,6 +15,9 @@ class GroupsController < ApplicationController
   # GET /groups/1.xml
   def show
     @group = Group.find(params[:id])
+    
+    @root = @group.root
+    @event = Event.find(:first, :conditions => {:group_id => @root})
 
     respond_to do |format|
       format.html # show.html.erb
@@ -40,8 +43,14 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/edit
   def edit
-    @group = Group.find(params[:id])
+    if request.post?
+      group_id = request.request_parameters['parent_id']
+    else
+      group_id = params[:id]
+    end
+    @group = Group.find(group_id)
   end
+
 
   # POST /groups
   # POST /groups.xml
@@ -49,10 +58,13 @@ class GroupsController < ApplicationController
     @group = Group.new(params[:group])
     @parent = Group.find(params[:parent_id].to_i)
 
+    @root = @parent.root
+    @event = Event.find(:first, :conditions => {:group_id => @root})
+
     respond_to do |format|
       if @group.save
         @group.move_to_child_of(@parent)
-        format.html { redirect_to(@group, :notice => 'Group was successfully created.') }
+        format.html { redirect_to(edit_event_path(@event), :notice => 'Group was successfully created.') }
         format.xml  { render :xml => @group, :status => :created, :location => @group }
       else
         format.html { render :action => "new" }
@@ -65,10 +77,13 @@ class GroupsController < ApplicationController
   # PUT /groups/1.xml
   def update
     @group = Group.find(params[:id])
+    
+    @root = @group.root
+    @event = Event.find(:first, :conditions => {:group_id => @root})
 
     respond_to do |format|
       if @group.update_attributes(params[:group])
-        format.html { redirect_to(@group, :notice => 'Group was successfully updated.') }
+        format.html { redirect_to(edit_event_path(@event), :notice => 'Group was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -81,11 +96,119 @@ class GroupsController < ApplicationController
   # DELETE /groups/1.xml
   def destroy
     @group = Group.find(params[:id])
+    
+    @root = @group.root
+    @event = Event.find(:first, :conditions => {:group_id => @root})
+    
     @group.destroy
 
     respond_to do |format|
-      format.html { redirect_to(groups_url) }
+      format.html { redirect_to(edit_event_path(@event)) }
       format.xml  { head :ok }
     end
   end
+  
+  def disambiguate
+    #puts "in disambiguate method with #{request.method} request\n"
+    #puts "parent_id = #{params['group']['parent_id']}\n"
+    
+    if params['commit'] == 'Edit'
+      redirect_to edit_group_path(params['group']['parent_id'])
+    elsif params['commit'] == 'New'
+      if params.has_key?('group')
+        if params['group'].has_key?('parent_id')
+          redirect_to new_child_group_path(params['group']['parent_id'])
+        elsif params['group'].has_key?('event_group_id')
+          redirect_to new_child_group_path(params['group']['event_group_id'])
+        else
+          redirect_to new_group_path
+        end
+      else
+        redirect_to new_group_path
+      end
+    elsif params['commit'] == 'Delete'
+      # Assign a value for 'id' in the params hash because we're just going
+      # to hand off to the destroy method. (We can't redirect because HTTP
+      # redirects can only use GET, and that won't work with destroy.)
+      request.params['id'] = params['group']['parent_id'].first      
+      destroy
+    elsif params['commit'] == '<'
+      if params.has_key?('group')
+        if params['group'].has_key?('parent_id')
+          destination = params['group']['parent_id'].first
+        elsif params['group'].has_key?('event_group_id')
+          destination = params['group']['event_group_id'].first
+        else
+          redirect_to new_group_path
+        end
+        
+        notice = ""
+        
+        if params['group'].has_key?('location_id')
+          locations_to_be_copied = params['group']['location_id']
+          notice += "locations #{locations_to_be_copied.join(', ')}"
+          locations_to_be_copied.each do |location|
+            clone_location_branch(Location.find(location), destination)
+          end
+        end
+        
+        if params['group'].has_key?('id')
+          groups_to_be_copied = params['group']['id']
+          if notice.length > 1
+            notice += " and "
+          end
+          notice += "groups #{groups_to_be_copied.join(', ')}"
+          groups_to_be_copied.each do |group|
+            clone_group_branch(Group.find(group), destination)
+          end
+        end
+        
+      else
+        redirect_to new_group_path
+      end
+      
+      groups = params['group']['id']
+      locations = params['group']['location_id']
+      
+      notice += " should be added to parent group #{destination}"
+      
+      redirect_to(edit_event_path(params['group']['event_group_id']),
+                  :notice => notice)
+    else
+      puts "commit didn't match anything!\n"
+    end
+  end
+  
+  def clone_group_branch(group, destination)
+    clone = group.clone
+    clone.parent_id = nil
+    clone.save
+    clone.move_to_child_of(destination)
+      
+    if !group.leaf?
+      group.children.each do |child|
+        clone_group_branch(child, clone)
+      end
+    end
+  end
+  
+  def clone_location_branch(location, destination_group)
+    group = group_from_location(location)
+    group.save
+    group.move_to_child_of(destination_group)
+    
+    if !location.leaf?
+      location.children.each do |child_location|
+        clone_location_branch(child_location, group)
+      end
+    end
+  end
+  
+  def group_from_location(location)
+    group = Group.new(:name     => location.name,
+                      :capacity => location.capacity,
+                      :location_id => location.id,
+                      :comment  => location.comment)
+  end
+
 end

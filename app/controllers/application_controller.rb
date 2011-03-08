@@ -12,6 +12,6 @@ class ApplicationController < ActionController::Base
   
   def set_sidebar_data
     @sidebar_events = Event.all
-    @sidebar_locations = Location.find_by_sql("SELECT * FROM locations WHERE parent_id IS NULL")
+    @sidebar_locations = Location.roots
   end
 end

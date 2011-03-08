@@ -1,0 +1,39 @@
+<h1>Listing people</h1>
+
+<table>
+  <tr>
+    <th>First name</th>
+    <th>Last name</th>
+    <th>Gender</th>
+    <th>Registration type</th>
+    <th>School</th>
+    <th>Graduation year</th>
+    <th>Housing assignment</th>
+    <th>Small group assignment</th>
+    <th>Campus group room</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @people.each do |person| %>
+  <tr>
+    <td><%= person.first_name %></td>
+    <td><%= person.last_name %></td>
+    <td><%= person.gender %></td>
+    <td><%= person.registration_type %></td>
+    <td><%= person.school %></td>
+    <td><%= person.graduation_year %></td>
+    <td><%= person.housing_assignment %></td>
+    <td><%= person.small_group_assignment %></td>
+    <td><%= person.campus_group_room %></td>
+    <td><%= link_to 'Show', person %></td>
+    <td><%= link_to 'Edit', edit_person_path(person) %></td>
+    <td><%= link_to 'Destroy', person, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Person', new_person_path %>

@@ -7,12 +7,14 @@ describe "events/index.html.erb" do
         :remote_event_id => 1,
         :remote_report_id => 1,
         :location_id => 1,
+        :status_id => 1,
         :group_id => 1
       ),
       stub_model(Event,
         :remote_event_id => 1,
         :remote_report_id => 1,
         :location_id => 1,
+        :status_id => 1,
         :group_id => 1
       )
     ])
@@ -29,7 +31,12 @@ describe "events/index.html.erb" do
       :id => 1,
       :name => "Group Name"
    ))
+   @status = assign(:status, stub_model(Status,
+      :id => 1,
+      :status => "Status"
+   ))
    Group.stub(:find).with(any_args()).and_return(@group)
+   Status.stub(:find).with(any_args()).and_return(@status)
    @location = assign(:location, stub_model(Location,
       :id => 1,
       :name => "Location Name"

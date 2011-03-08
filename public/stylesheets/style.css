@@ -68,6 +68,11 @@ h4 span
 font-weight: bold;
 }
 
+h5 span
+{
+font-weight: bold;
+}
+
 br.clear
 {
 clear: both;
@@ -217,7 +222,15 @@ background: #fff url('../images/n2.gif') 0px 1px repeat-x;
 #main_inner p
 {
 text-align: justify;
-margin-bottom: 2.0em;
+}
+
+#notice {
+  color: green;
+  margin: .5em 0;
+}
+
+#notice p {
+  margin-top: 0;
 }
 
 #main_inner ul
@@ -375,7 +388,7 @@ max-width: 2.5em;
 }
 
 .form-boxes {
-  margin-top: 4em;
+  margin-top: 2em;
 }
 
 .form-boxes > div {
@@ -388,6 +401,10 @@ max-width: 2.5em;
 
 .form-boxes #right {
   margin-left: 2em;
+}
+
+.form-boxes #middle input {
+  margin: 4em 2em;
 }
 
 .actions div{

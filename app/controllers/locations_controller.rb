@@ -2,6 +2,7 @@ class LocationsController < ApplicationController
   # GET /locations
   # GET /locations.xml
   def index
+    Location.rebuild!
     @locations = Location.all
 
     respond_to do |format|

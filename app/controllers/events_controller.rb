@@ -4,6 +4,7 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.xml
   def index
+    Group.rebuild!
     @remote_events = remote_events(session[:account_id], session[:username], session[:password])
     create_groups(@remote_events)
     @events = Event.all
@@ -27,7 +28,7 @@ class EventsController < ApplicationController
       format.xml  { render :xml => @event }
     end
   end
-
+  
   # GET /events/new
   # GET /events/new.xml
   def new
@@ -42,7 +43,10 @@ class EventsController < ApplicationController
   # GET /events/1/edit
   def edit
     @event = Event.find(params[:id])
-    @group = Group.find(@event.group_id)
+    @group = @event.group
+    @location = @event.location
+    @available_groups = Group.roots
+    @available_groups -= [@group.root]
   end
 
   # POST /events
@@ -92,8 +96,10 @@ class EventsController < ApplicationController
   private
   
   def remote_events(account_id, username, password)
+    filter_hash = {'StatusId' => 1}
     roc = RegonlineConnector.new(account_id, username, password)
-    events = roc.events
+    #events = roc.events
+    events = roc.filtered_events(filter_hash, "or", "false")
   end
   
   def location_from_event(event)
@@ -110,16 +116,28 @@ class EventsController < ApplicationController
   end
   
   def group_from_event(event)
-    unless Group.find(:first, :conditions => {:name => event['Title']})
+    unless Group.find(:first, :conditions => {:name => event['Title'], :remote_event_id => event['ID']})
       group = Group.new(:name => event['Title'],
                         :can_contain_groups => true,
+                        :remote_event_id => event['ID'],
                         :location => Location.find(:first,
                                                    :conditions => {:name => event['LocationName']}))
       group.save
       group.id
     else
-      group = Group.find(:first, :conditions => {:name => event['Title']})
+      group = Group.find(:first, :conditions => {:name => event['Title'], :remote_event_id => event['ID']})
       group.id
+    end
+  end
+  
+  def status_from_event(event)
+    unless Status.find(:first, :conditions => {:status => event['Status']})
+      status = Status.new(:status => event['Status'])
+      status.save
+      status.id
+    else
+      status = Status.find(:first, :conditions => {:status => event['Status']})
+      status.id
     end
   end
   
@@ -127,10 +145,11 @@ class EventsController < ApplicationController
     events.each do |id, event|
       if !Event.find(:first, :conditions => {:remote_event_id => event['ID']})
         gac_event = Event.new(:remote_event_id => event['ID'],
-                              :location_id => location_from_event(event),
-                              :group_id => group_from_event(event),
-                              :start_date => event['StartDate'],
-                              :end_date => event['EndDate'])
+                              :location_id     => location_from_event(event),
+                              :group_id        => group_from_event(event),
+                              :start_date      => event['StartDate'],
+                              :end_date        => event['EndDate'],
+                              :status_id       => status_from_event(event))
         gac_event.save
       end
     end

@@ -9,6 +9,11 @@ describe GroupsController do
     session[:username]   = 'joeuser'
     session[:password]   = 'password'
     session[:account_id] = '100'
+    
+    mock_root = mock_model(Group)
+    Group.stub(:root).with(no_args()).and_return(mock_root)
+    @mock_event = mock_model(Event, :group_id => 1)
+    Event.stub(:find).with(any_args()).and_return(@mock_event)
   end
 
   def mock_group(stubs={})
@@ -67,7 +72,7 @@ describe GroupsController do
     # The controller will try to look up the parent group, so have the
     # "find" class method return a mock object when searched for id=0.
     before(:each) do
-        Group.stub(:find).with(0) { mock_group }        
+        Group.stub(:find).with(0) { mock_group }
     end
       
     describe "with valid params" do
@@ -80,7 +85,7 @@ describe GroupsController do
       it "redirects to the created group" do
         Group.stub(:new) { mock_group(:save => true) }
         post :create, :group => {}
-        response.should redirect_to(group_url(mock_group))
+        response.should redirect_to(edit_event_url(@mock_event))
       end
     end
 
@@ -116,7 +121,7 @@ describe GroupsController do
       it "redirects to the group" do
         Group.stub(:find) { mock_group(:update_attributes => true) }
         put :update, :id => "1"
-        response.should redirect_to(group_url(mock_group))
+        response.should redirect_to(edit_event_url(@mock_event))
       end
     end
 
@@ -145,8 +150,43 @@ describe GroupsController do
     it "redirects to the groups list" do
       Group.stub(:find) { mock_group }
       delete :destroy, :id => "1"
-      response.should redirect_to(groups_url)
+      response.should redirect_to(edit_event_url(@mock_event))
     end
   end
 
+  describe "POST disambiguate" do
+    describe "with parent_id" do
+      describe "with commit=New" do
+        it "redirects to the new child form" do
+          post :disambiguate, :commit => 'New', :group => {'parent_id' => "37"}
+          response.should redirect_to("/groups/37/new")
+        end
+      end
+      
+      describe "with commit=Edit" do
+        it "redirects to the edit form"        
+      end
+      
+      describe "with commit=Delete" do
+        it "calls the destroy method"
+      end
+    end
+    
+    describe "without parent_id" do
+      describe "with commit=New" do
+        it "redirects to the new group form (top-level)" do
+          post :disambiguate, :commit => 'New'
+          response.should redirect_to(new_group_url)
+        end
+      end
+      
+      describe "with commit=Edit" do
+        it "displays an error"
+      end
+      
+      describe "with commit=Delete" do
+        it "displays an error"
+      end
+    end
+  end
 end
