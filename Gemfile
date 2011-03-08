@@ -31,4 +31,5 @@ group :development, :test do
   gem "cucumber-rails", ">= 0.3.2"
   gem "webrat", ">= 0.7.2"
   gem "rubyzip", ">= 0"
+  gem "rcov", "~> 0.9.9"
 end
