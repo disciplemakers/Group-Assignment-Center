@@ -34,9 +34,9 @@
       <h5>Active <span>Groups</span></h5>
       <%= f.hidden_field :event_group_id, :value => @event.group_id %>
       <div class="field">
-        <%= f.select :parent_id, nested_set_options(@group) {|i| "#{'---' * (i.level)}#{i.name}" }, {:include_blank => false}, {:multiple => true} %>
+        <%= f.select :parent_id, nested_set_options(@group) {|i| "#{'---' * (i.level)}#{i.name}" }, {:include_blank => false}, {:multiple => false, :size => 16} %>
       </div>
-      <div class="actions">    
+      <div class="actions">
         <%= submit_tag 'New' %>
         <%= submit_tag 'Edit' %>
         <%= submit_tag 'Delete', :confirm => 'Are you sure? All subgroups and assignments will be deleted!' %>
@@ -56,5 +56,4 @@
       </div>
     </div>
   </div>
-
 <% end %>

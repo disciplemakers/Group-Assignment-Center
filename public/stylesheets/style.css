@@ -388,7 +388,7 @@ max-width: 2.5em;
 }
 
 .form-boxes {
-  margin-top: 4em;
+  margin-top: 2em;
 }
 
 .form-boxes > div {
@@ -404,7 +404,7 @@ max-width: 2.5em;
 }
 
 .form-boxes #middle input {
-  margin: 5em 0;
+  margin: 4em 2em;
 }
 
 .actions div{

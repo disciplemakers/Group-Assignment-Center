@@ -133,28 +133,82 @@ class GroupsController < ApplicationController
       request.params['id'] = params['group']['parent_id'].first      
       destroy
     elsif params['commit'] == '<'
-      #if params.has_key?('group')
-      #  if params['group'].has_key?('parent_id')
-      #    parent = params['group']['parent_id']
-      #  elsif params['group'].has_key?('event_group_id')
-      #    redirect_to new_child_group_path(params['group']['event_group_id'])
-      #  else
-      #    redirect_to new_group_path
-      #  end
-      #else
-      #  redirect_to new_group_path
-      #end
+      if params.has_key?('group')
+        if params['group'].has_key?('parent_id')
+          destination = params['group']['parent_id'].first
+        elsif params['group'].has_key?('event_group_id')
+          destination = params['group']['event_group_id'].first
+        else
+          redirect_to new_group_path
+        end
+        
+        notice = ""
+        
+        if params['group'].has_key?('location_id')
+          locations_to_be_copied = params['group']['location_id']
+          notice += "locations #{locations_to_be_copied.join(', ')}"
+          locations_to_be_copied.each do |location|
+            clone_location_branch(Location.find(location), destination)
+          end
+        end
+        
+        if params['group'].has_key?('id')
+          groups_to_be_copied = params['group']['id']
+          if notice.length > 1
+            notice += " and "
+          end
+          notice += "groups #{groups_to_be_copied.join(', ')}"
+          groups_to_be_copied.each do |group|
+            clone_group_branch(Group.find(group), destination)
+          end
+        end
+        
+      else
+        redirect_to new_group_path
+      end
+      
       groups = params['group']['id']
       locations = params['group']['location_id']
       
-      notice = 'groups ' + groups.join(', ') + ' and  locations ' + locations.join(', ') + ' should be added to ' +
-               'parent group ' + params['group']['parent_id'].first
+      notice += " should be added to parent group #{destination}"
       
       redirect_to(edit_event_path(params['group']['event_group_id']),
                   :notice => notice)
     else
       puts "commit didn't match anything!\n"
     end
+  end
+  
+  def clone_group_branch(group, destination)
+    clone = group.clone
+    clone.parent_id = nil
+    clone.save
+    clone.move_to_child_of(destination)
+      
+    if !group.leaf?
+      group.children.each do |child|
+        clone_group_branch(child, clone)
+      end
+    end
+  end
+  
+  def clone_location_branch(location, destination_group)
+    group = group_from_location(location)
+    group.save
+    group.move_to_child_of(destination_group)
+    
+    if !location.leaf?
+      location.children.each do |child_location|
+        clone_location_branch(child_location, group)
+      end
+    end
+  end
+  
+  def group_from_location(location)
+    group = Group.new(:name     => location.name,
+                      :capacity => location.capacity,
+                      :location_id => location.id,
+                      :comment  => location.comment)
   end
 
 end
