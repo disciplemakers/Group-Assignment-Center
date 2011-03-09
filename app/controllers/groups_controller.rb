@@ -35,7 +35,7 @@ class GroupsController < ApplicationController
       @parent = Group.find(params[:id])
     end
     
-    respond_to do |format|
+    respond_to do |format|     
       format.html # new.html.erb
       format.xml  { render :xml => @group }
     end
@@ -62,7 +62,10 @@ class GroupsController < ApplicationController
     @event = Event.find(:first, :conditions => {:group_id => @root})
 
     respond_to do |format|
-      if @group.save
+      if params[:commit] == 'Cancel'
+        format.html { redirect_to(edit_event_path(@event)) }
+        format.xml  { head :ok }
+      elsif @group.save
         @group.move_to_child_of(@parent)
         format.html { redirect_to(edit_event_path(@event), :notice => 'Group was successfully created.') }
         format.xml  { render :xml => @group, :status => :created, :location => @group }
@@ -82,7 +85,10 @@ class GroupsController < ApplicationController
     @event = Event.find(:first, :conditions => {:group_id => @root})
 
     respond_to do |format|
-      if @group.update_attributes(params[:group])
+      if params[:commit] == 'Cancel'
+        format.html { redirect_to(edit_event_path(@event)) }
+        format.xml  { head :ok }
+      elsif @group.update_attributes(params[:group])
         format.html { redirect_to(edit_event_path(@event), :notice => 'Group was successfully updated.') }
         format.xml  { head :ok }
       else

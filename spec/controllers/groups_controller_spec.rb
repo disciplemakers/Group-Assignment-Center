@@ -74,6 +74,10 @@ describe GroupsController do
     before(:each) do
         Group.stub(:find).with(0) { mock_group }
     end
+    
+    describe "after Cancel button press" do
+      it "should redirect to the event edit form"
+    end
       
     describe "with valid params" do
       it "assigns a newly created group as @group" do
@@ -105,6 +109,10 @@ describe GroupsController do
   end
 
   describe "PUT update" do
+    describe "after Cancel button pressed" do
+      it "should redirect to the event edit form"
+    end
+    
     describe "with valid params" do
       it "updates the requested group" do
         Group.stub(:find).with("37") { mock_group }
