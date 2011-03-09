@@ -404,7 +404,11 @@ max-width: 2.5em;
 }
 
 .form-boxes #middle input {
-  margin: 4em 2em;
+  margin: 4em 0.5em;
+}
+
+.field select {
+  width: 17em;
 }
 
 .actions div{
