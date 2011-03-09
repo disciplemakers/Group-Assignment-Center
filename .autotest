@@ -4,13 +4,13 @@
 # require 'autotest/bundler'
 # require 'autotest/isolate'
 # require 'autotest/once'
-require 'autotest/rcov'
+# require 'autotest/rcov'
 # require 'autotest/restart'
 # require 'autotest/timestamp'
 
 # Autotest::AutoUpdate.sleep_time = o
 # Autotest::AutoUpdate.update_cmd = o
 # Autotest::Isolate.dir = o
-Autotest::RCov.command = 'rcov'
-Autotest::RCov.pattern = 'spec/**/*_spec.rb'
-Autotest::RCov.options = ['--exclude', '\/usr\/lib\/ruby\/*,\/var\/lib\/gems\/*,spec/*']
+# Autotest::RCov.command = 'rcov'
+##Autotest::RCov.pattern = 'spec/**/*_spec.rb'
+##Autotest::RCov.options = ['--exclude', '\/usr\/lib\/ruby\/*,\/var\/lib\/gems\/*,spec/*']
