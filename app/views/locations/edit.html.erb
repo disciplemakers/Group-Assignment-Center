@@ -1,6 +1,10 @@
 <% content_for :title do "GAC - Editing #{@location.name}" end %>
 
-<h3>Editing location</h3>
+<h3>Editing <span class="normal-case"><%= @location.name %></span></h3>
+
+<% if notice %>
+  <div id="notice"><p><%= notice %></p></div>
+<% end %>
 
 <%= render 'form' %>
 

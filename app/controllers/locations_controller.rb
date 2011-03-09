@@ -69,7 +69,7 @@ class LocationsController < ApplicationController
 
     respond_to do |format|
       if @location.update_attributes(params[:location])
-        format.html { redirect_to(@location, :notice => 'Location was successfully updated.') }
+        format.html { redirect_to(edit_location_path(@location), :notice => 'Location was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
