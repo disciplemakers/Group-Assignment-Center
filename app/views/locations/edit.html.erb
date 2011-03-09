@@ -8,4 +8,6 @@
 
 <%= render 'form' %>
 
-<%= render 'builder' %>
+<% if @location.root? %>
+  <%= render 'builder' %>
+<% end %>
