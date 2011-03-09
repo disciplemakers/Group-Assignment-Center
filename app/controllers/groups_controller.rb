@@ -118,8 +118,8 @@ class GroupsController < ApplicationController
       if params.has_key?('group')
         if params['group'].has_key?('parent_id')
           redirect_to new_child_group_path(params['group']['parent_id'])
-        elsif params['group'].has_key?('event_group_id')
-          redirect_to new_child_group_path(params['group']['event_group_id'])
+        elsif params['group'].has_key?('active_object_id')
+          redirect_to new_child_group_path(params['group']['active_object_id'])
         else
           redirect_to new_group_path
         end
@@ -136,8 +136,8 @@ class GroupsController < ApplicationController
       if params.has_key?('group')
         if params['group'].has_key?('parent_id')
           destination = params['group']['parent_id'].first
-        elsif params['group'].has_key?('event_group_id')
-          destination = params['group']['event_group_id'].first
+        elsif params['group'].has_key?('active_object_id')
+          destination = params['group']['active_object_id'].first
         else
           redirect_to new_group_path
         end
@@ -172,8 +172,8 @@ class GroupsController < ApplicationController
       
       notice += " should be added to parent group #{destination}"
       
-      redirect_to(edit_event_path(params['group']['event_group_id']),
-                  :notice => notice)
+      redirect_to(edit_event_path(params['group']['active_object_id']),
+                  :notice => "test:" + notice)
     else
       puts "commit didn't match anything!\n"
     end

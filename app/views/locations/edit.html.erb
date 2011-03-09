@@ -4,9 +4,4 @@
 
 <%= render 'form' %>
 
-<%= render(:partial => "shared/object_edit_control",
-           :object  => @location,
-           :locals  => {:destroy_confirm_message => "Are you sure? All sublocations will be deleted!",
-                        :active_object_id => @location.id,
-                        :select_field => :parent_id,
-                        :select_size  => 16}) %>
+<%= render 'builder' %>

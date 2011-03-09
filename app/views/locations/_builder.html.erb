@@ -1,0 +1,25 @@
+<%= form_for(@location, :url => "/locations/disambiguate") do |f| %>
+  <% if @location.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@location.errors.count, "error") %> prohibited this group from being saved:</h2>
+
+      <ul>
+      <% @location.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-boxes">
+    <div id="left">
+      <%= render(:partial => "shared/object_edit_control",
+                 :object  => @location,
+                 :locals  => {:f                       => f,
+                              :destroy_confirm_message => "Are you sure? All sublocations will be deleted!",
+                              :active_object_id        => @location.id,
+                              :select_field            => :parent_id,
+                              :select_size             => 16}) %>
+    </div>
+  </div>
+<% end %>

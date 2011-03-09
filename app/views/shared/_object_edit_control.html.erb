@@ -1,34 +1,16 @@
-<%= form_for(object_edit_control, :url => "#{url_for(object_edit_control.class)}/disambiguate") do |f| %>
-  <% if object_edit_control.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(object_edit_control.errors.count, "error") %> prohibited this group from being saved:</h2>
+<h5>Active <span><%= object_edit_control.class %></span></h5>
+<%= f.hidden_field "active_object_id", :value => active_object_id %>
 
-      <ul>
-      <% object_edit_control.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+<div class="field">
+  <%= render(:partial => "shared/select",
+             :object  => object_edit_control,
+             :locals  => { :f         => f,
+                           :selection => select_field,
+                           :size      => select_size}) %>
+</div>
 
-  <div class="form-boxes">
-    <div id="left">
-      <h5>Active <span><%= object_edit_control.class %></span></h5>
-      <%= f.hidden_field "active_object_id", :value => active_object_id %>
-
-      <div class="field">
-        <%= render(:partial => "shared/select",
-                   :object  => object_edit_control,
-                   :locals  => { :f         => f,
-                                 :selection => select_field,
-                                 :size      => select_size}) %>
-      </div>
-      
-      <div class="actions">
-        <%= submit_tag 'New', {:disabled => true} %>
-        <%= submit_tag 'Edit', {:disabled => true} %>
-        <%= submit_tag 'Delete', {:confirm => destroy_confirm_message, :disabled => true} %>
-      </div>
-    </div>
-  </div>
-<% end %>
+<div class="actions">
+  <%= submit_tag 'New' %>
+  <%= submit_tag 'Edit' %>
+  <%= submit_tag 'Delete', {:confirm => destroy_confirm_message} %>
+</div>
