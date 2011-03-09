@@ -2,11 +2,19 @@ require 'spec_helper'
 
 describe "locations/edit.html.erb" do
   before(:each) do
-    @location = assign(:location, stub_model(Location,
-      :name => "MyString"
+    @location = assign(:location, mock_model(Location,
+      :id => 1,
+      :name => "Test Location",
+      :parent_id => nil,
+      :capacity  => nil,
+      :comment   => nil
     ))
+    @location.stub(:self_and_descendants).with(no_args()).and_return(@location)
+    @location.stub(:map).with(no_args()).and_return([@location])
+    
+    Location.stub(:find).with(1).and_return(@location)
   end
-
+  
   it "renders the edit location form" do
     render
 
