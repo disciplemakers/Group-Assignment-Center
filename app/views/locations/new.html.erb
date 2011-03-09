@@ -1,7 +1,5 @@
 <% content_for :title do "GAC - Create New Location" end %>
 
-<h3>New location<% if @parent %> in <%= @parent.name %><% end %></h3>
+<h3>New location<% if @parent %> in <span class="normal-case"><%= @parent.name %></span><% end %></h3>
 
 <%= render 'form' %>
-
-<%= link_to 'Back', locations_path %>

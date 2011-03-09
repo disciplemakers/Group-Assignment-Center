@@ -13,7 +13,9 @@ Gac::Application.routes.draw do
     post "disambiguate", :on => :collection
   end
 
-  resources :locations
+  resources :locations do
+    post "disambiguate", :on => :collection
+  end
   #resources :locations do
   #  member do
   #    get 'new_child'
