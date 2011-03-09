@@ -1,12 +1,15 @@
 require 'regonlineconnector'
+require 'pp'
 
 class EventsController < ApplicationController
   # GET /events
   # GET /events.xml
   def index
     Group.rebuild!
+    
     @remote_events = remote_events(session[:account_id], session[:username], session[:password])
-    create_groups(@remote_events)
+    create_events(@remote_events)
+
     @events = Event.all
 
     respond_to do |format|
@@ -141,9 +144,19 @@ class EventsController < ApplicationController
     end
   end
   
-  def create_groups(events)
+  def create_events(events)
     events.each do |id, event|
-      if !Event.find(:first, :conditions => {:remote_event_id => event['ID']})
+      if gac_event = Event.find(:first, :conditions => {:remote_event_id => event['ID']})
+        attributes = {"remote_event_id" => event['ID'],
+                      "location_id"     => location_from_event(event),
+                      "group_id"        => group_from_event(event),
+                      "start_date"      => event['StartDate'],
+                      "end_date"        => event['EndDate'],
+                      "status_id"       => status_from_event(event)}
+        if !gac_event.update_attributes(attributes)
+          pp gac_event.errors
+        end        
+      else
         gac_event = Event.new(:remote_event_id => event['ID'],
                               :location_id     => location_from_event(event),
                               :group_id        => group_from_event(event),
