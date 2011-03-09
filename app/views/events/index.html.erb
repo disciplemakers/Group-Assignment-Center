@@ -5,31 +5,21 @@
 <table>
   <tr>
     <th>Event/Group</th>
-    <th>Remote event</th>
-    <th>Remote report</th>
     <th>Location</th>
     <th>Start date</th>
     <th>End date</th>
     <th>Status</th>
-    <th></th>
-    <th></th>
-    <th></th>
   </tr>
 
 <% @events.each do |event| %>
   <tr>
-    <td><%= Group.find(event.group_id).name %></td>
-    <td><%= event.remote_event_id %></td>
-    <td><%= event.remote_report_id %></td>
+    <td><%= link_to Group.find(event.group_id).name, edit_event_path(event) %></td>
     <td><% if event.location_id %>
           <%= Location.find(event.location_id).name %>
         <% end %></td>
-    <td><%= event.start_date %></td>
-    <td><%= event.end_date %></td>
+    <td><%= event.start_date.strftime("%b %d, %Y") if event.start_date %></td>
+    <td><%= event.end_date.strftime("%b %d, %Y") if event.end_date %></td>
     <td><%= Status.find(event.status_id).status %></td>
-    <td><%= link_to 'Show', event %></td>
-    <td><%= link_to 'Edit', edit_event_path(event) %></td>
-    <td><%= link_to 'Destroy', event, :confirm => 'Are you sure? This will delete all groups associated with this event!!', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
