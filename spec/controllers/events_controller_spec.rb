@@ -73,8 +73,6 @@ describe EventsController do
       get :show, :id => "37"
       assigns(:remote_registrants).should == @report_hash
     end
-    
-    it "assigns a list of registrants as @registrants"
      
   end
 
@@ -138,10 +136,10 @@ describe EventsController do
         assigns(:event).should be(mock_event)
       end
 
-      it "redirects to the event" do
+      it "redirects to the edit form for the event" do
         Event.stub(:find) { mock_event(:update_attributes => true) }
         put :update, :id => "1"
-        response.should redirect_to(event_url(mock_event))
+        response.should redirect_to(edit_event_url(mock_event))
       end
     end
 

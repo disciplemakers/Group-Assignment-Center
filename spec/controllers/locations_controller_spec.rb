@@ -106,10 +106,10 @@ describe LocationsController do
         assigns(:location).should be(mock_location)
       end
 
-      it "redirects to the location" do
+      it "redirects to the edit form for the location" do
         Location.stub(:find) { mock_location(:update_attributes => true) }
         put :update, :id => "1"
-        response.should redirect_to(location_url(mock_location))
+        response.should redirect_to(edit_location_url(mock_location))
       end
     end
 
