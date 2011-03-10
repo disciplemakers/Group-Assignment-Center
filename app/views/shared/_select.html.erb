@@ -1,4 +1,4 @@
 <%= f.select selection,
              nested_set_options(select) {|i| "#{'---' * (i.level)}#{i.name}" },
-             {:include_blank => false},
+             {:include_blank => false, :selected_key => nil},
              {:multiple => false, :size => size} %>
