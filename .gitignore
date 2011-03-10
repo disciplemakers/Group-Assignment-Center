@@ -6,4 +6,3 @@ tmp/**/*
 .project
 vendor/cache/*
 coverage/*
-config/database.yml

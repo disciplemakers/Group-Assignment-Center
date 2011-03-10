@@ -23,10 +23,18 @@ role :db,  domain, :primary => true    # This is where Rails migrations will run
 # if you're still using the script/reapear helper you will need
 # these http://github.com/rails/irs_process_scripts
 
-# namespace :deploy do
+namespace :deploy do
+  
+  task :copy_database_configuration do
+    production_db_config = "/var/lib/capistrano/gac-production.database.yml"
+    run "cp #{production_db_config} #{release_path}/config/database.yml"
+  end
+  
+  after "deploy:update_code" , "deploy:copy_database_configuration"
+
 #   task :start do ; end
 #   task :stop do ; end
 #   task :restart, :roles => :app, :except => { :no_release => true } do
 #     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
 #   end
-# end
+end
