@@ -3,7 +3,6 @@ coverage/*
 db/*.sqlite3
 log/*.log
 tmp/**/*
-Gemfile.lock
 .project
 vendor/cache/*
 coverage/*

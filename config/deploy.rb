@@ -5,6 +5,7 @@ set :repository,  "git@github.com:disciplemakers/Group-Assignment-Center.git"
 set :scm, :git
 set :user, "capistrano"
 set :deploy_to, "/var/lib/capistrano/apps"
+require "bundler/capistrano"
 set :use_sudo, false
 ssh_options[:forward_agent] = true
 set :branch, "devel"
