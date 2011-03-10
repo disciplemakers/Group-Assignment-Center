@@ -5,6 +5,6 @@ log/*.log
 tmp/**/*
 Gemfile.lock
 .project
-vendor/*
+vendor/cache/*
 coverage/*
 config/database.yml
