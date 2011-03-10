@@ -29,12 +29,11 @@ namespace :deploy do
     production_db_config = "/var/lib/capistrano/gac-production.database.yml"
     run "cp #{production_db_config} #{release_path}/config/database.yml"
   end
-  
   after "deploy:update_code" , "deploy:copy_database_configuration"
 
-#   task :start do ; end
-#   task :stop do ; end
-#   task :restart, :roles => :app, :except => { :no_release => true } do
-#     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
-#   end
+  task :start do ; end
+  task :stop do ; end
+  task :restart, :roles => :app, :except => { :no_release => true } do
+    run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
+  end
 end
