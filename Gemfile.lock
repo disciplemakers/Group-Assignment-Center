@@ -58,6 +58,7 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
+    mysql (2.8.1)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -120,7 +121,8 @@ PLATFORMS
 DEPENDENCIES
   capistrano
   cucumber-rails (>= 0.3.2)
-  rails (= 3.0.3)
+  mysql
+  rails (>= 3.0.3)
   rcov (~> 0.9.9)
   rspec-rails (>= 2.0.0)
   rubyzip
