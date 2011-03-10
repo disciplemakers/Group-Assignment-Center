@@ -16,7 +16,7 @@
   </div>
   
   <% if @parent %>
-    <%= f.hidden_field :parent_id, :value => @parent.id%>
+    <%= f.hidden_field :parent_id, :value => @parent.id %>
   <% end %>
   
   <div class="field">
@@ -29,6 +29,6 @@
   </div>
   <div class="actions">
     <%= f.submit %>
-    <%= f.submit "Cancel" %>
+    <%= f.submit "Cancel" if @location.child? or @parent %>
   </div>
 <% end %>
