@@ -150,8 +150,8 @@ class GroupsController < ApplicationController
         
         notice = ""
         
-        if params['group'].has_key?('location_id')
-          locations_to_be_copied = params['group']['location_id']
+        if params['group'].has_key?('location')
+          locations_to_be_copied = params['group']['location']
           notice += "locations #{locations_to_be_copied.join(', ')}"
           locations_to_be_copied.each do |location|
             clone_location_branch(Location.find(location), destination)
