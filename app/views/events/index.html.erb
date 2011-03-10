@@ -6,8 +6,7 @@
   <tr>
     <th>Event/Group</th>
     <th>Location</th>
-    <th>Start date</th>
-    <th>End date</th>
+    <th>Dates</th>
     <th>Status</th>
   </tr>
 
@@ -15,10 +14,9 @@
   <tr>
     <td><%= link_to Group.find(event.group_id).name, edit_event_path(event) %></td>
     <td><% if event.location_id %>
-          <%= Location.find(event.location_id).name %>
+          <%= link_to Location.find(event.location_id).name, edit_location_path(event.location_id) %>
         <% end %></td>
-    <td><%= event.start_date.strftime("%b %d, %Y") if event.start_date %></td>
-    <td><%= event.end_date.strftime("%b %d, %Y") if event.end_date %></td>
+    <td><%= render(:partial => "date_range", :object  => event) if event.start_date %></td>
     <td><%= Status.find(event.status_id).status %></td>
   </tr>
 <% end %>

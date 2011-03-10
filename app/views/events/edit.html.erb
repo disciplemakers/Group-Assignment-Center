@@ -2,11 +2,12 @@
 
 <h3 class="normal-case"><span><%= Group.find(@event.group_id).name %></span></h3>
   <h5 class="normal-case">
-    <% if @event.start_date and @event.end_date %>
-      <span><%= @event.start_date %> - <%= @event.end_date %></span>
+    <% if @event.start_date %>
+      <span><%= render(:partial => "date_range", :object  => @event) %></span>
     <% end %>
     <% if @event.location_id %>
-      at <span><%= Location.find(@event.location_id).name %></span>  
+      at 
+      <span> <%= Location.find(@event.location_id).name %></span>  
     <% end %>
   </h5>
 
