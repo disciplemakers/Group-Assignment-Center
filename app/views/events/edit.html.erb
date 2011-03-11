@@ -1,13 +1,13 @@
-<% content_for :title do "GAC - Editing #{Group.find(@event.group_id).name}" end %>
+<% content_for :title do "GAC - Editing #{@group.name}" end %>
 
-<h3 class="normal-case"><span><%= Group.find(@event.group_id).name %></span></h3>
+<h3 class="normal-case"><span><%= @group.name %></span></h3>
   <h5 class="normal-case">
     <% if @event.start_date %>
       <span><%= render(:partial => "date_range", :object  => @event) %></span>
     <% end %>
     <% if @event.location_id %>
       at 
-      <span> <%= Location.find(@event.location_id).name %></span>  
+      <span> <%= @location.name %></span>  
     <% end %>
   </h5>
 
