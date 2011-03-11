@@ -55,17 +55,54 @@ class AssignmentsController < ApplicationController
   # POST /assignments
   # POST /assignments.xml
   def create
-    @assignment = Assignment.new(params[:assignment])
-
-    respond_to do |format|
-      if @assignment.save
-        format.html { redirect_to(@assignment, :notice => 'Assignment was successfully created.') }
-        format.xml  { render :xml => @assignment, :status => :created, :location => @assignment }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @assignment.errors, :status => :unprocessable_entity }
-      end
+    @event = Event.find(params[:event_id])
+    @group = @event.group
+    
+    unless params[:left_side].nil?
+      people = params[:left_side].select {|i| i =~ /^person-/}
+      groups = params[:left_side].select {|i| i =~ /^group-/}
     end
+    
+    if params['commit'] == '<'
+      if params[:assignment].nil? or params[:assignment]['person'].nil? or params[:assignment]['person'].length == 0 
+        respond_to do |format|
+          format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'No people selected.') }
+        end        
+      elsif !groups.nil? and groups.length == 1
+        errors = []
+        group_id = groups.first.gsub('group-', '').to_i
+        params[:assignment]['person'].each do |p|
+          assignment = Assignment.new(:group_id => group_id, :person_id => p)
+          unless assignment.save
+            errors << assignment.errors
+          end
+        end
+        respond_to do |format|
+          format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'Assignment was successfully created!!') }
+          format.xml  { head :ok }
+        end        
+      elsif !groups.nil? and groups.length > 1
+        respond_to do |format|
+          format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'More than one group on left selected.') }
+        end
+      else # groups.length === 0
+        respond_to do |format|
+          format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'No groups selected on left.') }
+        end
+      end
+    else
+
+    end
+    
+    #respond_to do |format|
+    #  if @assignment.save
+    #    format.html { redirect_to(@assignment, :notice => 'Assignment was successfully created.') }
+    #    format.xml  { render :xml => @assignment, :status => :created, :location => @assignment }
+    #  else
+    #    format.html { render :action => "new" }
+    #    format.xml  { render :xml => @assignment.errors, :status => :unprocessable_entity }
+    #  end
+    #end
   end
 
   # PUT /assignments/1
