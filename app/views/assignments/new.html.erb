@@ -1,4 +1,19 @@
-<h1>New assignment</h1>
+<% content_for :title do "GAC - Assigning People in #{@group.name}" end %>
+
+<h3>Assigning People in <span class="normal-case"><%= @group.name %></span></h3>
+  <h5>
+    <% if @event.start_date %>
+      <span class="normal-case"><%= render(:partial => "date_range", :object  => @event) %></span>
+    <% end %>
+    <% if @event.location_id %>
+      at 
+      <span class="normal-case"> <%= @event.location.name %></span>  
+    <% end %>
+  </h5>
+
+<% if notice %>
+  <div id="notice"><p><%= notice %></p></div>
+<% end %>
 
 <%= render 'form' %>
 
