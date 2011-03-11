@@ -14,12 +14,9 @@
     <div id="left">
       <div class="field">
         <h5>Available <span>Groups</span></h5>
-        <%= render(:partial => "shared/select",
-                   :object  => @group,
-                   :locals  => { :f         => f,
-                                 :selection => :id,
-                                 :multiple => false,
-                                 :size      => 8}) %>
+         <%= select(nil, "left_side", groups_with_people_options(@group)  ,
+                    {:include_blank => false, :selected_key => nil},
+                    {:multiple => true, :size => 8}) %>
       </div>  
     </div>
     <div id="middle">
@@ -28,9 +25,13 @@
     <div id="right">
       <div class="field">
         <h5>Unassigned <span>People</span></h5>
-        <%= f.collection_select (:person, Person.find(:all, :conditions => {:event_id => @event.id}), :id, :full_name,
-             {:include_blank => false, :selected_key => nil},
-             {:multiple => true, :size => 8}) %>
+        <%= f.collection_select (:person, 
+                                 Person.find(:all, 
+                                             :conditions => {:event_id => @event.id}),
+                                 :id,
+                                 :full_name,
+                                 {:include_blank => false, :selected_key => nil},
+                                 {:multiple => true, :size => 8}) %>
      </div>
    </div>
   </div>                           
