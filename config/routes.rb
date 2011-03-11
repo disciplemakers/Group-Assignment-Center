@@ -7,7 +7,9 @@ Gac::Application.routes.draw do
 
   #get "sessions/destroy"
 
-  resources :events
+  resources :events do
+    resources :assignments  
+  end
 
   resources :groups do
     post "disambiguate", :on => :collection

@@ -5,6 +5,8 @@ class Person < ActiveRecord::Base
   validates_length_of :graduation_year, :is => 4, :allow_blank => true
   validate :gender_must_be_M_or_F
   
+  has_many :assignments, :dependent => :destroy
+  
   def gender_must_be_M_or_F
     errors.add(:gender, "must be 'M' or 'F'") unless
       gender == 'M' or gender == 'F' or gender.nil?

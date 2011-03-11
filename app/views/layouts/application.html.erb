@@ -15,8 +15,9 @@
       </div>
       <div id="menu">
         <ul>
-          <li><a href="#">Assign</a></li>
-          <li><a class="active" href="/events" disabled>Setup</a></li>
+          <li><a <%= "class=active " if controller.controller_name == 'assignments' %>href="#">Assign</a></li>
+          <li><a <%= "class=active " if controller.controller_name != 'assignments' %>href="/events">Setup</a></li>
+          <li>
         </ul>
       </div>
     </div>

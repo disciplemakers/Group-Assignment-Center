@@ -4,6 +4,7 @@ class Group < ActiveRecord::Base
   belongs_to :gender_constraint
   belongs_to :location
   has_one :event
+  has_many :assignments, :dependent => :destroy
   
   validates_presence_of :name
   validates_numericality_of :capacity, :only_integer => true,

@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Group:</b>
+  <%= @assignment.group_id %>
+</p>
+
+<p>
+  <b>Person:</b>
+  <%= @assignment.person_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_event_assignment_path(@assignment) %> |
+<%= link_to 'Back', event_assignments_path %>
