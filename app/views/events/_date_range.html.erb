@@ -1,9 +1,9 @@
 <% if date_range.start_date.year == date_range.end_date.year %>
   <% if date_range.start_date.month == date_range.end_date.month %>
-    <%= date_range.start_date.strftime("%b %d") %>&ndash;<%= date_range.end_date.strftime("%d, %Y") %>
+    <%= date_range.start_date.strftime("%b %d") %>&nbsp;&ndash; <%= date_range.end_date.strftime("%d, %Y") %>
   <% else %>
-    <%= date_range.start_date.strftime("%b %d") %>&ndash;<%= date_range.end_date.strftime("%b %d, %Y") %>  
+    <%= date_range.start_date.strftime("%b %d") %>&nbsp;&ndash; <%= date_range.end_date.strftime("%b %d, %Y") %>  
   <% end %>
 <% else %>
-  <%= date_range.start_date.strftime("%b %d, %Y") %>&ndash;<%= date_range.end_date.strftime("%b %d, %Y") %>
+  <%= date_range.start_date.strftime("%b %d, %Y") %>&nbsp;&ndash; <%= date_range.end_date.strftime("%b %d, %Y") %>
 <% end %>
