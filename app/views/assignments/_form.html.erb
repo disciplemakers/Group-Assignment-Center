@@ -12,23 +12,25 @@
   <% end %>
   <div class="form-boxes">
     <div id="left">
-      <h5>Available <span>Groups</span></h5>
-      <%= render(:partial => "shared/select",
-                 :object  => @group,
-                 :locals  => { :f         => f,
-                               :selection => :id,
-                               :size      => 8}) %>
-     </div>
+      <div class="field">
+        <h5>Available <span>Groups</span></h5>
+        <%= render(:partial => "shared/select",
+                   :object  => @group,
+                   :locals  => { :f         => f,
+                                 :selection => :id,
+                                 :multiple => false,
+                                 :size      => 8}) %>
+      </div>  
+    </div>
     <div id="middle">
       <%= submit_tag '<', :confirm => 'Are you sure?  This will copy the selected group/location on the right (and all of its children) to the selected group on the left.' %>
     </div>
     <div id="right">
       <div class="field">
         <h5>Unassigned <span>People</span></h5>
-        <%= f.select :person, @remote_registrants,             
+        <%= f.collection_select (:person, Person.find(:all, :conditions => {:event_id => @event.id}), :id, :full_name,
              {:include_blank => false, :selected_key => nil},
-             {:multiple => true, :size => 8} %>
-        
+             {:multiple => true, :size => 8}) %>
      </div>
    </div>
   </div>                           

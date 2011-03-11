@@ -31,6 +31,7 @@ class AssignmentsController < ApplicationController
     @group = @event.group
     if @event.remote_report_id
       @remote_registrants = remote_registrants(@event, session[:account_id], session[:username], session[:password])
+      save_remote_registrations(@remote_registrants, params[:event_id])
     end
 
 
@@ -103,5 +104,39 @@ class AssignmentsController < ApplicationController
                              '2/18/2011',
                              'false')
   end
-
-end  
+  
+  def save_remote_registrations(registrations, event_id)
+    registrations.each do |id, registration|
+      if gac_registration = Person.find(:first,
+                                        :conditions => {:confirmation_number => registration['ConfirmationNumber']})
+        attributes = {"confirmation_number"    => registration['ConfirmationNumber'],
+                      "event_id"               => event_id,
+                      "first_name"             => registration['FirstName'],
+                      "last_name"              => registration['LastName'],
+                      "gender"                 => registration['Gender'],
+                      "registration_type"      => registration['RegistrationType'],
+                      "school"                 => registration['School'],
+                      "graduation_year"        => registration['GraduationYear'],
+                      "housing_assignment"     => registration['HousingAssignment'],
+                      "small_group_assignment" => registration['SmallGroupAssignment'],
+                      "campus_group_room"      => registration['CampusGroupRoom']}
+        if !gac_registration.update_attributes(attributes)
+          pp gac_registration.errors
+        end        
+      else
+        gac_registration = Person.new(:confirmation_number    => registration['ConfirmationNumber'],
+                                      :event_id               => event_id,
+                                      :first_name             => registration['FirstName'],
+                                      :last_name              => registration['LastName'],
+                                      :gender                 => registration['Gender'],
+                                      :registration_type      => registration['RegistrationType'],
+                                      :school                 => registration['School'],
+                                      :graduation_year        => registration['GraduationYear'],
+                                      :housing_assignment     => registration['HousingAssignment'],
+                                      :small_group_assignment => registration['SmallGroupAssignment'],
+                                      :campus_group_room      => registration['CampusGroupRoom'])
+        gac_registration.save
+      end
+    end
+  end
+end
