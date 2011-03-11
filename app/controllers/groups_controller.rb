@@ -148,11 +148,8 @@ class GroupsController < ApplicationController
           redirect_to new_group_path
         end
         
-        notice = ""
-        
         if params['group'].has_key?('location')
           locations_to_be_copied = params['group']['location']
-          notice += "locations #{locations_to_be_copied.join(', ')}"
           locations_to_be_copied.each do |location|
             clone_location_branch(Location.find(location), destination)
           end
@@ -160,10 +157,6 @@ class GroupsController < ApplicationController
         
         if params['group'].has_key?('id')
           groups_to_be_copied = params['group']['id']
-          if notice.length > 1
-            notice += " and "
-          end
-          notice += "groups #{groups_to_be_copied.join(', ')}"
           groups_to_be_copied.each do |group|
             clone_group_branch(Group.find(group), destination)
           end
@@ -176,10 +169,8 @@ class GroupsController < ApplicationController
       groups = params['group']['id']
       locations = params['group']['location_id']
       
-      notice += " should be added to parent group #{destination}"
-      
       redirect_to(edit_event_path(params['group']['active_object_id']),
-                  :notice => "test:" + notice)
+                  :notice => notice)
     else
       puts "commit didn't match anything!\n"
     end
