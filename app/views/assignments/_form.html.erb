@@ -10,16 +10,27 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.label :group_id %><br />
-    <%= f.text_field :group_id %>
-  </div>
-  <div class="field">
-    <%= f.label :person_id %><br />
-    <%= f.text_field :person_id %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <div class="form-boxes">
+    <div id="left">
+      <h5>Available <span>Groups</span></h5>
+      <%= render(:partial => "shared/select",
+                 :object  => @group,
+                 :locals  => { :f         => f,
+                               :selection => :id,
+                               :size      => 8}) %>
+     </div>
+    <div id="middle">
+      <%= submit_tag '<', :confirm => 'Are you sure?  This will copy the selected group/location on the right (and all of its children) to the selected group on the left.' %>
+    </div>
+    <div id="right">
+      <div class="field">
+        <h5>Unassigned <span>People</span></h5>
+        <%= f.select :person, @remote_registrants,             
+             {:include_blank => false, :selected_key => nil},
+             {:multiple => true, :size => 8} %>
+        
+     </div>
+   </div>
+  </div>                           
+  
 <% end %>

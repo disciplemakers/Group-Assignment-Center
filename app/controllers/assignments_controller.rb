@@ -1,3 +1,5 @@
+require 'regonlineconnector'
+
 class AssignmentsController < ApplicationController
   # GET /assignments
   # GET /assignments.xml
@@ -25,6 +27,12 @@ class AssignmentsController < ApplicationController
   # GET /assignments/new.xml
   def new
     @assignment = Assignment.new
+    @event = Event.find(params[:event_id])
+    @group = @event.group
+    if @event.remote_report_id
+      @remote_registrants = remote_registrants(@event, session[:account_id], session[:username], session[:password])
+    end
+
 
     respond_to do |format|
       format.html # new.html.erb
@@ -35,6 +43,12 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1/edit
   def edit
     @assignment = Assignment.find(params[:id])
+    @event = Event.find(params[:event_id])
+    @group = @event.group
+    if @event.remote_report_id
+      @remote_registrants = remote_registrants(@event, session[:account_id], session[:username], session[:password])
+    end
+
   end
 
   # POST /assignments
@@ -80,4 +94,14 @@ class AssignmentsController < ApplicationController
       format.xml  { head :ok }
     end
   end
-end
+  
+  def remote_registrants(event, account_id, username, password)
+    roc = RegonlineConnector.new(account_id, username, password)
+    registrants = roc.report(event[:remote_report_id],
+                             event[:remote_event_id],
+                             '2/18/2010',
+                             '2/18/2011',
+                             'false')
+  end
+
+end  
