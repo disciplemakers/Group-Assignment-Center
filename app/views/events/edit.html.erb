@@ -1,6 +1,6 @@
 <% content_for :title do "GAC - Editing #{@group.name}" end %>
 
-<h3 class="normal-case"><span><%= @group.name %></span></h3>
+<h3>Setting Up <span class="normal-case"><%= @group.name %></span></h3>
   <h5>
     <% if @event.start_date %>
       <span class="normal-case"><%= render(:partial => "date_range", :object  => @event) %></span>
