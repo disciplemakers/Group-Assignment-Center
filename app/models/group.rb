@@ -5,6 +5,7 @@ class Group < ActiveRecord::Base
   belongs_to :location
   has_one :event
   has_many :assignments, :dependent => :destroy
+  has_many :people, :through => :assignments
   
   validates_presence_of :name
   validates_numericality_of :capacity, :only_integer => true,
