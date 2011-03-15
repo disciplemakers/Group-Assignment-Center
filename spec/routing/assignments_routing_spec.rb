@@ -3,16 +3,8 @@ require "spec_helper"
 describe AssignmentsController do
   describe "routing" do
 
-    it "recognizes and generates #index" do
-      { :get => "/events/1/assignments" }.should route_to(:controller => "assignments", :event_id => "1", :action => "index")
-    end
-
     it "recognizes and generates #new" do
       { :get => "/events/1/assignments/new" }.should route_to(:controller => "assignments", :event_id => "1", :action => "new")
-    end
-
-    it "recognizes and generates #show" do
-      { :get => "/events/1/assignments/1" }.should route_to(:controller => "assignments", :event_id => "1", :action => "show", :id => "1")
     end
 
     it "recognizes and generates #edit" do

@@ -1,28 +1,6 @@
 require 'regonlineconnector'
 
 class AssignmentsController < ApplicationController
-  # GET /assignments
-  # GET /assignments.xml
-  def index
-    @assignments = Assignment.all
-    @event = Event.find(params[:event_id])
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @assignments }
-    end
-  end
-
-  # GET /assignments/1
-  # GET /assignments/1.xml
-  def show
-    @assignment = Assignment.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @assignment }
-    end
-  end
 
   # GET /assignments/new
   # GET /assignments/new.xml

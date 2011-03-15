@@ -10,22 +10,6 @@ describe AssignmentsController do
     @mock_assignment ||= mock_model(Assignment, stubs).as_null_object
   end
 
-  describe "GET index" do
-    it "assigns all assignments as @assignments" do
-      Assignment.stub(:all) { [mock_assignment] }
-      get :index
-      assigns(:assignments).should eq([mock_assignment])
-    end
-  end
-
-  describe "GET show" do
-    it "assigns the requested assignment as @assignment" do
-      Assignment.stub(:find).with("37") { mock_assignment }
-      get :show, :id => "37"
-      assigns(:assignment).should be(mock_assignment)
-    end
-  end
-
   describe "GET new" do
     it "assigns a new assignment as @assignment" do
       Assignment.stub(:new) { mock_assignment }
