@@ -11,6 +11,8 @@ describe "locations/edit.html.erb" do
     ))
     @location.stub(:self_and_descendants).with(no_args()).and_return(@location)
     @location.stub(:map).with(no_args()).and_return([@location])
+    @location.stub(:child?).with(no_args()).and_return(false)
+    @location.stub(:root?).with(no_args()).and_return(true)
     
     Location.stub(:find).with(1).and_return(@location)
   end
