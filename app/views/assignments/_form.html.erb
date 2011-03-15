@@ -1,4 +1,4 @@
-<%= form_for(@assignment, :url => new_event_assignment_path(@event, @assignment)) do |f| %>
+<%= form_for(@assignment, :url => event_assignments_path(@event)) do |f| %>
   <% if @assignment.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@assignment.errors.count, "error") %> prohibited this assignment from being saved:</h2>
@@ -20,7 +20,7 @@
       </div>  
     </div>
     <div id="middle">
-      <%= submit_tag '<', :confirm => 'Are you sure?  This will copy the selected group(s)/location(s) on the right (and all of its children) to the selected group on the left.' %>
+      <%= submit_tag '<' %>
     </div>
     <div id="right">
       <div class="field">
