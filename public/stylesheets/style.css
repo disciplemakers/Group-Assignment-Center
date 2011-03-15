@@ -269,7 +269,6 @@ margin: 0 auto;
 
 #main_inner h3,h4
 {
-border-bottom: dotted 1px #E1E1E1;
 position: relative;
 }
 
@@ -279,6 +278,7 @@ font-size: 2.1em;
 padding-bottom: 0.1em;
 margin-bottom: 0.5em;
 margin-top: 0;
+border-bottom: dotted 1px #E1E1E1;
 }
 
 #main_inner h4

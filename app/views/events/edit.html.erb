@@ -1,7 +1,7 @@
 <% content_for :title do "GAC - Editing #{@group.name}" end %>
 
 <h3>Setting Up <span class="normal-case"><%= @group.name %></span></h3>
-  <h5>
+  <h4>
     <% if @event.start_date %>
       <span class="normal-case"><%= render(:partial => "date_range", :object  => @event) %></span>
     <% end %>
@@ -12,7 +12,7 @@
     <% if @event.remote_report_id %>
       [<%= link_to "Make Assignments", new_event_assignment_path(@event) %>]
     <% end %>
-  </h5>
+  </h4>
 
 <% if notice %>
   <div id="notice"><p><%= notice %></p></div>
