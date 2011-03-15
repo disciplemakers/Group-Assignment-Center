@@ -42,7 +42,7 @@ class AssignmentsController < ApplicationController
       groups = params[:left_side].select {|i| i =~ /^group-/}
     end
     
-    if params['commit'] == '<'
+    if params['commit'] == '<--'
       if params[:assignment].nil? or params[:assignment]['person'].nil? or params[:assignment]['person'].length == 0 
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'No people selected.') }
@@ -69,7 +69,20 @@ class AssignmentsController < ApplicationController
           format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'No groups selected on left.') }
         end
       end
-    else
+    elsif params['commit'] == '-->'
+      if params[:left_side].nil? 
+        respond_to do |format|
+          format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'No people selected.') }
+        end
+      #else
+      #  params[:left_side].each do |p|
+      #    match = /person-(.+)/.match(p)
+      #    person_id = #$1
+      #    puts "person_id = #{person_id}"
+      #  end
+      end
+                  
+      
 
     end
     

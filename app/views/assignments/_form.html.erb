@@ -16,11 +16,12 @@
         <h4>Available <span>Groups</span></h4>
          <%= select(nil, "left_side", groups_with_people_options(@group)  ,
                     {:include_blank => false, :selected_key => nil},
-                    {:multiple => true, :size => 8}) %>
+                    {:multiple => true, :size => 12}) %>
       </div>  
     </div>
     <div id="middle">
-      <%= submit_tag '<' %>
+      <%= submit_tag '<--' %>
+      <%= submit_tag '-->' %>
     </div>
     <div id="right">
       <div class="field">
@@ -31,7 +32,7 @@
                                 :id,
                                 :full_name,
                                 {:include_blank => false, :selected_key => nil},
-                                {:multiple => true, :size => 8}) %>
+                                {:multiple => true, :size => 12}) %>
      </div>
    </div>
   </div>                           
