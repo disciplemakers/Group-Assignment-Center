@@ -3,7 +3,7 @@
 <h3>Assigning People in <span class="normal-case"><%= @group.name %></span></h3>
   <h5>
     <% if @event.start_date %>
-      <span class="normal-case"><%= render(:partial => "date_range", :object  => @event) %></span>
+      <span class="normal-case"><%= render(:partial => "events/date_range", :object  => @event) %></span>
     <% end %>
     <% if @event.location_id %>
       at 

@@ -8,6 +8,7 @@ Gac::Application.routes.draw do
   #get "sessions/destroy"
 
   resources :events do
+    get "assign", :on => :collection
     resources :assignments, :except => [:index, :show]
   end
 

@@ -12,11 +12,11 @@
 
 <% @events.each do |event| %>
   <tr>
-    <td><%= link_to Group.find(event.group_id).name, edit_event_path(event) %></td>
+    <td><%= link_to Group.find(event.group_id).name, new_event_assignment_path(event) %></td>
     <td><% if event.location_id %>
-          <%= link_to Location.find(event.location_id).name, edit_location_path(event.location_id) %>
+          <%= Location.find(event.location_id).name %>
         <% end %></td>
-    <td><%= render(:partial => "events/date_range", :object  => event) if event.start_date %></td>
+    <td><%= render(:partial => "date_range", :object  => event) if event.start_date %></td>
     <td><%= Status.find(event.status_id).status %></td>
   </tr>
 <% end %>

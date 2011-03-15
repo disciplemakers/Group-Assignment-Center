@@ -18,6 +18,21 @@ class EventsController < ApplicationController
     end
   end
 
+  def assign
+    Group.rebuild!
+    
+    @remote_events = remote_events(session[:account_id], session[:username], session[:password])
+    create_events(@remote_events)
+
+    @events = Event.all
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @events }
+    end
+  end
+
+
   # GET /events/1
   # GET /events/1.xml
   def show
