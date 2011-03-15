@@ -4,6 +4,8 @@ describe Assignment do
   before(:each) do
     @assignment = stub_model(Assignment, :group_id  => '1',
                                          :person_id => '37')
+    @group = stub_model(Group, :id => "1")
+    @person = stub_model(Person, :id => "37")
   end
   
   it "is invalid without a group_id" do
@@ -17,9 +19,18 @@ describe Assignment do
   end
   
   describe "to a group that has a capacity" do
-    it "is invalid if the group is already at capacity"
+    before(:each) do
+      @group.capacity = 7
+    end
+    it "is invalid if the group is already at capacity" do
+      @group.stub(:people).and_return(%w{ john paul george ringo tom dick harry })
+      @assignment.should be_invalid
+    end
     
-    it "is valid if the group is below capacity"
+    it "is valid if the group is below capacity" do
+      @group.stub(:people).and_return(%w{ john paul george ringo })
+      @assignment.should be_valid
+    end
   end
   
   describe "to a group that has a gender constraint" do
@@ -36,8 +47,8 @@ describe Assignment do
   end
   
   describe "to a group that has a unique membership constraint" do
-    
+    it "is valid if the user isn't already assigned to a group bound by the constraint"
+    it "is invalid if the user is already assigned to a group bound by the constraint"  
   end
   
-  describe "to a group that has a required membership constraint"
 end
