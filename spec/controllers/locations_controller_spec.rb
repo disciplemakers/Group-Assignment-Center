@@ -70,10 +70,10 @@ describe LocationsController do
         assigns(:location).should be(mock_location)
       end
 
-      it "redirects to the created location" do
+      it "redirects to the edit page of the created location" do
         Location.stub(:new) { mock_location(:save => true) }
         post :create, :location => {}
-        response.should redirect_to(location_url(mock_location))
+        response.should redirect_to(edit_location_url(mock_location))
       end
     end
 
@@ -135,10 +135,10 @@ describe LocationsController do
       delete :destroy, :id => "37"
     end
 
-    it "redirects to the locations list" do
+    it "redirects to the events list" do
       Location.stub(:find) { mock_location }
       delete :destroy, :id => "1"
-      response.should redirect_to(locations_url)
+      response.should redirect_to(events_url)
     end
   end
 
