@@ -13,9 +13,9 @@
   <tr>
     <td><%= assignment.group_id %></td>
     <td><%= assignment.person_id %></td>
-    <td><%= link_to 'Show', event_assignment %></td>
-    <td><%= link_to 'Edit', edit_event_assignment_path(assignment) %></td>
-    <td><%= link_to 'Destroy', event_assignment, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Show', event_assignment_path(@event, assignment) %></td>
+    <td><%= link_to 'Edit', edit_event_assignment_path(@event, assignment) %></td>
+    <td><%= link_to 'Destroy', event_assignment_path(@event, assignment), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

@@ -1,4 +1,4 @@
-<%= form_for(@assignment, :url => event_assignment_path) do |f| %>
+<%= form_for(@assignment, :url => new_event_assignment_path(@event, @assignment)) do |f| %>
   <% if @assignment.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@assignment.errors.count, "error") %> prohibited this assignment from being saved:</h2>
@@ -25,13 +25,13 @@
     <div id="right">
       <div class="field">
         <h5>Unassigned <span>People</span></h5>
-        <%= f.collection_select (:person, 
-                                 Person.find(:all, 
-                                             :conditions => {:event_id => @event.id}),
-                                 :id,
-                                 :full_name,
-                                 {:include_blank => false, :selected_key => nil},
-                                 {:multiple => true, :size => 8}) %>
+        <%= f.collection_select(:person, 
+                                Person.find(:all, 
+                                            :conditions => {:event_id => @event.id}),
+                                :id,
+                                :full_name,
+                                {:include_blank => false, :selected_key => nil},
+                                {:multiple => true, :size => 8}) %>
      </div>
    </div>
   </div>                           

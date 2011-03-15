@@ -5,6 +5,7 @@ class AssignmentsController < ApplicationController
   # GET /assignments.xml
   def index
     @assignments = Assignment.all
+    @event = Event.find(params[:event_id])
 
     respond_to do |format|
       format.html # index.html.erb
