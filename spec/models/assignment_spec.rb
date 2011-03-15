@@ -1,5 +1,43 @@
 require 'spec_helper'
 
 describe Assignment do
-  pending "add some examples to (or delete) #{__FILE__}"
+  before(:each) do
+    @assignment = stub_model(Assignment, :group_id  => '1',
+                                         :person_id => '37')
+  end
+  
+  it "is invalid without a group_id" do
+    @assignment.group_id = nil
+    @assignment.should be_invalid
+  end
+  
+  it "is invalid without a person_id" do
+    @assignment.person_id = nil
+    @assignment.should be_invalid
+  end
+  
+  describe "to a group that has a capacity" do
+    it "is invalid if the group is already at capacity"
+    
+    it "is valid if the group is below capacity"
+  end
+  
+  describe "to a group that has a gender constraint" do
+    describe "of 'M' or 'F'" do
+      it "is valid if the person's gender matches"
+      it "is invalid if the person's gender does not match"
+    end
+    
+    describe "of 'single-gender'" do
+      it "is valid if no one else is in the group yet"
+      it "is valid if the person's gender matches that of people already in the group"
+      it "is invalid if the person's gender does not match that of people already in the group"
+    end
+  end
+  
+  describe "to a group that has a unique membership constraint" do
+    
+  end
+  
+  describe "to a group that has a required membership constraint"
 end
