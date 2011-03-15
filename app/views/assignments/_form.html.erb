@@ -13,7 +13,7 @@
   <div class="form-boxes">
     <div id="left">
       <div class="field">
-        <h5>Available <span>Groups</span></h5>
+        <h4>Available <span>Groups</span></h4>
          <%= select(nil, "left_side", groups_with_people_options(@group)  ,
                     {:include_blank => false, :selected_key => nil},
                     {:multiple => true, :size => 8}) %>
@@ -24,7 +24,7 @@
     </div>
     <div id="right">
       <div class="field">
-        <h5>Unassigned <span>People</span></h5>
+        <h4>Unassigned <span>People</span></h4>
         <%= f.collection_select(:person, 
                                 Person.find(:all, 
                                             :conditions => {:event_id => @event.id}),

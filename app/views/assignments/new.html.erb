@@ -1,7 +1,7 @@
 <% content_for :title do "GAC - Assigning People in #{@group.name}" end %>
 
 <h3>Assigning People in <span class="normal-case"><%= @group.name %></span></h3>
-  <h5>
+  <h4>
     <% if @event.start_date %>
       <span class="normal-case"><%= render(:partial => "events/date_range", :object  => @event) %></span>
     <% end %>
@@ -9,7 +9,7 @@
       at 
       <span class="normal-case"> <%= @event.location.name %></span>  
     <% end %>
-  </h5>
+  </h4>
 
 <% if notice %>
   <div id="notice"><p><%= notice %></p></div>
