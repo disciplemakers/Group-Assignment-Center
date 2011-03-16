@@ -8,7 +8,7 @@ module AssignmentsHelper
         if mover.nil? || mover.new_record? || mover.move_possible?(i)
           result << ["#{'---' * (i.level)}#{i.name}", "group-#{i.id}"]
           i.people.each do |p|
-              result << ["#{'---' * (i.level+1)}#{p.full_name}", "person-#{p.id}"]
+              result << ["#{'---' * (i.level+1)}#{p.full_name}", "group-#{i.id}--person-#{p.id}"]
           end
         end
       end

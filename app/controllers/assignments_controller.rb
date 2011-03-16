@@ -42,6 +42,7 @@ class AssignmentsController < ApplicationController
       groups = params[:left_side].select {|i| i =~ /^group-/}
     end
     
+    # The "assign" or "right-to-left" button
     if params['commit'] == '<--'
       if params[:assignment].nil? or params[:assignment]['person'].nil? or params[:assignment]['person'].length == 0 
         respond_to do |format|
@@ -69,6 +70,8 @@ class AssignmentsController < ApplicationController
           format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'No groups selected on left.') }
         end
       end
+      
+    # The "unassign" or "left-to-right" button
     elsif params['commit'] == '-->'
       if params[:left_side].nil? 
         respond_to do |format|
@@ -76,9 +79,12 @@ class AssignmentsController < ApplicationController
         end
       else
         params[:left_side].each do |p|
-          if person_id = p.scan(/person-(\d+)/)
-            # This will delete all assignments for this person! Not exactly what we want.
-            Assignment.destroy_all(["person_id == ?", person_id])  
+          match = p.scan(/group-(\d+)--person-(\d+)/)[0]
+          unless match.nil?
+            group_id = match[0]
+            person_id = match[1]
+            puts "group_id = #{group_id}, person_id = #{person_id}"
+            Assignment.destroy_all(["person_id = ? AND group_id = ?", person_id, group_id])
           end          
         end
         respond_to do |format|
