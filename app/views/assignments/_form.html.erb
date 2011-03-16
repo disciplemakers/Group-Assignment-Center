@@ -29,9 +29,8 @@
     <div id="right">
       <div class="field">
         <h4>Unassigned <span>People</span></h4>
-        <%= f.collection_select(:person, 
-                                Person.find(:all, 
-                                            :conditions => {:event_id => @event.id}),
+        <%= f.collection_select(:person,
+                                Person.find_all_by_event_id(@event.id) - Person.find_all_assigned_under(@group),                               
                                 :id,
                                 :full_name,
                                 {:include_blank => false, :selected_key => nil},
