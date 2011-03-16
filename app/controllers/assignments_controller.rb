@@ -7,7 +7,15 @@ class AssignmentsController < ApplicationController
   def new
     @assignment = Assignment.new
     @event = Event.find(params[:event_id])
-    @group = @event.group
+    
+    # Check whether the form is being requested of a subgroup rather than
+    # the group that corresponds to the whole event.
+    if drilldown_group_id = params[:drilldown_group_id]
+      @group = Group.find(drilldown_group_id)
+    else
+      @group = @event.group
+    end
+    
     if @event.remote_report_id
       @remote_registrants = remote_registrants(@event, session[:account_id], session[:username], session[:password])
       save_remote_registrations(@remote_registrants, params[:event_id])
@@ -73,28 +81,44 @@ class AssignmentsController < ApplicationController
       
     # The "unassign" or "left-to-right" button
     elsif params['commit'] == '-->'
-      if params[:left_side].nil? 
+      if params[:left_side].nil? or people.nil?
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'No people selected.') }
         end
       else
-        params[:left_side].each do |p|
-          match = p.scan(/group-(\d+)--person-(\d+)/)[0]
-          unless match.nil?
-            group_id = match[0]
-            person_id = match[1]
-            puts "group_id = #{group_id}, person_id = #{person_id}"
-            Assignment.destroy_all(["person_id = ? AND group_id = ?", person_id, group_id])
-          end          
+        people.each do |p|
+          match = p.scan(/person-(\d+)--group-(\d+)/)[0]
+          # Since we already limited "people" to options that have a person ID,
+          # there should be no danger that match would be nil.
+          person_id = match[0]
+          group_id = match[1]
+          Assignment.destroy_all(["person_id = ? AND group_id = ?", person_id, group_id])
         end
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id])) }
         end
       end
+      
+    # The "drill down" or "select" button
+    elsif params['commit'] == 'Select Group'
+      if params[:left_side].nil? or groups.nil? or groups.length == 0
+        respond_to do |format|
+          format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'No group selected.') }
+        end
+      elsif groups.length > 1
+        respond_to do |format|
+          format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'More than one group selected. Please select only one group.') }
+        end        
+      else
+        respond_to do |format|
+          format.html { redirect_to(new_event_assignment_url(params[:event_id], :drilldown_group_id => groups.first.gsub('group-', '').to_i)) }
+        end
+      end                  
+    end
                   
       
 
-    end
+    
     
     #respond_to do |format|
     #  if @assignment.save

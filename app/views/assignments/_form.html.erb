@@ -17,7 +17,10 @@
          <%= select(nil, "left_side", groups_with_people_options(@group)  ,
                     {:include_blank => false, :selected_key => nil},
                     {:multiple => true, :size => 12}) %>
-      </div>  
+      </div>
+      <div class="actions">
+        <%= submit_tag 'Select Group' %>    
+      </div>    
     </div>
     <div id="middle">
       <%= submit_tag '<--' %>
