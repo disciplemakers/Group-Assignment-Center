@@ -7,6 +7,19 @@ class Person < ActiveRecord::Base
   
   belongs_to :event
   has_many :assignments, :dependent => :destroy
+  has_many :groups, :through => :assignments
+  
+  # Returns an array of all People who are assigned to the given
+  # group or one of its descendants.
+  def self.find_all_assigned_under(group)
+    self.all.select { |p| p.assigned_under?(group) }
+  end
+  
+  # Returns true if the Person is assigned to the given group
+  # or one of its descendants.
+  def assigned_under?(group)
+    !(self.groups & group.self_and_descendants).empty?
+  end
   
   def gender_must_be_M_or_F
     errors.add(:gender, "must be 'M' or 'F'") unless
