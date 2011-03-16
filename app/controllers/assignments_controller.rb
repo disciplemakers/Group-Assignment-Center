@@ -74,12 +74,16 @@ class AssignmentsController < ApplicationController
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'No people selected.') }
         end
-      #else
-      #  params[:left_side].each do |p|
-      #    match = /person-(.+)/.match(p)
-      #    person_id = #$1
-      #    puts "person_id = #{person_id}"
-      #  end
+      else
+        params[:left_side].each do |p|
+          if person_id = p.scan(/person-(\d+)/)
+            # This will delete all assignments for this person! Not exactly what we want.
+            Assignment.destroy_all(["person_id == ?", person_id])  
+          end          
+        end
+        respond_to do |format|
+          format.html { redirect_to(new_event_assignment_url(params[:event_id])) }
+        end
       end
                   
       
