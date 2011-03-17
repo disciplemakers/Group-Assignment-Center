@@ -1,8 +1,10 @@
 class Person < ActiveRecord::Base
-  validates_presence_of :first_name, :last_name
+  validates_presence_of :first_name, :last_name, :confirmation_number
   validates_numericality_of :confirmation_number, :only_integer => true
-  validates_numericality_of :graduation_year, :only_integer => true, :allow_blank => true
-  validates_length_of :graduation_year, :is => 4, :allow_blank => true
+  validates_numericality_of :graduation_year, :only_integer => true, 
+                                              :allow_blank => true,
+                                              :greater_than => 1900,
+                                              :less_than => 2999
   validate :gender_must_be_M_or_F
   
   belongs_to :event
