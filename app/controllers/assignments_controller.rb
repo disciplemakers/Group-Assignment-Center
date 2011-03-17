@@ -21,7 +21,6 @@ class AssignmentsController < ApplicationController
       save_remote_registrations(@remote_registrants, params[:event_id])
     end
 
-
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @assignment }
@@ -160,12 +159,15 @@ class AssignmentsController < ApplicationController
   end
   
   def remote_registrants(event, account_id, username, password)
+    end_date = Time.now
+    year_in_seconds = 31536000
+    start_date = end_date - year_in_seconds
     roc = RegonlineConnector.new(account_id, username, password)
     registrants = roc.report(event[:remote_report_id],
                              event[:remote_event_id],
-                             '2/18/2010',
-                             '2/18/2011',
-                             'false')
+                             start_date.strftime("%m/%d/%Y"),
+                             end_date.strftime("%m/%d/%Y"),
+                             'true')
   end
   
   def save_remote_registrations(registrations, event_id)
@@ -184,7 +186,11 @@ class AssignmentsController < ApplicationController
                       "small_group_assignment" => registration['SmallGroupAssignment'],
                       "campus_group_room"      => registration['CampusGroupRoom']}
         if !gac_registration.update_attributes(attributes)
+          print "\n\n***********************ERROR SAVING ATTRIBUTES***********************************"
+          pp attributes
+          print "\n"
           pp gac_registration.errors
+          print "\n\n"
         end        
       else
         gac_registration = Person.new(:confirmation_number    => registration['ConfirmationNumber'],
@@ -198,7 +204,14 @@ class AssignmentsController < ApplicationController
                                       :housing_assignment     => registration['HousingAssignment'],
                                       :small_group_assignment => registration['SmallGroupAssignment'],
                                       :campus_group_room      => registration['CampusGroupRoom'])
-        gac_registration.save
+        
+        if !gac_registration.save
+          print "\n\n***********************ERROR SAVING REGISTRATION***********************************"
+          pp gac_registration
+          print "\n"
+          pp gac_registration.errors
+          print "\n\n"
+        end        
       end
     end
   end
