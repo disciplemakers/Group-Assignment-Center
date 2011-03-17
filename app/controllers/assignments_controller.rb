@@ -114,10 +114,6 @@ class AssignmentsController < ApplicationController
         end
       end                  
     end
-                  
-      
-
-    
     
     #respond_to do |format|
     #  if @assignment.save
@@ -180,7 +176,7 @@ class AssignmentsController < ApplicationController
                       "last_name"              => registration['LastName'],
                       "gender"                 => registration['Gender'],
                       "registration_type"      => registration['RegistrationType'],
-                      "school"                 => registration['School'],
+                      "school"                 => registration['SchoolName'],
                       "graduation_year"        => registration['GraduationYear'],
                       "housing_assignment"     => registration['HousingAssignment'],
                       "small_group_assignment" => registration['SmallGroupAssignment'],
@@ -199,7 +195,7 @@ class AssignmentsController < ApplicationController
                                       :last_name              => registration['LastName'],
                                       :gender                 => registration['Gender'],
                                       :registration_type      => registration['RegistrationType'],
-                                      :school                 => registration['School'],
+                                      :school                 => registration['SchoolName'],
                                       :graduation_year        => registration['GraduationYear'],
                                       :housing_assignment     => registration['HousingAssignment'],
                                       :small_group_assignment => registration['SmallGroupAssignment'],
