@@ -14,9 +14,8 @@
     <div id="left">
       <div class="field">
         <h4>Available <span>Groups</span></h4>
-         <%= select(nil, "left_side", groups_with_people_options(@group)  ,
-                    {:include_blank => false, :selected_key => nil},
-                    {:multiple => true, :size => 12}) %>
+         <%= select_tag("left_side", groups_with_people_options_with_style(@group).html_safe,
+                        {:multiple => true, :size => 12}) %>
       </div>
       <div class="actions">
         <%= submit_tag 'Select Group' %>    
@@ -30,9 +29,11 @@
       <div class="field">
         <h4>Unassigned <span>People</span></h4>
         <%= f.collection_select(:person,
-                                Person.find_all_by_event_id(@event.id) - Person.find_all_assigned_under(@group),                               
+                                Person.find_all_by_event_id(@event.id,
+                                                            :order => 'last_name, first_name') -
+                                                            Person.find_all_assigned_under(@group),                               
                                 :id,
-                                :full_name,
+                                :full_name_and_info,
                                 {:include_blank => false, :selected_key => nil},
                                 {:multiple => true, :size => 12}) %>
      </div>

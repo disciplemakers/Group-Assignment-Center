@@ -32,4 +32,27 @@ class Person < ActiveRecord::Base
     full_name = "#{self.first_name} #{self.last_name}"
   end
   
+  def full_name_and_info
+    schools = { 'Kutztown University'         => 'KU',
+                'Lafayette College'           => 'LC',
+                'Muhlenberg College'          => 'MC',
+                'East Stroudsburg University' => 'ESU',
+                'Penn State University'       => 'PSU',
+                'Gettysburg College'          => 'GC',
+                'Shippensburg University'     => 'Ship',
+                'Bucknell University'         => 'Bucknell',
+                'Bloomsburg University'       => 'Bloom' }
+    
+    ed_info = String.new
+    if (!self.graduation_year.nil? or !self.school.nil?)
+      ed_info += " ("
+      ed_info += (schools[self.school].nil? ? self.school : schools[self.school]) unless self.school.nil? 
+      ed_info += " " if !self.school.nil? and !self.graduation_year.nil?
+      ed_info += "'#{self.graduation_year.to_i.modulo(100)}" if !self.graduation_year.nil?
+      ed_info += ")"
+    end
+    
+    # reg_type, gender, school, grad_year
+    full_info = "#{self.full_name} - #{self.registration_type}#{ed_info}"
+  end
 end
