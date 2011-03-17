@@ -449,6 +449,19 @@ max-width: 2.5em;
 display: inline-block;
 }
 
+.field select .group-option {
+color: #184366;
+font-weight: bold;
+}
+
+.field select .person-option {
+color: #F16C00;
+}
+
+.field select {
+color: #184366;
+}
+
 .button_to
 {
 display: inline-block;
