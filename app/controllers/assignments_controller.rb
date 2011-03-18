@@ -63,6 +63,20 @@ class AssignmentsController < ApplicationController
           unless assignment.save
             errors << assignment.errors
           end
+          # Update local db field
+          group = Group.find(group_id)
+          if !group.label_text.nil? and !group.label_field.nil?
+            person = Person.find(p)
+            label_text = build_custom_field_text(group)
+            unless person.update_attribute(group.custom_field.people_field, label_text)
+              errors << person.errors
+            end
+            # write back label text to regonline
+            roc = RegonlineConnector.new(session[:account_id], session[:username], session[:password])
+            update_data_hash = {person.confirmation_number => {"custom_fields" => {group.custom_field.name => label_text}}}
+            event_id = @event.remote_event_id
+            updated_registrations = roc.update_registrations(event_id, update_data_hash)
+          end
         end
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'Assignment was successfully created!!') }
@@ -92,6 +106,19 @@ class AssignmentsController < ApplicationController
           person_id = match[0]
           group_id = match[1]
           Assignment.destroy_all(["person_id = ? AND group_id = ?", person_id, group_id])
+          # Clear local db field
+          group = Group.find(group_id)
+          if !group.label_text.nil? and !group.label_field.nil?
+            person = Person.find(person_id)
+            unless person.update_attribute(group.custom_field.people_field, nil)
+              errors << person.errors
+            end
+            # write back label text to regonline
+            roc = RegonlineConnector.new(session[:account_id], session[:username], session[:password])
+            update_data_hash = {person.confirmation_number => {"custom_fields" => {group.custom_field.name => ''}}}
+            event_id = @event.remote_event_id
+            updated_registrations = roc.update_registrations(event_id, update_data_hash)
+          end
         end
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id])) }
@@ -164,6 +191,17 @@ class AssignmentsController < ApplicationController
                              start_date.strftime("%m/%d/%Y"),
                              end_date.strftime("%m/%d/%Y"),
                              'true')
+  end
+  
+  def build_custom_field_text(group)
+    text_array = []
+    ancestry = group.self_and_ancestors
+    ancestry.each do |g|
+      text_array << g.label_text if ((g.label_field = group.label_field) and g.label_text_prepend_to_child_label) or (g == group)
+    end
+    #text_array << group.label_text
+    text_array.compact
+    text = text_array.join(" ")
   end
   
   def save_remote_registrations(registrations, event_id)
