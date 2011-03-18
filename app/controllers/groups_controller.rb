@@ -33,6 +33,12 @@ class GroupsController < ApplicationController
     @group = Group.new
     if params[:id]
       @parent = Group.find(params[:id])
+      unless @parent.can_contain_groups
+        event = Event.find_by_group_id(@parent.root)
+        redirect_to(edit_event_path(event),
+                    :notice => "Selected group cannot contain groups.")
+        return
+      end
     end
     
     respond_to do |format|     
