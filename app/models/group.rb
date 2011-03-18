@@ -13,4 +13,14 @@ class Group < ActiveRecord::Base
                             :allow_nil => true,
                             :greater_than_or_equal_to => 0
   
+  validate :parent_can_contain_children
+  
+  def parent_can_contain_children
+    if parent_id
+      parent = Group.find(parent_id)
+      unless parent.can_contain_groups
+        errors.add_to_base("can not add group to a group that can not contain groups")
+      end      
+    end
+  end
 end
