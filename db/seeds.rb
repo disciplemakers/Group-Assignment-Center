@@ -9,3 +9,8 @@
 gender_constraints = GenderConstraint.create([{:constraint => 'Male'},
                                               {:constraint => 'Female'},
                                               {:constraint => 'Single Gender'}])                             
+
+custom_fields = CustomField.create([
+            {:name => 'Housing Assignment', :people_field => 'housing_assignment'},
+            {:name => 'Small Group Assignment', :people_field => 'small_group_assignment'},
+            {:name => 'Campus Group Room', :people_field => 'campus_group_room'}])                                  

@@ -2,6 +2,7 @@ class Group < ActiveRecord::Base
   acts_as_nested_set
   
   belongs_to :gender_constraint
+  belongs_to :custom_field, :foreign_key => "label_field"
   belongs_to :location
   has_one :event
   has_many :assignments, :dependent => :destroy
