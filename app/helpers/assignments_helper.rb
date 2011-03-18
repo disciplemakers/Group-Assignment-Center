@@ -25,7 +25,10 @@ module AssignmentsHelper
     items.each do |root|
       root.self_and_descendants.map do |i|
         if mover.nil? || mover.new_record? || mover.move_possible?(i)
-          options_for_select << %(<option value="group-#{html_escape(i.id.to_s)}" class="group-option">#{'---' * (i.level)}#{i.name}</option>)
+          count = i.people.count
+          capacity = i.capacity
+          status = (capacity.nil? ? (count <= 0 ? '' : " (#{count})") : " (#{count}/#{capacity})")   
+          options_for_select << %(<option value="group-#{html_escape(i.id.to_s)}" class="group-option">#{'---' * (i.level)}#{i.name}#{status}</option>)
           i.people.each do |p|
               options_for_select << %(<option value="person-#{p.id}--group-#{i.id}" class="person-option">#{'----' * (i.level+1)}#{p.full_name_and_info}</option>)
           end
