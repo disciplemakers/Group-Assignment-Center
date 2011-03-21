@@ -27,10 +27,13 @@
 <div id="main">
   <div id="main_inner" class="fixed">
     <div id="main_utility">
+      <% if session[:username] %>
       <div id="logout">
         <%= link_to 'Logout', logout_path, :method => :delete %>
       </div>
+      <% end %>
     </div>
+
     <div id="primaryContent_2columns">
       <div id="columnA_2columns">
           <%= yield %>
