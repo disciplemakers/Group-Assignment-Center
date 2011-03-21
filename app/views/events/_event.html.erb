@@ -1,1 +1,1 @@
-<li><%= link_to Group.find(event.group_id).name, edit_event_path(event) %></li> 
+<li><%= link_to Group.find(event.group_id).name, ((action_name == 'assign' or controller.controller_name == 'assignments') ? new_event_assignment_path(event) : edit_event_path(event)) %></li> 
