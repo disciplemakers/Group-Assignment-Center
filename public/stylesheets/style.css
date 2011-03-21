@@ -232,6 +232,7 @@ color: #616161;
 #main
 {
 background: #fff url('../images/n2.gif') 0px 1px repeat-x;
+min-height: 10em;
 }
 
 #main_inner p
@@ -357,6 +358,11 @@ color: #F16C00;
 #main_utility #logout a:visited
 {
 color: #184366;
+}
+
+#login_form
+{
+margin: 0 0 2.5em;
 }
 
 /* Footer */

@@ -1,11 +1,13 @@
+<% content_for :title do "GAC Login Page" end %>
+
+<div id="login_form">
 <h3>Welcome to Group Assignment Center</h3>
-<div class="gac_form">
   <% if flash[:alert] %>
     <p id="notice"><%= flash[:alert] %></p>
   <% end %>
   <%= form_tag do %>
   <div>
-    <span>Log in with your RegOnline username and password.</span><br />
+    <h2>Please log in with your RegOnline username and password.</h2><br />
     <label for="username">Username:</label>
     <%= text_field_tag :username, params[:username] %>
   </div>
