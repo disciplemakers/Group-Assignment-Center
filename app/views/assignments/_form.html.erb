@@ -15,7 +15,7 @@
       <div class="field">
         <h4>Available <span>Groups</span></h4>
          <%= select_tag("left_side", groups_with_people_options_with_style(@group).html_safe,
-                        {:multiple => true, :size => 12}) %>
+                        {:multiple => true, :size => 16}) %>
       </div>
       <div class="actions">
         <%= submit_tag 'Select Group' %>    
@@ -35,7 +35,7 @@
                                 :id,
                                 :full_name_and_info,
                                 {:include_blank => false, :selected_key => nil},
-                                {:multiple => true, :size => 12}) %>
+                                {:multiple => true, :size => 16}) %>
      </div>
    </div>
   </div>                           
