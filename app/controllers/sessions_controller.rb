@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
       session[:username] = params[:username]
       session[:password] = params[:password]
       session[:account_id] = params[:account_id] 
-      redirect_to events_url
+      redirect_to assign_events_path
       print "session created!"
     else
       print "login failed"
