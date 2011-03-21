@@ -442,7 +442,10 @@ max-width: 2.5em;
 }
 
 .field select {
-  width: 17em;
+font-size: 1.0em;
+letter-spacing: -.15px;
+width: 20em;
+overflow: auto;
 }
 
 .actions div{
