@@ -1,4 +1,4 @@
-<%= form_for(@assignment, :url => event_assignments_path(@event)) do |f| %>
+<%= form_for(@assignment, :url => event_assignments_path(@event), :remote => true) do |f| %>
   <% if @assignment.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@assignment.errors.count, "error") %> prohibited this assignment from being saved:</h2>
@@ -10,32 +10,29 @@
       </ul>
     </div>
   <% end %>
+  <%= hidden_field_tag 'assign_action', '' %>
   <div class="form-boxes">
     <div id="left">
       <div class="field">
         <h4>Available <span>Groups</span></h4>
-         <%= select_tag("left_side", groups_with_people_options_with_style(@group).html_safe,
-                        {:multiple => true, :size => 16}) %>
+        <div id="left_side_container">
+          <%= render 'left_side' %>
+        </div>
       </div>
       <div class="actions">
-        <%= submit_tag 'Select Group' %>    
+        <%= submit_tag 'Select Group', :id => 'drilldown' %>    
       </div>    
     </div>
     <div id="middle">
-      <%= submit_tag '<--' %>
-      <%= submit_tag '-->' %>
+      <%= submit_tag '<--', :id => 'assign', :onclick => 'document.getElementById("assign_action").value = "<--";' %>
+      <%= submit_tag '-->', :id => 'unassign', :onclick => 'document.getElementById("assign_action").value = "-->";' %>
     </div>
     <div id="right">
       <div class="field">
         <h4>Unassigned <span>People</span></h4>
-        <%= f.collection_select(:person,
-                                Person.find_all_by_event_id(@event.id,
-                                                            :order => 'last_name, first_name') -
-                                                            Person.find_all_assigned_under(@group),                               
-                                :id,
-                                :full_name_and_info,
-                                {:include_blank => false, :selected_key => nil},
-                                {:multiple => true, :size => 16}) %>
+        <div id="right_side_container">
+          <%= render 'right_side' %>
+       </div>
      </div>
    </div>
   </div>                           
