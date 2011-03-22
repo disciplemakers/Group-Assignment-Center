@@ -50,7 +50,7 @@ class AssignmentsController < ApplicationController
     end
     
     # The "assign" or "right-to-left" button
-    if params['commit'] == '<--'
+    if params['commit'] == '<--' or params['assign_action'] == '<--'
       if params[:assignment].nil? or params[:assignment]['person'].nil? or params[:assignment]['person'].length == 0 
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'No people selected.') }
@@ -80,6 +80,7 @@ class AssignmentsController < ApplicationController
         end
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'Assignment was successfully created!!') }
+          format.js
           format.xml  { head :ok }
         end        
       elsif !groups.nil? and groups.length > 1
@@ -93,7 +94,7 @@ class AssignmentsController < ApplicationController
       end
       
     # The "unassign" or "left-to-right" button
-    elsif params['commit'] == '-->'
+    elsif params['commit'] == '-->' or params['assign_action'] == '-->'
       if params[:left_side].nil? or people.nil?
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'No people selected.') }
@@ -122,6 +123,7 @@ class AssignmentsController < ApplicationController
         end
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id])) }
+          format.js
         end
       end
       
@@ -136,8 +138,11 @@ class AssignmentsController < ApplicationController
           format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'More than one group selected. Please select only one group.') }
         end        
       else
+        @group = Group.find(groups.first.gsub('group-', '').to_i)
+        @event = Event.find(params[:event_id])
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id], :drilldown_group_id => groups.first.gsub('group-', '').to_i)) }
+          format.js
         end
       end                  
     end
