@@ -1,0 +1,10 @@
+page.replace_html('left_side_container', render('left_side'))
+page.replace_html('right_side_container', render('right_side'))
+
+page['left_side'].visual_effect :highlight,
+                                :startcolor => "#F16C00",
+                                :endcolor   => "#ffffff"
+
+page['assignment_person'].visual_effect :highlight,
+                                        :startcolor => "#F16C00",
+                                        :endcolor   => "#ffffff"
