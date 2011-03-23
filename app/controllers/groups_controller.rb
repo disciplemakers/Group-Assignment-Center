@@ -95,7 +95,7 @@ class GroupsController < ApplicationController
         format.html { redirect_to(edit_event_path(@event)) }
         format.xml  { head :ok }
       elsif @group.update_attributes(params[:group])
-        format.html { redirect_to(edit_event_path(@event), :notice => 'Group was successfully updated.') }
+        format.html { redirect_to(edit_event_path(@event), :notice => "#{@group.name} was successfully updated.") }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
