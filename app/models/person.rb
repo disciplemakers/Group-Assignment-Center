@@ -28,6 +28,15 @@ class Person < ActiveRecord::Base
       gender == 'M' or gender == 'F' or gender.nil?
   end
   
+  def self.sortable_fields
+    sortable_fields = { 'School' => "School",
+                        'Graduation Year' => "graduation_year",
+                        'Gender' => "gender",
+                        'Registration Type' => "registration_type",
+                        'Name (Last, First)' => "last_name, first_name",
+                        'Name (First, Last)first_name' => "first_name, last_name" }
+  end
+  
   def full_name
     full_name = "#{self.first_name} #{self.last_name}"
   end
