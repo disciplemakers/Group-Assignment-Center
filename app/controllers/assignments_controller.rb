@@ -135,14 +135,18 @@ class AssignmentsController < ApplicationController
       end
       
     # The "drill down" or "select" button
-    elsif params['commit'] == 'Select Group'
+    elsif params['commit'] == 'Select Group' or params['assign_action'] == 'Select Group'
       if params[:left_side].nil? or groups.nil? or groups.length == 0
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'No group selected.') }
+          format.js {render :template => "shared/error.js.rjs",
+                            :locals => { :alert => "Error: No group selected ..."}}
         end
       elsif groups.length > 1
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'More than one group selected. Please select only one group.') }
+          format.js {render :template => "shared/error.js.rjs",
+                            :locals => { :alert => "Error: More than one group selected ..."}}
         end        
       else
         @group = Group.find(groups.first.gsub('group-', '').to_i)
