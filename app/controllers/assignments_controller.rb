@@ -76,7 +76,7 @@ class AssignmentsController < ApplicationController
             roc = RegonlineConnector.new(session[:account_id], session[:username], session[:password])
             update_data_hash = {person.confirmation_number => {"custom_fields" => {group.custom_field.name => label_text}}}
             event_id = @event.remote_event_id
-            updated_registrations = roc.update_registrations(event_id, update_data_hash)
+            updated_registrations = roc.update_registrations(event_id, update_data_hash) if RAILS_ENV == "production"
           end
         end
         respond_to do |format|
@@ -125,7 +125,7 @@ class AssignmentsController < ApplicationController
             roc = RegonlineConnector.new(session[:account_id], session[:username], session[:password])
             update_data_hash = {person.confirmation_number => {"custom_fields" => {group.custom_field.name => ''}}}
             event_id = @event.remote_event_id
-            updated_registrations = roc.update_registrations(event_id, update_data_hash)
+            updated_registrations = roc.update_registrations(event_id, update_data_hash) if RAILS_ENV == "production"
           end
         end
         respond_to do |format|
