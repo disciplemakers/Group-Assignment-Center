@@ -1,4 +1,5 @@
 require 'regonlineconnector'
+require 'pp'
 
 class AssignmentsController < ApplicationController
 
@@ -86,10 +87,14 @@ class AssignmentsController < ApplicationController
       elsif !groups.nil? and groups.length > 1
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'More than one group on left selected.') }
+          format.js {render :template => "shared/error.js.rjs",
+                            :locals => { :alert => "Assignment Error: More than one group on left selected ..."}}
         end
       else # groups.length === 0
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'No groups selected on left.') }
+          format.js {render :template => "shared/error.js.rjs",
+                            :locals => { :alert => "Assignment Error: No groups selected on left ..."}}
         end
       end
       
@@ -98,6 +103,8 @@ class AssignmentsController < ApplicationController
       if params[:left_side].nil? or people.nil?
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'No people selected.') }
+          format.js {render :template => "shared/error.js.rjs",
+                            :locals => { :alert => "Assignment Error: No people selected for removal ..."}}
         end
       else
         people.each do |p|
@@ -229,6 +236,16 @@ class AssignmentsController < ApplicationController
     end
     
     registrations.each do |id, registration|
+      if registration['RegistrationStatus'] == "Canceled"
+        if registrations_hash[registration['ConfirmationNumber']]
+          Person.find(:first,
+                      :conditions => {:confirmation_number => registration['ConfirmationNumber']}).destroy
+        end
+        next
+      end
+      
+      grad_year = (registration['GraduationYear'].to_i > 1900 ? registration['GraduationYear'].to_i : nil)
+       
       if !registrations_hash[registration['ConfirmationNumber']].nil?
         attributes = {"confirmation_number"    => registration['ConfirmationNumber'],
                       "event_id"               => event_id.to_i,
@@ -237,7 +254,7 @@ class AssignmentsController < ApplicationController
                       "gender"                 => registration['Gender'],
                       "registration_type"      => registration['RegistrationType'],
                       "school"                 => registration['SchoolName'],
-                      "graduation_year"        => registration['GraduationYear'].to_i,
+                      "graduation_year"        => grad_year,
                       "housing_assignment"     => registration['HousingAssignment'],
                       "small_group_assignment" => registration['SmallGroupAssignment'],
                       "campus_group_room"      => registration['CampusGroupRoom']}
@@ -251,7 +268,7 @@ class AssignmentsController < ApplicationController
             pp gac_registration.errors
             print "\n\n"
           end
-        end        
+        end
       else
         gac_registration = Person.new(:confirmation_number    => registration['ConfirmationNumber'],
                                       :event_id               => event_id,
@@ -260,7 +277,7 @@ class AssignmentsController < ApplicationController
                                       :gender                 => registration['Gender'],
                                       :registration_type      => registration['RegistrationType'],
                                       :school                 => registration['SchoolName'],
-                                      :graduation_year        => registration['GraduationYear'],
+                                      :graduation_year        => grad_year,
                                       :housing_assignment     => registration['HousingAssignment'],
                                       :small_group_assignment => registration['SmallGroupAssignment'],
                                       :campus_group_room      => registration['CampusGroupRoom'])
