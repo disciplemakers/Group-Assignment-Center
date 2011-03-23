@@ -1,0 +1,5 @@
+page.replace_html('right_side_container_with_sort', render('right_side_with_sort'))
+
+page['assignment_person'].visual_effect :highlight,
+                                        :startcolor => "#F16C00",
+                                        :endcolor   => "#ffffff"
