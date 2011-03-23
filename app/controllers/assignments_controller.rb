@@ -8,6 +8,11 @@ class AssignmentsController < ApplicationController
   def new
     @assignment = Assignment.new
     @event = Event.find(params[:event_id])
+    @sort_by_1 = (params['sort_by_1'].nil? ? "last_name, first_name" : params['sort_by_1'])
+    @sort_by_2 = Person.sortable_fields[params['sort_by_2']]
+    
+    @sort_order = @sort_by_1
+    @sort_order += ", #{params['sort_by_2']}" unless params['sort_by_2'].blank?
     
     # Check whether the form is being requested of a subgroup rather than
     # the group that corresponds to the whole event.
@@ -44,17 +49,30 @@ class AssignmentsController < ApplicationController
   def create
     @event = Event.find(params[:event_id])
     @group = @event.group
+    @sort_by_1 = (params['sort_by_1'].nil? ? "last_name, first_name" : params['sort_by_1'])
+    @sort_by_2 = params['sort_by_2']
+    
+    @sort_order = @sort_by_1
+    @sort_order += ", #{params['sort_by_2']}" unless params['sort_by_2'].blank?
     
     unless params[:left_side].nil?
       people = params[:left_side].select {|i| i =~ /^person-/}
       groups = params[:left_side].select {|i| i =~ /^group-/}
     end
     
+    # The sort button
+    if params['commit'] == 'Sort' or params['assign_action'] == "Sort"
+      respond_to do |format|
+        format.html { redirect_to(new_event_assignment_url(params[:event_id])) }
+        format.js {render :template => "assignments/sort.js.rjs"}
+      end 
     # The "assign" or "right-to-left" button
-    if params['commit'] == '<--' or params['assign_action'] == '<--'
+    elsif params['commit'] == '<--' or params['assign_action'] == '<--'
       if params[:assignment].nil? or params[:assignment]['person'].nil? or params[:assignment]['person'].length == 0 
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'No people selected.') }
+          format.js {render :template => "shared/error.js.rjs",
+                            :locals => { :alert => "Assignment Error: No People Selected ..."}}
         end        
       elsif !groups.nil? and groups.length == 1
         errors = []
