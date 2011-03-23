@@ -454,8 +454,9 @@ width: 20em;
 overflow: auto;
 }
 
-.actions div{
+div.actions {
 display: inline-block;
+margin-top: 2em;
 }
 
 .field select .group-option {

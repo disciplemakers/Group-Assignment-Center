@@ -45,18 +45,18 @@
     <%= f.collection_select(:gender_constraint_id, GenderConstraint.all, :id, :constraint, {:include_blank => true}) %>
   </div>
   <div class="field">
+    <%= f.label :label_field %>:
+    <%= f.collection_select(:label_field, CustomField.all, :id, :name, {:include_blank => true}) %>
+  </div>
+  <div class="field">
     <%= f.label :label_text %>: <%= f.text_field :label_text %>
   </div>
   <div class="field">
     <%= f.check_box :label_text_prepend_to_child_label %>
     <%= f.label :label_text_prepend_to_child_label %>
   </div>
-  <div class="field">
-    <%= f.label :label_field %>:
-    <%= f.collection_select(:label_field, CustomField.all, :id, :name, {:include_blank => true}) %>
-  </div>
   <div class="actions">
     <%= f.submit %>
-    <%= f.submit "Cancel" %>
+    <%= f.submit "Cancel", :confirm => "Are you sure?  Any unsaved changes made will be lost."%>
   </div>
 <% end %>
