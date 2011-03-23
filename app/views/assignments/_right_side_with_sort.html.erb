@@ -1,0 +1,15 @@
+          <div id="right_side_container">
+            <%= render 'right_side' %>
+          </div>
+          <h5>Sort by:</h5>
+          <%= select_tag("sort_by_1", options_for_select(Person.sortable_fields.sort,
+                                                         @sort_by_1),
+                         {:multiple => false}) %>
+          <br />
+          <h5>then</h5>
+          <%= select_tag("sort_by_2", options_for_select(Person.sortable_fields.sort,
+                                                         @sort_by_2),
+                         {:multiple => false, :include_blank => true}) %>
+          <br />
+          <%= submit_tag 'Sort', :id => 'sort', 
+                                :onclick => 'document.getElementById("assign_action").value = "Sort";' %>
