@@ -34,7 +34,7 @@ describe "groups/new.html.erb" do
       assert_select "select#group_gender_constraint_id", :name => "group[gender_constraint_id]"
       assert_select "input#group_label_text", :name => "group[label_text]"
       assert_select "input#group_label_text_prepend_to_child_label", :name => "group[label_text_prepend_to_child_label]"
-      assert_select "input#group_label_field", :name => "group[label_field]"
+      assert_select "select#group_label_field", :name => "group[label_field]"
     end
   end
 end
