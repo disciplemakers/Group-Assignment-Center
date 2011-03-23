@@ -23,4 +23,22 @@ class Group < ActiveRecord::Base
       end      
     end
   end
+  
+  def required_membership_scope
+    self.self_and_ancestors.reverse_each do |g|
+      if g.required_membership
+        return g
+      end
+    end
+    return self
+  end
+  
+  def unique_membership_scope
+    self.self_and_ancestors.reverse_each do |g|
+      if g.unique_membership
+        return g
+      end
+    end
+    return self
+  end
 end
