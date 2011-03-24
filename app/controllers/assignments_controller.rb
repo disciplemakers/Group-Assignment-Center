@@ -16,10 +16,10 @@ class AssignmentsController < ApplicationController
     
     # Check whether the form is being requested of a subgroup rather than
     # the group that corresponds to the whole event.
-    if drilldown_group_id = params[:drilldown_group_id]
-      @group = Group.find(drilldown_group_id)
+    if @drilldown_group_id = params[:drilldown_group_id]
+      @group = @drilldown_group = Group.find(@drilldown_group_id)
     else
-      @group = @event.group
+      @group = @drilldown_group = @event.group
     end
     
     if @event.remote_report_id
@@ -55,6 +55,13 @@ class AssignmentsController < ApplicationController
     @sort_order = @sort_by_1
     @sort_order += ", #{params['sort_by_2']}" unless params['sort_by_2'].blank?
     
+    # Preserve our knowledge of what group we were looking at.
+    if drilldown_group_id = params['drilldown_group_id'].to_i
+      @drilldown_group = Group.find(drilldown_group_id)
+    else
+      @drilldown_group = @group
+    end
+
     unless params[:left_side].nil?
       people = params[:left_side].select {|i| i =~ /^person-/}
       groups = params[:left_side].select {|i| i =~ /^group-/}
@@ -167,10 +174,11 @@ class AssignmentsController < ApplicationController
                             :locals => { :alert => "Error: More than one group selected ..."}}
         end        
       else
-        @group = Group.find(groups.first.gsub('group-', '').to_i)
+        puts 'in final else of drill down action block'
+        @drilldown_group = @group = Group.find(groups.first.gsub('group-', '').to_i)
         @event = Event.find(params[:event_id])
         respond_to do |format|
-          format.html { redirect_to(new_event_assignment_url(params[:event_id], :drilldown_group_id => groups.first.gsub('group-', '').to_i)) }
+          format.html { redirect_to(new_event_assignment_url(params[:event_id], :drilldown_group_id => @drilldown_group.id)) }
           format.js
         end
       end                  
