@@ -82,12 +82,12 @@ class AssignmentsController < ApplicationController
                             :locals => { :alert => "Assignment Error: No People Selected ..."}}
         end        
       elsif !groups.nil? and groups.length == 1
-        errors = []
+        @errors = []
         group_id = groups.first.gsub('group-', '').to_i
         params[:assignment]['person'].each do |p|
           assignment = Assignment.new(:group_id => group_id, :person_id => p)
           unless assignment.save
-            errors << assignment.errors
+            @errors << assignment.errors.full_messages
           end
           # Update local db field
           group = Group.find(group_id)
