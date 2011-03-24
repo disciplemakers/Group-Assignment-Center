@@ -110,6 +110,14 @@ class LocationsController < ApplicationController
     
     if params['commit'] == 'Edit'
       redirect_to edit_location_path(params['location']['parent_id'])
+    elsif params['commit'] == 'Clone'
+      original_location = Location.find(params['location']['parent_id'].first)
+      @parent = original_location.parent
+      @location = original_location.clone
+      name = "#{@location.name} (Clone)"
+      @location.name = name
+      @location.parent_id = nil
+      render "new"
     elsif params['commit'] == 'New'
       if params.has_key?('location')
         if params['location'].has_key?('parent_id')

@@ -126,6 +126,14 @@ class GroupsController < ApplicationController
     
     if params['commit'] == 'Edit'
       redirect_to edit_group_path(params['group']['parent_id'])
+    elsif params['commit'] == 'Clone'
+      original_group = Group.find(params['group']['parent_id'].first)
+      @parent = original_group.parent
+      @group = original_group.clone
+      name = "#{@group.name} (Clone)"
+      @group.name = name
+      @group.parent_id = nil
+      render "new"
     elsif params['commit'] == 'New'
       if params.has_key?('group')
         if params['group'].has_key?('parent_id')
