@@ -9,6 +9,7 @@ class Group < ActiveRecord::Base
   has_many :people, :through => :assignments, :order => "people.last_name, people.first_name"
   
   validates_presence_of :name
+  #validates_presence_of :label_field, :unless => :label_text.blank?
   validates_numericality_of :capacity, :only_integer => true,
                             :allow_nil => true,
                             :greater_than_or_equal_to => 0
