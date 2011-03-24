@@ -19,7 +19,7 @@ class Group < ActiveRecord::Base
     if parent_id
       parent = Group.find(parent_id)
       unless parent.can_contain_groups
-        errors.add_to_base("can not add group to a group that can not contain groups")
+        errors.add(:base, "Error adding group to #{parent.name}: This group not marked as able to contain groups.\n")
       end      
     end
   end
