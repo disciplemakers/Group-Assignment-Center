@@ -39,7 +39,13 @@ class GroupsController < ApplicationController
                     :notice => "Selected group cannot contain groups.")
         return
       end
+      # Try to look up the location of this group. 
+      @location = Event.find(:first, :conditions => {:group_id => @parent.root}).location
     end
+    
+    # If location hasn't been assigned yet, that means we don't have one.
+    # Give it the Location class instead of a particular location.    
+    @location = Location if @location.nil?
     
     respond_to do |format|     
       format.html # new.html.erb
@@ -55,6 +61,7 @@ class GroupsController < ApplicationController
       group_id = params[:id]
     end
     @group = Group.find(group_id)
+    @location = Event.find(:first, :conditions => {:group_id => @group.root}).location
   end
 
 
