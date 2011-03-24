@@ -28,7 +28,9 @@
   </div>
   <div class="field">
     <%= f.label :location_id %>: 
-    <%= f.collection_select(:location_id, Location.all, :id, :name, {:include_blank => true}) %>
+    <%= f.select :location_id,
+                 nested_set_options(Event.find(:first, :conditions => {:group_id => @group.root}).location) {|i| "#{'---' * (i.level)}#{i.name}" },
+                 {:include_blank => true, :selected_key => @group.location_id} %>
   </div>
   <div class="field">
     <%= f.label :comment%>:<br />
