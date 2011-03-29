@@ -42,4 +42,14 @@ class Group < ActiveRecord::Base
     end
     return self
   end
+  
+  def build_custom_field_text
+    text_array = []
+    ancestry = self.self_and_ancestors
+    ancestry.each do |g|
+      text_array << g.label_text if ((g.label_field = self.label_field) and g.label_text_prepend_to_child_label) or (g == self)
+    end
+    text_array.compact
+    text = text_array.join(" ")
+  end
 end
