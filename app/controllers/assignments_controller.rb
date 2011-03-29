@@ -93,15 +93,15 @@ class AssignmentsController < ApplicationController
           group = Group.find(group_id)
           if !group.label_text.nil? and !group.label_field.nil?
             person = Person.find(p)
-            label_text = build_custom_field_text(group)
+            label_text = group.build_custom_field_text
             unless person.update_attribute(group.custom_field.people_field, label_text)
               errors << person.errors
             end
             # write back label text to regonline
-            roc = RegonlineConnector.new(session[:account_id], session[:username], session[:password])
-            update_data_hash = {person.confirmation_number => {"custom_fields" => {group.custom_field.name => label_text}}}
-            event_id = @event.remote_event_id
-            updated_registrations = roc.update_registrations(event_id, update_data_hash) if RAILS_ENV == "production"
+            person.write_custom_field_to_remote(
+                RegonlineConnector.new(session[:account_id], session[:username], session[:password]),
+                group.custom_field.name,
+                label_text) if RAILS_ENV == "production"
           end
         end
         respond_to do |format|
@@ -147,10 +147,10 @@ class AssignmentsController < ApplicationController
               errors << person.errors
             end
             # write back label text to regonline
-            roc = RegonlineConnector.new(session[:account_id], session[:username], session[:password])
-            update_data_hash = {person.confirmation_number => {"custom_fields" => {group.custom_field.name => ''}}}
-            event_id = @event.remote_event_id
-            updated_registrations = roc.update_registrations(event_id, update_data_hash) if RAILS_ENV == "production"
+            person.write_custom_field_to_remote(
+                RegonlineConnector.new(session[:account_id], session[:username], session[:password]),
+                group.custom_field.name,
+                '') if RAILS_ENV == "production"
           end
         end
         respond_to do |format|
@@ -233,17 +233,6 @@ class AssignmentsController < ApplicationController
                              start_date.strftime("%m/%d/%Y"),
                              end_date.strftime("%m/%d/%Y"),
                              'true')
-  end
-  
-  def build_custom_field_text(group)
-    text_array = []
-    ancestry = group.self_and_ancestors
-    ancestry.each do |g|
-      text_array << g.label_text if ((g.label_field = group.label_field) and g.label_text_prepend_to_child_label) or (g == group)
-    end
-    #text_array << group.label_text
-    text_array.compact
-    text = text_array.join(" ")
   end
   
   def save_remote_registrations(registrations, event_id)
