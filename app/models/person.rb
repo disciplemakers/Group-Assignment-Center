@@ -16,6 +16,21 @@ class Person < ActiveRecord::Base
   def self.find_all_assigned_under(group)
     self.all.select { |p| p.assigned_under?(group) }
   end
+
+  def custom_field_changed?
+    self.groups.each do |group|
+      return true if self.instance_variable_get("@" + group.custom_field.people_field) != group.build_custom_field_text
+    end
+    false
+  end
+  
+  def write_custom_field_to_remote(connector, custom_field_name, label_text)
+    update_data_hash = {self.confirmation_number =>
+                            {"custom_fields" =>
+                                 {custom_field_name => label_text}}}
+    event_id = Event.find(self.event_id).remote_event_id
+    updated_registrations = connector.update_registrations(event_id, update_data_hash)
+  end
   
   # Returns true if the Person is assigned to the given group
   # or one of its descendants.
