@@ -1,6 +1,7 @@
-if @errors.any?
+if @errors and @errors.any?
   page.alert @errors
 end
+
 page.replace_html('left_side_container', render('left_side'))
 page.replace_html('right_side_container', render('right_side'))
 
