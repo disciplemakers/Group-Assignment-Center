@@ -1,10 +1,10 @@
-          <%= collection_select(:assignment,
-                                :person,
-                                Person.find_all_by_event_id(@event.id,
-                                                            :order => @sort_order ) -
-                                                            Person.find_all_assigned_under(@group.required_membership_scope),
-                                                            #Person.find_all_assigned_under(@group),
-                                :id,
-                                :full_name_and_info,
-                                {:include_blank => false, :selected_key => nil},
-                                {:multiple => true, :size => 16}) %>
+<%= collection_select(:assignment,
+                      :person,
+                      Person.find_all_by_event_id(@event.id,
+                                                  :order => @sort_order ) -
+                                                  Person.find_all_assigned_under(@group.required_membership_scope),
+                                                  #Person.find_all_assigned_under(@group),
+                      :id,
+                      :full_name_and_info,
+                      {:include_blank => false, :selected_key => nil},
+                      {:multiple => true, :size => 16}) %>
