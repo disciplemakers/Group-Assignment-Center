@@ -272,6 +272,8 @@ class AssignmentsController < ApplicationController
       end
       
       grad_year = (registration['GraduationYear'].to_i > 1900 ? registration['GraduationYear'].to_i : nil)
+      person = Person.find(:first,
+                           :conditions => {:confirmation_number => registration['ConfirmationNumber']})
       
       if !registrations_hash[registration['ConfirmationNumber']].nil?
         if custom_fields_hash[registration['ConfirmationNumber']].nil?
