@@ -23,22 +23,13 @@ class Assignment < ActiveRecord::Base
   
   def unique_membership
     group = self.group
-    ancestors = group.self_and_ancestors
-    person = self.person
     
-    constrained_group = Group.new
-    ancestors.reverse_each do |g|
-      if g.unique_membership
-        constrained_group = g
-        break
-      end
-    end
-
+    constrained_group = group.unique_membership_scope 
     return unless constrained_group.name
     
     person.groups.each do |g|
       if g.is_descendant_of?(constrained_group)
-        errors.add(:base, "Error assigning #{person.full_name}: He/she is already assigned under #{constrained_group}.\n")
+        errors.add(:base, "Error assigning #{person.full_name}: He/she is already assigned under #{constrained_group.name}.\n")
       end
     end
   end
