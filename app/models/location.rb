@@ -4,7 +4,12 @@ class Location < ActiveRecord::Base
   has_many :groups
   has_many :events
   
-  def before_destroy
+  before_destroy :clear_location_references
+  
+  
+  private
+  
+  def clear_location_references
     if self.root?
       # nullify event location fields
       if events = Event.find(:all, :conditions => {:location_id => self.id})
