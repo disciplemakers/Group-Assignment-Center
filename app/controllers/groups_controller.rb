@@ -171,16 +171,30 @@ class GroupsController < ApplicationController
         
         if params['group'].has_key?('location')
           locations_to_be_copied = params['group']['location']
-          locations_to_be_copied.each do |location|
-            clone_location_branch(Location.find(location), destination)
+          locations_to_be_copied.collect! {|l| Location.find(l)}
+          destination_group = destination
+          
+          while location = locations_to_be_copied.shift do
+            recursive = !(location.leaf? or ((location.children & locations_to_be_copied).length > 0))
+            location_group = clone_location_branch(location, destination_group, recursive)
+            destination_group = (recursive ? destination : location_group)
           end
         end
         
         if params['group'].has_key?('id')
           groups_to_be_copied = params['group']['id']
+          #groups_to_be_copied.collect! {|g| Group.find(g)}
+          #destination_group = destination
+          
           groups_to_be_copied.each do |group|
             clone_group_branch(Group.find(group), destination)
           end
+          
+          #while g = groups_to_be_copied.shift do
+          #  recursive = !(g.leaf? or ((g.children & groups_to_be_copied).length > 0))
+          #  group_group = clone_group_branch(g, destination_group, recursive)
+          #  destination_group = (recursive ? destination : group_group)
+          #end
         end
         
       else
@@ -197,34 +211,36 @@ class GroupsController < ApplicationController
     end
   end
   
-  def clone_group_branch(group, destination)
+  def clone_group_branch(group, destination, recursive = true)
     clone = group.clone
     clone.parent_id = nil
     clone.save
     clone.move_to_child_of(destination)
       
-    if !group.leaf?
+    if !group.leaf? and recursive
       group.children.each do |child|
         clone_group_branch(child, clone)
       end
     end
   end
   
-  def clone_location_branch(location, destination_group)
+  def clone_location_branch(location, destination_group, recursive = true)
     group = group_from_location(location)
     group.save
     group.move_to_child_of(destination_group)
     
-    if !location.leaf?
+    if !location.leaf? and recursive
       location.children.each do |child_location|
         clone_location_branch(child_location, group)
       end
     end
+    group
   end
   
   def group_from_location(location)
     group = Group.new(:name     => location.name,
                       :capacity => location.capacity,
+                      :can_contain_groups => !location.leaf?,
                       :location_id => location.id,
                       :comment  => location.comment)
   end
