@@ -256,7 +256,8 @@ class AssignmentsController < ApplicationController
       if person.groups.length > 0
         custom_fields_hash[person.confirmation_number] = Hash.new
         person.groups.collect do |pg|
-          custom_fields_hash[person.confirmation_number][CustomField.find(pg.custom_field).people_field] = pg.build_custom_field_text
+          custom_fields_hash[person.confirmation_number][pg.custom_field.people_field] = 
+                pg.build_custom_field_text if pg.custom_field
         end
       end
     end
