@@ -289,28 +289,28 @@ class AssignmentsController < ApplicationController
                               registration['CampusGroupRoom']
         end
         
-        roc = RegonlineConnector.new(session[:account_id], session[:username], session[:password])
-        if !housing_assignment.nil? and housing_assignment != registration['HousingAssignment']
-            print "writing #{registration['FirstName']} #{registration['LastName']}'s housing_assignment=.:#{housing_assignment}:. back to regonline\n\n"
-            # write back label text to regonline
-            update_data_hash = {registration['ConfirmationNumber'] => {"custom_fields" => {"Housing Assignment" => housing_assignment}}}
-            remote_event_id = Event.find(event_id.to_i).remote_event_id
-            updated_registrations = roc.update_registrations(remote_event_id, update_data_hash) if RAILS_ENV == "production"
-        end
-        if !small_group_assignment.nil? and small_group_assignment != registration['SmallGroupAssignment']
-            print "writing back #{registration['FirstName']} #{registration['LastName']}'s small_group_assignment=#{small_group_assignment} to regonline\n\n"
-            # write back label text to regonline
-            update_data_hash = {registration['ConfirmationNumber'] => {"custom_fields" => {"Small Group Assignment" => small_group_assignment}}}
-            remote_event_id = Event.find(event_id.to_i).remote_event_id
-            updated_registrations = roc.update_registrations(remote_event_id, update_data_hash) if RAILS_ENV == "production"          
-        end
-        if !campus_group_room.nil? and campus_group_room != registration['CampusGroupRoom']
-            print "writing back #{registration['FirstName']} #{registration['LastName']}'s campus_group_room=#{campus_group_room} to regonline\n\n"
-            # write back label text to regonline
-            update_data_hash = {registration['ConfirmationNumber'] => {"custom_fields" => {"Campus Group Room" => campus_group_room}}}
-            remote_event_id = Event.find(event_id.to_i).remote_event_id
-            updated_registrations = roc.update_registrations(remote_event_id, update_data_hash) if RAILS_ENV == "production"         
-        end
+        #roc = RegonlineConnector.new(session[:account_id], session[:username], session[:password])
+        #if !housing_assignment.nil? and housing_assignment != registration['HousingAssignment']
+        #    print "writing #{registration['FirstName']} #{registration['LastName']}'s housing_assignment=.:#{housing_assignment}:. back to regonline\n\n"
+        #    # write back label text to regonline
+        #    update_data_hash = {registration['ConfirmationNumber'] => {"custom_fields" => {"Housing Assignment" => housing_assignment}}}
+        #    remote_event_id = Event.find(event_id.to_i).remote_event_id
+        #    updated_registrations = roc.update_registrations(remote_event_id, update_data_hash) if RAILS_ENV == "production"
+        #end
+        #if !small_group_assignment.nil? and small_group_assignment != registration['SmallGroupAssignment']
+        #    print "writing back #{registration['FirstName']} #{registration['LastName']}'s small_group_assignment=#{small_group_assignment} to regonline\n\n"
+        #    # write back label text to regonline
+        #    update_data_hash = {registration['ConfirmationNumber'] => {"custom_fields" => {"Small Group Assignment" => small_group_assignment}}}
+        #    remote_event_id = Event.find(event_id.to_i).remote_event_id
+        #    updated_registrations = roc.update_registrations(remote_event_id, update_data_hash) if RAILS_ENV == "production"          
+        #end
+        #if !campus_group_room.nil? and campus_group_room != registration['CampusGroupRoom']
+        #    print "writing back #{registration['FirstName']} #{registration['LastName']}'s campus_group_room=#{campus_group_room} to regonline\n\n"
+        #    # write back label text to regonline
+        #    update_data_hash = {registration['ConfirmationNumber'] => {"custom_fields" => {"Campus Group Room" => campus_group_room}}}
+        #    remote_event_id = Event.find(event_id.to_i).remote_event_id
+        #    updated_registrations = roc.update_registrations(remote_event_id, update_data_hash) if RAILS_ENV == "production"         
+        #end
         
         attributes = {"confirmation_number"    => registration['ConfirmationNumber'],
                       "event_id"               => event_id.to_i,
