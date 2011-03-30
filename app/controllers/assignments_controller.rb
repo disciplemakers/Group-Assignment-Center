@@ -238,6 +238,7 @@ class AssignmentsController < ApplicationController
   def save_remote_registrations(registrations, event_id)
     people = Person.find_all_by_event_id(event_id)
     registrations_hash = Hash.new
+    custom_fields_hash = Hash.new
     people.each do |person|
       registrations_hash[person.confirmation_number] = {
         "confirmation_number"    => person.confirmation_number,
@@ -252,6 +253,12 @@ class AssignmentsController < ApplicationController
         "small_group_assignment" => person.small_group_assignment,
         "campus_group_room"      => person.campus_group_room
       }
+      if person.groups.length > 0
+        custom_fields_hash[person.confirmation_number] = Hash.new
+        person.groups.collect do |pg|
+          custom_fields_hash[person.confirmation_number][pg.custom_field.people_field] = pg.build_custom_field_text
+        end
+      end
     end
     
     registrations.each do |id, registration|
@@ -264,8 +271,46 @@ class AssignmentsController < ApplicationController
       end
       
       grad_year = (registration['GraduationYear'].to_i > 1900 ? registration['GraduationYear'].to_i : nil)
-       
+      
       if !registrations_hash[registration['ConfirmationNumber']].nil?
+        if custom_fields_hash[registration['ConfirmationNumber']].nil?
+          housing_assignment = registration['HousingAssignment']
+          small_group_assignment = registration['SmallGroupAssignment']
+          campus_group_room = registration['CampusGroupRoom']
+        else
+          housing_assignment = custom_fields_hash[registration['ConfirmationNumber']]['housing_assignment'] ||
+                               registration['HousingAssignment']
+          small_group_assignment = custom_fields_hash[registration['ConfirmationNumber']]['small_group_assignment'] ||
+                                   registration['SmallGroupAssignment']
+          campus_group_room = custom_fields_hash[registration['ConfirmationNumber']]['campus_group_room'] || 
+                              registration['CampusGroupRoom']
+        end
+        
+        if housing_assignment != registration['HousingAssignment']
+            print "writing #{registration['FirstName']} #{registration['LastName']}'s housing_assignment=.:#{housing_assignment}:. back to regonline\n\n"
+            # write back label text to regonline
+            person.write_custom_field_to_remote(
+                RegonlineConnector.new(session[:account_id], session[:username], session[:password]),
+                'Housing Assignment',
+                housing_assignment) if RAILS_ENV == "production"          
+        end
+        if small_group_assignment != registration['SmallGroupAssignment']
+            print "writing back #{registration['FirstName']} #{registration['LastName']}'s small_group_assignment=#{small_group_assignment} to regonline\n\n"
+            # write back label text to regonline
+            person.write_custom_field_to_remote(
+                RegonlineConnector.new(session[:account_id], session[:username], session[:password]),
+                'Small Group Assignment',
+                small_group_assignment) if RAILS_ENV == "production"          
+        end
+        if campus_group_room != registration['CampusGroupRoom']
+            print "writing back #{registration['FirstName']} #{registration['LastName']}'s campus_group_room=#{campus_group_room} to regonline\n\n"
+            # write back label text to regonline
+            person.write_custom_field_to_remote(
+                RegonlineConnector.new(session[:account_id], session[:username], session[:password]),
+                'Campus Group Room',
+                campus_group_room) if RAILS_ENV == "production"          
+        end
+        
         attributes = {"confirmation_number"    => registration['ConfirmationNumber'],
                       "event_id"               => event_id.to_i,
                       "first_name"             => registration['FirstName'],
@@ -274,10 +319,10 @@ class AssignmentsController < ApplicationController
                       "registration_type"      => registration['RegistrationType'],
                       "school"                 => registration['SchoolName'],
                       "graduation_year"        => grad_year,
-                      "housing_assignment"     => registration['HousingAssignment'],
-                      "small_group_assignment" => registration['SmallGroupAssignment'],
-                      "campus_group_room"      => registration['CampusGroupRoom']}
-        if !(attributes.sort == registrations_hash[registration['ConfirmationNumber']].sort)
+                      "housing_assignment"     => housing_assignment,
+                      "small_group_assignment" => small_group_assignment,
+                      "campus_group_room"      => campus_group_room}
+        if (attributes.sort != registrations_hash[registration['ConfirmationNumber']].sort)
           gac_registration = Person.find(:first,
                                          :conditions => {:confirmation_number => registration['ConfirmationNumber']})
           if !gac_registration.update_attributes(attributes)
