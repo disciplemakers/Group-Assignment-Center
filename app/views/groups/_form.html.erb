@@ -50,12 +50,12 @@
     <%= f.label :label_field %>:
     <%= f.collection_select(:label_field, CustomField.all, :id, :name, {:include_blank => true}) %>
   </div>
-  <div class="field">
+  <div class="field" style="margin-left: 2.5em">
     <%= f.label :label_text %>: <%= f.text_field :label_text %>
   </div>
-  <div class="field">
+  <div class="field" style="margin-left: 2.5em">
     <%= f.check_box :label_text_prepend_to_child_label %>
-    <%= f.label :label_text_prepend_to_child_label %>
+    Add this text to beginning of subgroups' label text 
   </div>
   <div class="actions">
     <%= f.submit %>
