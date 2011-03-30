@@ -183,18 +183,14 @@ class GroupsController < ApplicationController
         
         if params['group'].has_key?('id')
           groups_to_be_copied = params['group']['id']
-          #groups_to_be_copied.collect! {|g| Group.find(g)}
-          #destination_group = destination
+          groups_to_be_copied.collect! {|g| Group.find(g)}
+          destination_group = destination
           
-          groups_to_be_copied.each do |group|
-            clone_group_branch(Group.find(group), destination)
+          while g = groups_to_be_copied.shift do
+            recursive = !(g.leaf? or ((g.children & groups_to_be_copied).length > 0))
+            group_group = clone_group_branch(g, destination_group, recursive)
+            destination_group = (recursive ? destination : group_group)
           end
-          
-          #while g = groups_to_be_copied.shift do
-          #  recursive = !(g.leaf? or ((g.children & groups_to_be_copied).length > 0))
-          #  group_group = clone_group_branch(g, destination_group, recursive)
-          #  destination_group = (recursive ? destination : group_group)
-          #end
         end
         
       else
@@ -222,6 +218,7 @@ class GroupsController < ApplicationController
         clone_group_branch(child, clone)
       end
     end
+    clone
   end
   
   def clone_location_branch(location, destination_group, recursive = true)
