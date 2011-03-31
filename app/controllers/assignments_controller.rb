@@ -227,6 +227,7 @@ class AssignmentsController < ApplicationController
     end_date = Time.now
     year_in_seconds = 31536000
     start_date = end_date - year_in_seconds
+    end_date += (3600*24)
     roc = RegonlineConnector.new(account_id, username, password)
     registrants = roc.report(event[:remote_report_id],
                              event[:remote_event_id],
