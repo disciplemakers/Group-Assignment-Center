@@ -34,6 +34,11 @@ describe EventsController do
     
     it "assigns all events as @events" do
       Event.stub(:all) { [mock_event] }
+      
+      # The next two lines aren't right, but maybe they're on the right track?
+      #Group.stub(:new).and_return(stub_model(Group))
+      #Group.stub(:custom_field).and_return(stub_model(CustomField))
+      
       get :index
       assigns(:events).should eq([mock_event])
     end
