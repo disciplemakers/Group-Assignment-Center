@@ -237,6 +237,7 @@ class AssignmentsController < ApplicationController
   
   def save_remote_registrations(registrations, event_id)
     people = Person.find_all_by_event_id(event_id)
+    remote_event_id = Event.find(event_id).remote_event_id
     registrations_hash = Hash.new
     custom_fields_hash = Hash.new
     people.each do |person|
@@ -255,13 +256,22 @@ class AssignmentsController < ApplicationController
       }
       if person.groups.length > 0
         custom_fields_hash[person.confirmation_number] = Hash.new
+        custom_fields_hash[person.confirmation_number]['custom_fields'] = Hash.new
         person.groups.collect do |pg|
-          custom_fields_hash[person.confirmation_number][pg.custom_field.people_field] = 
+          custom_fields_hash[person.confirmation_number]['custom_fields'][pg.custom_field.name] = 
                 pg.build_custom_field_text if pg.custom_field
         end
       end
     end
     
+    #print "\n\n#{remote_event_id}\n\n"
+    #pp custom_fields_hash
+    
+    roc = RegonlineConnector.new(session[:account_id], session[:username], session[:password])
+    updated_registrations = roc.update_registrations(
+                                remote_event_id, 
+                                custom_fields_hash) if RAILS_ENV == "production"
+        
     registrations.each do |id, registration|
       if registration['RegistrationStatus'] == "Canceled"
         if registrations_hash[registration['ConfirmationNumber']]
@@ -281,11 +291,11 @@ class AssignmentsController < ApplicationController
           small_group_assignment = registration['SmallGroupAssignment']
           campus_group_room = registration['CampusGroupRoom']
         else
-          housing_assignment = custom_fields_hash[registration['ConfirmationNumber']]['housing_assignment'] ||
+          housing_assignment = custom_fields_hash[registration['ConfirmationNumber']]['custom_fields']['Housing Assignment'] ||
                                registration['HousingAssignment']
-          small_group_assignment = custom_fields_hash[registration['ConfirmationNumber']]['small_group_assignment'] ||
+          small_group_assignment = custom_fields_hash[registration['ConfirmationNumber']]['custom_fields']['Small Group Assignment'] ||
                                    registration['SmallGroupAssignment']
-          campus_group_room = custom_fields_hash[registration['ConfirmationNumber']]['campus_group_room'] || 
+          campus_group_room = custom_fields_hash[registration['ConfirmationNumber']]['custom_fields']['Campus Group Room'] || 
                               registration['CampusGroupRoom']
         end
         
