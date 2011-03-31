@@ -12,7 +12,11 @@ class Group < ActiveRecord::Base
   #validates_presence_of :label_field, :unless => :label_text.blank?
   validates_numericality_of :capacity, :only_integer => true,
                             :allow_nil => true,
-                            :greater_than_or_equal_to => 0
+                            :greater_than_or_equal_to => 0                          
+  
+  validates_format_of :label_text,
+                      :with => /^[^'"]*\z/,
+                      :message => "Label text cannot contain single or double quotes."
   
   validate :parent_can_contain_children
   
