@@ -25,6 +25,8 @@ class Group < ActiveRecord::Base
     end
   end
   
+  # Returns the ancestor of the given group in which required_membership is set,
+  # or itself if no ancestor has required_membership set.
   def required_membership_scope
     self.self_and_ancestors.reverse_each do |g|
       if g.required_membership
@@ -33,7 +35,9 @@ class Group < ActiveRecord::Base
     end
     return self
   end
-  
+
+  # Returns the ancestor of the given group in which unique_membership is set,
+  # or itself if no ancestor has unique_membership set.
   def unique_membership_scope
     self.self_and_ancestors.reverse_each do |g|
       if g.unique_membership
@@ -44,6 +48,7 @@ class Group < ActiveRecord::Base
   end
   
   def build_custom_field_text
+    return '' if self.label_field.blank?
     text_array = []
     ancestry = self.self_and_ancestors
     ancestry.each do |g|
