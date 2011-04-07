@@ -3,6 +3,8 @@ module ApplicationHelper
   # Returns an li tag representing the given object, including sub lists
   # representing any children.
   def print_tree(object)
+    return "" if object.nil? or object.name.nil?
+    
     # Print the object itself.
     output = content_tag(:li, nil, false) do
       link_to(object.name, object) + ' | ' +
