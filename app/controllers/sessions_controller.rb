@@ -13,9 +13,7 @@ class SessionsController < ApplicationController
       session[:password] = params[:password]
       session[:account_id] = params[:account_id] 
       redirect_to assign_events_path
-      print "session created!"
     else
-      print "login failed"
       redirect_to login_url, :alert => "Invalid username/password combination"
     end
   end
