@@ -2,6 +2,8 @@ class GroupObserver < ActiveRecord::Observer
   observe :group
   
   def after_save(group)
+    return unless group and group.custom_field
+    
     label_text = group.build_custom_field_text
     label_field = group.custom_field.people_field
     

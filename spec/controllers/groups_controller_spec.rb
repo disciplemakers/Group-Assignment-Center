@@ -14,6 +14,7 @@ describe GroupsController do
     Group.stub(:root).with(no_args()).and_return(mock_root)
     @mock_event = mock_model(Event, :group_id => 1)
     Event.stub(:find).with(any_args()).and_return(@mock_event)
+    @mock_event.stub(:location).with(no_args()).and_return(nil)
   end
 
   def mock_group(stubs={})
