@@ -3,8 +3,8 @@ require 'pp'
 
 class AssignmentsController < ApplicationController
 
-  # GET /assignments/new
-  # GET /assignments/new.xml
+  # GET /events/1/assignments/new
+  # GET /events/1/assignments/new.xml
   def new
     @assignment = Assignment.new
     @event = Event.find(params[:event_id])
@@ -181,7 +181,13 @@ class AssignmentsController < ApplicationController
           format.html { redirect_to(new_event_assignment_url(params[:event_id], :drilldown_group_id => @drilldown_group.id)) }
           format.js
         end
-      end                  
+      end
+    
+    else
+      respond_to do |format|
+        format.html { render :action => "new", :event_id => :event_id }
+        format.xml  { render :xml => ["No commit action selected"], :status => :unprocessable_entity }
+      end
     end
     
     #respond_to do |format|
@@ -195,14 +201,14 @@ class AssignmentsController < ApplicationController
     #end
   end
 
-  # PUT /assignments/1
-  # PUT /assignments/1.xml
+  # PUT /events/1/assignments/1
+  # PUT /events/1/assignments/1.xml
   def update
     @assignment = Assignment.find(params[:id])
 
     respond_to do |format|
       if @assignment.update_attributes(params[:assignment])
-        format.html { redirect_to(@assignment, :notice => 'Assignment was successfully updated.') }
+        format.html { redirect_to(event_assignment_url(@assignment), :notice => 'Assignment was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

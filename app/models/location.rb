@@ -4,17 +4,14 @@ class Location < ActiveRecord::Base
   has_many :groups
   has_many :events
   
-  before_destroy :clear_location_references
+  before_destroy :clear_location_data
   
-  
-  private
-  
-  def clear_location_references
+  def clear_location_data
     if self.root?
       # nullify event location fields
       if events = Event.find(:all, :conditions => {:location_id => self.id})
         events.each do |event|
-          event.update_attributes({"location_id" => nil})
+          event.update_attribute("location_id", nil)
         end
       end
     end
@@ -22,7 +19,7 @@ class Location < ActiveRecord::Base
     # nullify group location fields
     if groups = Group.find(:all, :conditions => {:location_id => self.id})
       groups.each do |group|
-        group.update_attributes({"location_id" => nil})
+        group.update_attribute("location_id", nil)
       end
     end
   end

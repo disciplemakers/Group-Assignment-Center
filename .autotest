@@ -14,3 +14,9 @@
 # Autotest::RCov.command = 'rcov'
 ##Autotest::RCov.pattern = 'spec/**/*_spec.rb'
 ##Autotest::RCov.options = ['--exclude', '\/usr\/lib\/ruby\/*,\/var\/lib\/gems\/*,spec/*']
+
+Autotest.add_hook(:initialize) {|at|
+  at.add_exception %r{^./spec/views}  # ignore views
+  nil
+}
+

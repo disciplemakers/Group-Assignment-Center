@@ -7,7 +7,8 @@ require 'rake'
 Gac::Application.load_tasks
 
 RSpec::Core::RakeTask.new(:rcov) do |spec|
-  spec.pattern = 'spec/**/*_spec.rb'
+  #spec.pattern = 'spec/**/*_spec.rb'
+  spec.pattern = 'spec/[^v]*/*_spec.rb'
   spec.rcov = true
-  spec.rcov_opts = ['--exclude', '\/usr\/lib\/ruby\/*,\/var\/lib\/gems\/*,spec/*,\/var\/local\/devel']
+  spec.rcov_opts = ['--rails', '--threshold', '100', '--exclude', 'views,\/usr\/lib\/ruby\/*,\/var\/lib\/gems\/*,spec\/*,\/var\/local\/devel,app\/views\/*']
 end

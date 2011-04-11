@@ -14,7 +14,19 @@ describe EventsController do
   def mock_event(stubs={})
     @mock_event ||= mock_model(Event, stubs).as_null_object
   end
-
+  
+  describe "without session information" do
+    before(:each) do
+      session[:username] = nil
+      session[:password] = nil
+    end
+    
+    it "should redirect to the login page" do
+      get :index
+      response.should redirect_to(login_url)
+    end
+  end
+  
   describe "GET index" do
     before(:each) do
       mock_roc = mock('Connector')
@@ -34,6 +46,11 @@ describe EventsController do
     
     it "assigns all events as @events" do
       Event.stub(:all) { [mock_event] }
+      
+      # The next two lines aren't right, but maybe they're on the right track?
+      #Group.stub(:new).and_return(stub_model(Group))
+      #Group.stub(:custom_field).and_return(stub_model(CustomField))
+      
       get :index
       assigns(:events).should eq([mock_event])
     end
@@ -66,14 +83,7 @@ describe EventsController do
       Event.stub(:find).with("37") { mock_event }
       get :show, :id => "37"
       assigns(:event).should be(mock_event)
-    end 
-    
-    it "assigns remote registrants as @remote_registrants" do
-      Event.stub(:find).with("37") { mock_event }
-      get :show, :id => "37"
-      assigns(:remote_registrants).should == @report_hash
     end
-     
   end
 
   describe "GET new" do
