@@ -15,10 +15,12 @@
     <label for="password">Password:</label>
     <%= password_field_tag :password, params[:password] %>
   </div>
+  <% if APP_CONFIG.nil? or APP_CONFIG['account_id'].nil? %>
   <div>
     <label for="password">Account ID:</label>
     <%= password_field_tag :account_id, params[:account_id] %>
   </div>
+  <% end %>
       
   <div>
     <%= submit_tag "Login" %>
