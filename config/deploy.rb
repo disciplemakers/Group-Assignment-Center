@@ -29,7 +29,14 @@ namespace :deploy do
     production_db_config = "/var/lib/capistrano/gac-production.database.yml"
     run "cp #{production_db_config} #{release_path}/config/database.yml"
   end
+  
+  task :copy_app_configuration do
+    app_config = "/var/lib/capistrano/config.yml"
+    run "cp #{app_config} #{release_path}/config/config.yml"
+  end
+  
   after "deploy:update_code" , "deploy:copy_database_configuration"
+  after "deploy:update_code" , "deploy:copy_app_configuration"
 
   task :start do ; end
   task :stop do ; end

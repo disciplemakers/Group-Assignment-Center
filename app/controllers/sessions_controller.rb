@@ -7,11 +7,13 @@ class SessionsController < ApplicationController
   end
 
   def create
-    roc = RegonlineConnector.new(params[:account_id], params[:username], params[:password])
+    account_id = params[:account_id]
+    account_id = APP_CONFIG['account_id'] if account_id.nil?
+    roc = RegonlineConnector.new(account_id, params[:username], params[:password])
     if roc.authenticate
       session[:username] = params[:username]
       session[:password] = params[:password]
-      session[:account_id] = params[:account_id] 
+      session[:account_id] = account_id
       redirect_to assign_events_path
     else
       redirect_to login_url, :alert => "Invalid username/password combination"

@@ -6,3 +6,4 @@ tmp/**/*
 .project
 vendor/cache/*
 coverage/*
+config/config.yml
