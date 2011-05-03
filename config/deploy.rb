@@ -8,7 +8,7 @@ set :deploy_to, "/var/lib/capistrano/apps"
 require "bundler/capistrano"
 set :use_sudo, false
 ssh_options[:forward_agent] = true
-set :branch, "devel"
+set :branch, "master"
 set :deploy_via, :remote_cache
 set :domain, "rails-dmz"
 set :db_domain, "mysql-dmz"
