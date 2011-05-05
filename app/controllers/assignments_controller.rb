@@ -70,14 +70,18 @@ class AssignmentsController < ApplicationController
     # The sort button
     if params['commit'] == 'Sort' or params['assign_action'] == "Sort"
       respond_to do |format|
-        format.html { redirect_to(new_event_assignment_url(params[:event_id])) }
+        format.html do
+          redirect_to(new_event_assignment_url(params[:event_id],
+                                              :drilldown_group_id => @drilldown_group.id))
+        end
         format.js {render :template => "assignments/sort.js.rjs"}
-      end 
+      end
+       
     # The "assign" or "right-to-left" button
     elsif params['commit'] == '<--' or params['assign_action'] == '<--'
       if params[:assignment].nil? or params[:assignment]['person'].nil? or params[:assignment]['person'].length == 0 
         respond_to do |format|
-          format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'No people selected.') }
+          format.html { redirect_to(new_event_assignment_url(params[:event_id], :drilldown_group_id => @drilldown_group.id), :notice => 'No people selected.') }
           format.js {render :template => "shared/error.js.rjs",
                             :locals => { :alert => "Assignment Error: No People Selected ..."}}
         end        
@@ -105,19 +109,23 @@ class AssignmentsController < ApplicationController
           end
         end
         respond_to do |format|
-          format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'Assignment was successfully created!!') }
+          format.html do
+            redirect_to(new_event_assignment_url(params[:event_id],
+                                                 :drilldown_group_id => @drilldown_group.id),
+                                                 :notice => 'Assignment was successfully created!!')
+          end
           format.js
           format.xml  { head :ok }
         end        
       elsif !groups.nil? and groups.length > 1
         respond_to do |format|
-          format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'More than one group on left selected.') }
+          format.html { redirect_to(new_event_assignment_url(params[:event_id], :drilldown_group_id => @drilldown_group.id), :notice => 'More than one group on left selected.') }
           format.js {render :template => "shared/error.js.rjs",
                             :locals => { :alert => "Assignment Error: More than one group on left selected ..."}}
         end
       else # groups.length === 0
         respond_to do |format|
-          format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'No groups selected on left.') }
+          format.html { redirect_to(new_event_assignment_url(params[:event_id], :drilldown_group_id => @drilldown_group.id), :notice => 'No groups selected on left.') }
           format.js {render :template => "shared/error.js.rjs",
                             :locals => { :alert => "Assignment Error: No groups selected on left ..."}}
         end
@@ -127,7 +135,7 @@ class AssignmentsController < ApplicationController
     elsif params['commit'] == '-->' or params['assign_action'] == '-->'
       if params[:left_side].nil? or people.nil?
         respond_to do |format|
-          format.html { redirect_to(new_event_assignment_url(params[:event_id]), :notice => 'No people selected.') }
+          format.html { redirect_to(new_event_assignment_url(params[:event_id], :drilldown_group_id => @drilldown_group.id), :notice => 'No people selected.') }
           format.js {render :template => "shared/error.js.rjs",
                             :locals => { :alert => "Assignment Error: No people selected for removal ..."}}
         end
@@ -154,7 +162,7 @@ class AssignmentsController < ApplicationController
           end
         end
         respond_to do |format|
-          format.html { redirect_to(new_event_assignment_url(params[:event_id])) }
+          format.html { redirect_to(new_event_assignment_url(params[:event_id], :drilldown_group_id => @drilldown_group.id)) }
           format.js
         end
       end
