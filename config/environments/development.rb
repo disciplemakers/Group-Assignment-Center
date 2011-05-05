@@ -22,5 +22,8 @@ Gac::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
+  
+  # Raise the default log level high enough to exclude all the SQL output.
+  config.log_level = :info
 end
 
