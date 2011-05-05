@@ -113,8 +113,14 @@ class EventsController < ApplicationController
   def remote_events(account_id, username, password)
     filter_hash = {'StatusId' => 1}
     roc = RegonlineConnector.new(account_id, username, password)
-    #events = roc.events
-    events = roc.filtered_events(filter_hash, "or", "false")
+    
+    # Show all events if this is the development environment, but only
+    # active events otherwise.
+    if Rails.env.development?
+      events = roc.events
+    else
+      events = roc.filtered_events(filter_hash, "or", "false")
+    end
   end
   
   def location_from_event(event)
