@@ -72,7 +72,9 @@ class AssignmentsController < ApplicationController
       respond_to do |format|
         format.html do
           redirect_to(new_event_assignment_url(params[:event_id],
-                                              :drilldown_group_id => @drilldown_group.id))
+                                              :drilldown_group_id => @drilldown_group.id,
+                                              :sort_by_1 => @sort_by_1,
+                                              :sort_by_2 => @sort_by_2))
         end
         format.js {render :template => "assignments/sort.js.rjs"}
       end
