@@ -105,9 +105,10 @@ class AssignmentsController < ApplicationController
             end
             # write back label text to regonline
             person.write_custom_field_to_remote(
-                RegonlineConnector.new(session[:account_id], session[:username], session[:password]),
-                group.custom_field.name,
-                label_text) if RAILS_ENV == "production"
+                RegonlineConnector.new(session[:account_id],
+                                       session[:username],
+                                       session[:password]),
+                group.custom_field.name, label_text)
           end
         end
         respond_to do |format|
@@ -158,9 +159,10 @@ class AssignmentsController < ApplicationController
             end
             # write back label text to regonline
             person.write_custom_field_to_remote(
-                RegonlineConnector.new(session[:account_id], session[:username], session[:password]),
-                group.custom_field.name,
-                '') if RAILS_ENV == "production"
+                RegonlineConnector.new(session[:account_id],
+                                       session[:username],
+                                       session[:password]),
+                group.custom_field.name, '')
           end
         end
         respond_to do |format|

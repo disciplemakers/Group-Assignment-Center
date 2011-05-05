@@ -108,7 +108,7 @@ class GroupsController < ApplicationController
           person.update_attribute(label_field, label_text)
           person.write_custom_field_to_remote(RegonlineConnector.new(session[:account_id], session[:username], session[:password]),
                                               @group.custom_field.name,
-                                              label_text) if RAILS_ENV == "production"
+                                              label_text)
         end
         format.html { redirect_to(edit_event_path(@event), :notice => "#{@group.name} was successfully updated.") }
         format.xml  { head :ok }
