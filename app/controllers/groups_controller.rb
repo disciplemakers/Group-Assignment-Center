@@ -197,7 +197,17 @@ class GroupsController < ApplicationController
           while g = groups_to_be_copied.shift do
             recursive = !(g.leaf? or ((g.children & groups_to_be_copied).length > 0))
             group_group = clone_group_branch(g, destination_group, recursive)
-            destination_group = (recursive ? destination : group_group)
+            if groups_to_be_copied.length > 0 # Set next destination if needed
+              if recursive
+                destination_group = group_group.parent # Back out to destination of recursed clone
+              elsif g.is_ancestor_of?(groups_to_be_copied[0])
+                destination_group = group_group # Make next clone a child of this
+              elsif g.parent == (groups_to_be_copied[0]).parent
+                destination_group = group_group.parent # Make next clone a sibling of this
+              else
+                destination_group = destination
+              end
+            end
           end
         end
         
