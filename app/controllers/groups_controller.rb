@@ -217,9 +217,10 @@ class GroupsController < ApplicationController
       
       groups = params['group']['id']
       locations = params['group']['location_id']
+      egroup = Group.find(destination)
+      event = Event.find(:first, :conditions => {:group_id => egroup.root})
       
-      redirect_to(edit_event_path(params['group']['active_object_id']),
-                  :notice => notice)
+      redirect_to(edit_event_path(event), :notice => notice)
     else
       puts "commit didn't match anything!\n"
     end
