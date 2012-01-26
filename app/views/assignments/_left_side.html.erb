@@ -1,3 +1,3 @@
-<%= select_tag("left_side", groups_with_people_options(@drilldown_group).html_safe,
+<%= select_tag("left_side", groups_with_people_options(@drilldown_group, @selected).html_safe,
                {:multiple => true, :size => 16}) %>
 <%= hidden_field_tag 'drilldown_group_id', @drilldown_group.id %>

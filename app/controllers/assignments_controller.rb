@@ -90,6 +90,7 @@ class AssignmentsController < ApplicationController
       elsif !groups.nil? and groups.length == 1
         @errors = []
         group_id = groups.first.gsub('group-', '').to_i
+        @selected = group_id
         params[:assignment]['person'].each do |p|
           assignment = Assignment.new(:group_id => group_id, :person_id => p)
           unless assignment.save
