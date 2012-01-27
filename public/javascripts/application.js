@@ -20,11 +20,14 @@ function toggleGroupOptionChildren(element) {
     current_depth = (element.options[i].text.lastIndexOf("---") / 3) + 1
     
     if ( current_depth == depth )
-    { exit } // exit when we get back to the same depth as the double-clicked option
+    { break } // exit when we get back to the same depth as the double-clicked option
     
     if ( selectedStyle == "underline" && (current_depth > depth) ) { element.options[i].style.display = "none" }
     else {
       if ( element.options[i].className == "group-option" ) {
+        if ( (sub_depth > 0) && (current_depth > sub_depth) ) { continue }
+        else if ( sub_depth > 0 ) { sub_depth = 0 }
+        
         element.options[i].style.display = "block"
         
         if ( element.options[i].style.textDecoration == "underline" ) {
