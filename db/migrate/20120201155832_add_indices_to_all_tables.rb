@@ -14,7 +14,7 @@ class AddIndicesToAllTables < ActiveRecord::Migration
     add_index :events, :status_id
     add_index :gender_constraints, :id, :unique => true
     add_index :groups, :id, :unique => true
-    add_index :groups, [:name, :remote_event_id], :unique => true
+    add_index :groups, [:name, :remote_event_id]
     add_index :groups, :location_id
     add_index :groups, :remote_event_id
     add_index :locations, :id, :unique => true

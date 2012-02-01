@@ -85,7 +85,7 @@ ActiveRecord::Schema.define(:version => 20120201155832) do
 
   add_index "groups", ["id"], :name => "index_groups_on_id", :unique => true
   add_index "groups", ["location_id"], :name => "index_groups_on_location_id"
-  add_index "groups", ["name", "remote_event_id"], :name => "index_groups_on_name_and_remote_event_id", :unique => true
+  add_index "groups", ["name", "remote_event_id"], :name => "index_groups_on_name_and_remote_event_id"
   add_index "groups", ["remote_event_id"], :name => "index_groups_on_remote_event_id"
 
   create_table "locations", :force => true do |t|
