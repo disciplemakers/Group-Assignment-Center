@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110318150400) do
+ActiveRecord::Schema.define(:version => 20120201155832) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "group_id"
@@ -19,12 +19,21 @@ ActiveRecord::Schema.define(:version => 20110318150400) do
     t.datetime "updated_at"
   end
 
+  add_index "assignments", ["group_id", "person_id"], :name => "index_assignments_on_group_id_and_person_id", :unique => true
+  add_index "assignments", ["group_id"], :name => "index_assignments_on_group_id"
+  add_index "assignments", ["id"], :name => "index_assignments_on_id", :unique => true
+  add_index "assignments", ["person_id"], :name => "index_assignments_on_person_id"
+
   create_table "custom_fields", :force => true do |t|
     t.string   "name"
     t.string   "people_field"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "custom_fields", ["id"], :name => "index_custom_fields_on_id", :unique => true
+  add_index "custom_fields", ["name"], :name => "index_custom_fields_on_name"
+  add_index "custom_fields", ["people_field"], :name => "index_custom_fields_on_people_field"
 
   create_table "events", :force => true do |t|
     t.integer  "remote_event_id"
@@ -38,11 +47,19 @@ ActiveRecord::Schema.define(:version => 20110318150400) do
     t.integer  "status_id"
   end
 
+  add_index "events", ["group_id"], :name => "index_events_on_group_id", :unique => true
+  add_index "events", ["id"], :name => "index_events_on_id", :unique => true
+  add_index "events", ["location_id"], :name => "index_events_on_location_id"
+  add_index "events", ["remote_event_id"], :name => "index_events_on_remote_event_id", :unique => true
+  add_index "events", ["status_id"], :name => "index_events_on_status_id"
+
   create_table "gender_constraints", :force => true do |t|
     t.string   "constraint"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "gender_constraints", ["id"], :name => "index_gender_constraints_on_id", :unique => true
 
   create_table "groups", :force => true do |t|
     t.string   "name"
@@ -66,6 +83,11 @@ ActiveRecord::Schema.define(:version => 20110318150400) do
     t.integer  "remote_event_id"
   end
 
+  add_index "groups", ["id"], :name => "index_groups_on_id", :unique => true
+  add_index "groups", ["location_id"], :name => "index_groups_on_location_id"
+  add_index "groups", ["name", "remote_event_id"], :name => "index_groups_on_name_and_remote_event_id", :unique => true
+  add_index "groups", ["remote_event_id"], :name => "index_groups_on_remote_event_id"
+
   create_table "locations", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -77,6 +99,9 @@ ActiveRecord::Schema.define(:version => 20110318150400) do
     t.integer  "rgt"
     t.integer  "depth"
   end
+
+  add_index "locations", ["id"], :name => "index_locations_on_id", :unique => true
+  add_index "locations", ["name"], :name => "index_locations_on_name"
 
   create_table "people", :force => true do |t|
     t.string   "first_name"
@@ -94,10 +119,16 @@ ActiveRecord::Schema.define(:version => 20110318150400) do
     t.integer  "event_id"
   end
 
+  add_index "people", ["confirmation_number"], :name => "index_people_on_confirmation_number", :unique => true
+  add_index "people", ["event_id"], :name => "index_people_on_event_id"
+  add_index "people", ["id"], :name => "index_people_on_id", :unique => true
+
   create_table "statuses", :force => true do |t|
     t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "statuses", ["id"], :name => "index_statuses_on_id", :unique => true
 
 end
