@@ -23,8 +23,15 @@ class AssignmentsController < ApplicationController
     end
     
     if @event.remote_report_id
+      start_time = Time.now.to_f
       @remote_registrants = remote_registrants(@event, session[:account_id], session[:username], session[:password])
+      end_time = Time.now.to_f
+      notice = "Remote calls: #{"%.2f" % (end_time-start_time)}ms | "
+      start_time = Time.now.to_f
       save_remote_registrations(@remote_registrants, params[:event_id])
+      end_time = Time.now.to_f
+      notice += "Local (database) calls: #{"%.2f" % (end_time-start_time)}ms"
+      flash[:notice] = notice
     end
 
     respond_to do |format|
