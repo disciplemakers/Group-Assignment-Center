@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120201155832) do
+ActiveRecord::Schema.define(:version => 20120202141522) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "group_id"
@@ -83,9 +83,12 @@ ActiveRecord::Schema.define(:version => 20120201155832) do
     t.integer  "remote_event_id"
   end
 
+  add_index "groups", ["id", "lft", "rgt"], :name => "index_groups_on_id_and_lft_and_rgt", :unique => true
   add_index "groups", ["id"], :name => "index_groups_on_id", :unique => true
+  add_index "groups", ["lft", "rgt"], :name => "index_groups_on_lft_and_rgt", :unique => true
   add_index "groups", ["location_id"], :name => "index_groups_on_location_id"
   add_index "groups", ["name", "remote_event_id"], :name => "index_groups_on_name_and_remote_event_id"
+  add_index "groups", ["parent_id"], :name => "index_groups_on_parent_id"
   add_index "groups", ["remote_event_id"], :name => "index_groups_on_remote_event_id"
 
   create_table "locations", :force => true do |t|
