@@ -49,7 +49,8 @@ class Person < ActiveRecord::Base
                         'Gender' => "gender",
                         'Registration Type' => "registration_type",
                         'Name (Last, First)' => "last_name, first_name",
-                        'Name (First, Last)first_name' => "first_name, last_name" }
+                        'Name (First, Last)first_name' => "first_name, last_name",
+                        'Track' => "track" }
   end
   
   def full_name
@@ -62,6 +63,7 @@ class Person < ActiveRecord::Base
                 'Muhlenberg College'          => 'MC',
                 'East Stroudsburg University' => 'ESU',
                 'Penn State University'       => 'PSU',
+                'PennState University'        => 'PSU',
                 'Gettysburg College'          => 'GC',
                 'Shippensburg University'     => 'Ship',
                 'Bucknell University'         => 'Bucknell',
@@ -76,7 +78,10 @@ class Person < ActiveRecord::Base
       ed_info += ")"
     end
     
+    track_info = String.new
+    track_info += "/#{self.track}" if !self.track.nil?
+    
     # reg_type, gender, school, grad_year
-    full_info = "#{self.full_name} - #{self.registration_type}#{ed_info}"
+    full_info = "#{self.full_name} - #{self.registration_type}#{track_info}#{ed_info}"
   end
 end

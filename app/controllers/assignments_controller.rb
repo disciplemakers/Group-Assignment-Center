@@ -244,7 +244,7 @@ class AssignmentsController < ApplicationController
   
   def remote_registrants(event, account_id, username, password)
     end_date = Time.now
-    year_in_seconds = 31536000
+    year_in_seconds = 2 * 31536000
     start_date = end_date - year_in_seconds
     #end_date += (3600*24)
     roc = RegonlineConnector.new(account_id, username, password)
@@ -270,6 +270,7 @@ class AssignmentsController < ApplicationController
         "registration_type"      => person.registration_type,
         "school"                 => person.school,
         "graduation_year"        => person.graduation_year.to_i,
+        "track"                  => person.track,
         "housing_assignment"     => person.housing_assignment,
         "small_group_assignment" => person.small_group_assignment,
         "campus_group_room"      => person.campus_group_room
@@ -333,6 +334,7 @@ class AssignmentsController < ApplicationController
                       "registration_type"      => registration['RegistrationType'],
                       "school"                 => registration['SchoolName'],
                       "graduation_year"        => grad_year,
+                      "track"                  => registration['Track'],
                       "housing_assignment"     => housing_assignment,
                       "small_group_assignment" => small_group_assignment,
                       "campus_group_room"      => campus_group_room}
@@ -356,6 +358,7 @@ class AssignmentsController < ApplicationController
                                       :registration_type      => registration['RegistrationType'],
                                       :school                 => registration['SchoolName'],
                                       :graduation_year        => grad_year,
+                                      :track                  => registration['Track'],
                                       :housing_assignment     => registration['HousingAssignment'],
                                       :small_group_assignment => registration['SmallGroupAssignment'],
                                       :campus_group_room      => registration['CampusGroupRoom'])
