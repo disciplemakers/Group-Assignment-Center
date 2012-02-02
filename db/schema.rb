@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120202141522) do
+ActiveRecord::Schema.define(:version => 20120202190335) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "group_id"
@@ -120,6 +120,7 @@ ActiveRecord::Schema.define(:version => 20120202141522) do
     t.datetime "updated_at"
     t.integer  "confirmation_number"
     t.integer  "event_id"
+    t.string   "track"
   end
 
   add_index "people", ["confirmation_number"], :name => "index_people_on_confirmation_number", :unique => true
