@@ -49,7 +49,7 @@ class Person < ActiveRecord::Base
                         'Gender' => "gender",
                         'Registration Type' => "registration_type",
                         'Name (Last, First)' => "last_name, first_name",
-                        'Name (First, Last)first_name' => "first_name, last_name",
+                        'Name (First, Last)' => "first_name, last_name",
                         'Track' => "track" }
   end
   
