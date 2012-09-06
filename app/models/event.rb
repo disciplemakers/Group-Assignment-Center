@@ -1,4 +1,5 @@
 class Event < ActiveRecord::Base
+  default_scope :order => "start_date DESC"
   belongs_to :location
   belongs_to :status
   belongs_to :group, :dependent => :destroy
