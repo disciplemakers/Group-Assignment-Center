@@ -17,7 +17,7 @@ width: 90% !important;
 
 div.fixed
 {
-width: 950px !important;
+width: 1100px !important;
 }
 
 /* Basic Stuff */
@@ -149,7 +149,7 @@ background: #440000 url('../images/n1.gif') repeat-x;
 #header_inner
 {
 position: relative;
-width: 950px;
+width: 1100px;
 height:122px;
 margin: 0 auto;
 }
@@ -263,7 +263,7 @@ margin-left: 2em;
 #main_inner
 {
 position: relative;
-width: 950px;
+width: 1100px;
 margin: 0 auto;
 /*padding-top: 3.5em;*/
 }
@@ -332,7 +332,7 @@ margin-left: 1.1em;
 #main_utility
 {
 position: relative;
-width: 950px;
+width: 1100px;
 margin: 0;
 padding: .5em 0 0;
 height: 2.5em;
@@ -369,7 +369,7 @@ margin: 0 0 2.5em;
 
 #footer
 {
-width: 950px;
+width: 1100px;
 margin: 0 auto;
 text-align: center;
 clear: both;
@@ -450,7 +450,8 @@ max-width: 2.5em;
 .field select {
 font-size: 1.0em;
 letter-spacing: -.15px;
-width: 20em;
+min-width: 20em;
+max-width: 35em;
 overflow: auto;
 }
 
@@ -543,7 +544,7 @@ display: inline-block;
 	#secondaryContent_2columns
 	{
 	/*float: right;*/
-	margin: 0 0 0 765px;
+	margin: 0 0 0 915px;
 	}
 	
 	#columnC_2columns
