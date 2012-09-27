@@ -68,7 +68,7 @@ class AssignmentsController < ApplicationController
     @group = @event.group
     @sort_by_1 = (params['sort_by_1'].nil? ? "gender" : params['sort_by_1'])
     #@sort_by_1 = (params['sort_by_1'].nil? ? "last_name, first_name" : params['sort_by_1'])
-    @sort_by_2 = (params['sort_by_2'].nil? ? "school" : params['sort_by_2'])
+    @sort_by_2 = (params['sort_by_2'].nil? ? "School" : params['sort_by_2'])
     #@sort_by_2 = Person.sortable_fields[params['sort_by_2']]
     
     @sort_order = @sort_by_1
