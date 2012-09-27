@@ -127,6 +127,7 @@ GEM
       activesupport (>= 3.0)
       railties (>= 3.0)
       rspec (~> 2.11.0)
+    ruby-prof (0.11.2)
     rubyzip (0.9.9)
     selenium-webdriver (2.25.0)
       childprocess (>= 0.2.5)
@@ -165,6 +166,7 @@ DEPENDENCIES
   rails (>= 3.0.3)
   rcov (>= 0.9.9)
   rspec-rails (>= 2.0.0)
+  ruby-prof
   rubyzip
   sqlite3-ruby
   webrat (>= 0.7.2)

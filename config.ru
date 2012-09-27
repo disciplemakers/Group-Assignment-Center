@@ -2,3 +2,5 @@
 
 require ::File.expand_path('../config/environment',  __FILE__)
 run Gac::Application
+
+use Rack::RubyProf, :path => '/tmp/profile'

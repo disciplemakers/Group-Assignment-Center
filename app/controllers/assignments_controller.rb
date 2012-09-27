@@ -6,6 +6,8 @@ class AssignmentsController < ApplicationController
   # GET /events/1/assignments/new
   # GET /events/1/assignments/new.xml
   def new
+    notice = "" if notice.nil?
+    start_time = Time.now.to_f
     @assignment = Assignment.new
     @event = Event.find(params[:event_id])
     @sort_by_1 = (params['sort_by_1'].nil? ? "last_name, first_name" : params['sort_by_1'])
@@ -21,16 +23,21 @@ class AssignmentsController < ApplicationController
     else
       @group = @drilldown_group = @event.group
     end
+    end_time = Time.now.to_f
+    notice += "RENDER: Warm up time: #{"%.3f" % (end_time-start_time)}s | "
+    logger.info "PROFILER: Render warm up time: #{"%.3f" % (end_time-start_time)}s"
     
     if @event.remote_report_id
       start_time = Time.now.to_f
       @remote_registrants = remote_registrants(@event, session[:account_id], session[:username], session[:password])
       end_time = Time.now.to_f
-      notice = "Remote calls: #{"%.3f" % (end_time-start_time)}s | "
+      notice += "Remote calls: #{"%.3f" % (end_time-start_time)}s | "
+      logger.info "PROFILER: Render remote calls time: #{"%.3f" % (end_time-start_time)}s"
       start_time = Time.now.to_f
       save_remote_registrations(@remote_registrants, params[:event_id])
       end_time = Time.now.to_f
       notice += "Local (database) calls: #{"%.3f" % (end_time-start_time)}s"
+      logger.info "PROFILER: Render local db calls time: #{"%.3f" % (end_time-start_time)}s"
       flash[:notice] = notice
     end
 
@@ -54,6 +61,7 @@ class AssignmentsController < ApplicationController
   # POST /assignments
   # POST /assignments.xml
   def create
+    create_start_time = start_time = Time.now.to_f
     @event = Event.find(params[:event_id])
     @group = @event.group
     @sort_by_1 = (params['sort_by_1'].nil? ? "last_name, first_name" : params['sort_by_1'])
@@ -73,6 +81,8 @@ class AssignmentsController < ApplicationController
       people = params[:left_side].select {|i| i =~ /^person-/}
       groups = params[:left_side].select {|i| i =~ /^group-/}
     end
+    end_time = Time.now.to_f
+    logger.info "PROFILER: Assignments POST processing warm up wall time: #{"%.3f" % (end_time-start_time)}s"
     
     # The sort button
     if params['commit'] == 'Sort' or params['assign_action'] == "Sort"
@@ -88,6 +98,7 @@ class AssignmentsController < ApplicationController
        
     # The "assign" or "right-to-left" button
     elsif params['commit'] == '<--' or params['assign_action'] == '<--'
+      start_time = Time.now.to_f
       if params[:assignment].nil? or params[:assignment]['person'].nil? or params[:assignment]['person'].length == 0 
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id], :drilldown_group_id => @drilldown_group.id), :notice => 'No people selected.') }
@@ -142,9 +153,12 @@ class AssignmentsController < ApplicationController
                             :locals => { :alert => "Assignment Error: No groups selected on left ..."}}
         end
       end
+      end_time = Time.now.to_f
+      logger.info "PROFILER: Assign action processing wall time: #{"%.3f" % (end_time-start_time)}s"
       
     # The "unassign" or "left-to-right" button
     elsif params['commit'] == '-->' or params['assign_action'] == '-->'
+      start_time = Time.now.to_f
       if params[:left_side].nil? or people.nil?
         respond_to do |format|
           format.html { redirect_to(new_event_assignment_url(params[:event_id], :drilldown_group_id => @drilldown_group.id), :notice => 'No people selected.') }
@@ -179,6 +193,8 @@ class AssignmentsController < ApplicationController
           format.js
         end
       end
+      end_time = Time.now.to_f
+      logger.info "PROFILER: Unassign action processing wall time: #{"%.3f" % (end_time-start_time)}s"
       
     # The "drill down" or "select" button
     elsif params['commit'] == 'Select Group' or params['assign_action'] == 'Select Group'
@@ -220,6 +236,9 @@ class AssignmentsController < ApplicationController
     #    format.xml  { render :xml => @assignment.errors, :status => :unprocessable_entity }
     #  end
     #end
+
+    end_time = Time.now.to_f
+    logger.info "PROFILER: Assignment processing wall time: #{"%.3f" % (end_time-create_start_time)}s"
   end
 
   # PUT /events/1/assignments/1
