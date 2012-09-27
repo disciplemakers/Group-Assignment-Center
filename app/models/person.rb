@@ -14,7 +14,10 @@ class Person < ActiveRecord::Base
   # Returns an array of all People who are assigned to the given
   # group or one of its descendants.
   def self.find_all_assigned_under(group)
-    self.all.select { |p| p.assigned_under?(group) }
+    groups = group.self_and_descendants.collect { |g| g.id }
+    assignments = Assignment.all(:select => "person_id", 
+                                 :conditions => ["group_id in (?)", groups])
+    self.where(:id => assignments.collect { |a| a.person_id })
   end
 
   def custom_field_changed?
