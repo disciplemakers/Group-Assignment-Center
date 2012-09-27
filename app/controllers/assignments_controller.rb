@@ -99,6 +99,7 @@ class AssignmentsController < ApplicationController
         group_id = groups.first.gsub('group-', '').to_i
         @selected = group_id
         params[:assignment]['person'].each do |p|
+          next if p.empty? # Skip rails' empty element [0] on multi-selects
           assignment = Assignment.new(:group_id => group_id, :person_id => p)
           unless assignment.save
             @errors << assignment.errors.full_messages
