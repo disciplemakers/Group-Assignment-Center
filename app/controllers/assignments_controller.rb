@@ -10,11 +10,13 @@ class AssignmentsController < ApplicationController
     start_time = Time.now.to_f
     @assignment = Assignment.new
     @event = Event.find(params[:event_id])
-    @sort_by_1 = (params['sort_by_1'].nil? ? "last_name, first_name" : params['sort_by_1'])
-    @sort_by_2 = Person.sortable_fields[params['sort_by_2']]
+    @sort_by_1 = (params['sort_by_1'].nil? ? "gender" : params['sort_by_1'])
+    #@sort_by_1 = (params['sort_by_1'].nil? ? "last_name, first_name" : params['sort_by_1'])
+    @sort_by_2 = (params['sort_by_2'].nil? ? "School" : params['sort_by_2'])
+    #@sort_by_2 = Person.sortable_fields[params['sort_by_2']]
     
     @sort_order = @sort_by_1
-    @sort_order += ", #{params['sort_by_2']}" unless params['sort_by_2'].blank?
+    @sort_order += ", #{@sort_by_2}" unless @sort_by_2.blank?
     
     # Check whether the form is being requested of a subgroup rather than
     # the group that corresponds to the whole event.
@@ -64,11 +66,13 @@ class AssignmentsController < ApplicationController
     create_start_time = start_time = Time.now.to_f
     @event = Event.find(params[:event_id])
     @group = @event.group
-    @sort_by_1 = (params['sort_by_1'].nil? ? "last_name, first_name" : params['sort_by_1'])
-    @sort_by_2 = params['sort_by_2']
+    @sort_by_1 = (params['sort_by_1'].nil? ? "gender" : params['sort_by_1'])
+    #@sort_by_1 = (params['sort_by_1'].nil? ? "last_name, first_name" : params['sort_by_1'])
+    @sort_by_2 = (params['sort_by_2'].nil? ? "school" : params['sort_by_2'])
+    #@sort_by_2 = Person.sortable_fields[params['sort_by_2']]
     
     @sort_order = @sort_by_1
-    @sort_order += ", #{params['sort_by_2']}" unless params['sort_by_2'].blank?
+    @sort_order += ", #{@sort_by_2}" unless @sort_by_2.blank?
     
     # Preserve our knowledge of what group we were looking at.
     if drilldown_group_id = params['drilldown_group_id'].to_i
