@@ -142,9 +142,9 @@ class GroupsController < ApplicationController
     if params['commit'] == 'Edit'
       redirect_to edit_group_path(params['group']['parent_id'])
     elsif params['commit'] == 'Copy'
-      original_group = Group.find(params['group']['parent_id'].first)
+      original_group = Group.find(params['group']['parent_id'])
       @parent = original_group.parent
-      @group = original_group.clone
+      @group = original_group.dup
       name = "#{@group.name} (Copy)"
       @group.name = name
       @group.parent_id = nil
@@ -165,32 +165,35 @@ class GroupsController < ApplicationController
       # Assign a value for 'id' in the params hash because we're just going
       # to hand off to the destroy method. (We can't redirect because HTTP
       # redirects can only use GET, and that won't work with destroy.)
-      request.params['id'] = params['group']['parent_id'].first      
+      request.params['id'] = params['group']['parent_id']
       destroy
     elsif params['commit'] == '<'
       if params.has_key?('group')
         if params['group'].has_key?('parent_id')
-          destination = params['group']['parent_id'].first
+          destination = params['group']['parent_id']
         elsif params['group'].has_key?('active_object_id')
-          destination = params['group']['active_object_id'].first
+          destination = params['group']['active_object_id']
         else
           redirect_to new_group_path
         end
         
-        if params['group'].has_key?('location')
+        if ((!(params['group']['location'].empty?)) && params['group']['location'].length > 1)
           locations_to_be_copied = params['group']['location']
+          locations_to_be_copied.delete_if {|l| l == ""}
+          
           locations_to_be_copied.collect! {|l| Location.find(l)}
           destination_group = destination
           
           while location = locations_to_be_copied.shift do
             recursive = !(location.leaf? or ((location.children & locations_to_be_copied).length > 0))
-            location_group = clone_location_branch(location, destination_group, recursive)
+            location_group = clone_location_branch(location, Group.find(destination), recursive)
             destination_group = (recursive ? destination : location_group)
           end
         end
         
-        if params['group'].has_key?('id')
+        if ((!(params['group']['id'].empty?)) && params['group']['id'].length > 1)
           groups_to_be_copied = params['group']['id']
+          groups_to_be_copied.delete_if {|g| g == ""}
           groups_to_be_copied.collect! {|g| Group.find(g)}
           destination_group = destination
           
@@ -227,7 +230,7 @@ class GroupsController < ApplicationController
   end
   
   def clone_group_branch(group, destination, recursive = true)
-    clone = group.clone
+    clone = group.dup
     clone.parent_id = nil
     clone.save
     clone.move_to_child_of(destination)
